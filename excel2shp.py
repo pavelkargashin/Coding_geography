@@ -3,9 +3,10 @@ import os
 import csv
 import openpyxl
 import sys
+import parameters
 
-TestDataFolder = 'C:/PAUL/Science/GISofBALI/DataSource/'
-workData = 'StatData.xlsx'
+TestDataFolder = parameters.TestDataFolder
+workData = parameters.workData
 exceldata = TestDataFolder+workData
 
 # myExcel = openpyxl.load_workbook(TestDataFolder+workData)
@@ -34,27 +35,32 @@ exceldata = TestDataFolder+workData
 
 def explore_workbook(inputexcel):
     myExcel = openpyxl.load_workbook(inputexcel)
-    mySheets = myExcel.get_sheet_names()  # get all sheets via list
+    mySheets = myExcel.sheetnames # get all sheets via list
     myDoc = open(TestDataFolder + 'TEST.txt', 'w')
     for item in mySheets:
-        myDoc.write(item)
+        myDoc.write(item+'\n')
     myDoc.close()
 
 
 def export_data_to_csv(inputexcel, currentSheet):
+    list_temp = []
     myExcel = openpyxl.load_workbook(inputexcel)
-    mySheet = myExcel.get_sheet_by_name(currentSheet)
-    with open("new_csv.csv", 'wb') as mycsv:
-        filewriter = csv.writer(mycsv)
-        for row in xrange(mySheet.rows()):
-            filewriter.writerow(mySheet.values(row).encode('utf-8'))
+    mySheet = myExcel[currentSheet]
+    with open(TestDataFolder+"new_csv.csv", 'wb') as mycsv:
+        fw = csv.writer(mycsv, delimiter = ',')
+        for row_val in range(2, mySheet.max_row+1):
+            for col_val in range(1,mySheet.max_column):
+                list_temp.append(mySheet.cell(column = col_val, row = row_val).value)
+            # print(list_temp)
+            fw.writerow(list_temp)
+            list_temp=[]
     mycsv.close()
 
 
 def create_fields_list(inputexcel, currentSheet):
     list_temp = []
     myExcel = openpyxl.load_workbook(inputexcel)
-    mySheet = myExcel.get_sheet_by_name(currentSheet)
+    mySheet = myExcel[currentSheet]
     row_val=1
     with open(TestDataFolder+'attrNames.csv', 'w') as curCsv:
         MyWriter = csv.writer(curCsv, delimiter = ',')
@@ -67,7 +73,6 @@ def create_fields_list(inputexcel, currentSheet):
 
     return list_temp
 
-print(create_fields_list(exceldata, "glossary")[0])
 # def create_shapefile():
 
 # def fill_shapefile():
