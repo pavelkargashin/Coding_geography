@@ -11,7 +11,6 @@ workData = 'StatData.xlsx'
 PathToGIS = "C:/PAUL/Science/GISofBALI/"
 ThematicDataset = 'ThematicData'
 gisName = "GISEcologyBali"
-<<<<<<< HEAD
 
 # Final Parameters
 # Folders
@@ -21,7 +20,4 @@ TempData = ProjectFolder+"TempData/"
 GISData = ProjectFolder+"GISEcologyBali.gdb/"
 ThematicDataset = GISData + 'ThematicData'
 BasemapDataset = GISData + 'BasemapData'
-AnalysisDataset = GISData + 'AnalysisData'AnalysisDataset = GISData + 'AnalysisData'
-=======
 anotherparam = 0
->>>>>>> a5c6a99b347e8ef4e26459d9f9471563e19ed814
