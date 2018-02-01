@@ -8,7 +8,7 @@ ProjectFolder = 'C:/PAUL/Science/GISofBALI/ProjectFolder/'
 ProjectFolder = ''
 
 # AK work folder
-ProjectFolder = ''
+ProjectFolder = 'd:/YandexDisk/Projects/Bali/'
 
 # Folders
 InputData = ProjectFolder+"InputData/"
