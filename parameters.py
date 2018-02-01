@@ -21,4 +21,8 @@ GISData = ProjectFolder+"GISEcologyBali.gdb/"
 ThematicDataset = GISData + 'ThematicData'
 BasemapDataset = GISData + 'BasemapData'
 AnalysisDataset = GISData + 'AnalysisData'
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 3a7d0db307ac30792498bfd81c24dabd5ee266ee
 anotherparam = 0
