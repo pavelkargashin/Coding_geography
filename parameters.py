@@ -20,4 +20,5 @@ TempData = ProjectFolder+"TempData/"
 GISData = ProjectFolder+"GISEcologyBali.gdb/"
 ThematicDataset = GISData + 'ThematicData'
 BasemapDataset = GISData + 'BasemapData'
+AnalysisDataset = GISData + 'AnalysisData'
 anotherparam = 0
