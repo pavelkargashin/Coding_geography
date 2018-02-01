@@ -5,16 +5,16 @@
 # PK work folder
 ProjectFolder = 'C:/PAUL/Science/GISofBALI/ProjectFolder/'
 # PK home folder
-ProjectFolder = ''
+# ProjectFolder = ''
 
 # AK work folder
-ProjectFolder = 'd:/YandexDisk/Projects/Bali/'
+# ProjectFolder = 'd:/YandexDisk/Projects/Bali/'
 
 # Folders
 InputData = ProjectFolder+"InputData/"
 TempData = ProjectFolder+"TempData/"
-GISData = ProjectFolder+"GISEcologyBali.gdb/"
-ThematicDataset = GISData + 'ThematicData'
-BasemapDataset = GISData + 'BasemapData'
-AnalysisDataset = GISData + 'AnalysisData'
+GISDataName = "GISEcologyBali"
+ThematicDatasetName = 'ThematicData'
+BasemapDatasetName = 'BasemapData'
+AnalysisDatasetName = 'AnalysisData'
 
