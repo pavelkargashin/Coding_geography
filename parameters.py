@@ -11,3 +11,4 @@ workData = 'StatData.xlsx'
 PathToGIS = "C:/PAUL/Science/GISofBALI/"
 ThematicDataset = 'ThematicData'
 gisName = "GISEcologyBali"
+anotherparam = 0
