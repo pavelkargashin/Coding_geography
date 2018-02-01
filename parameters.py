@@ -11,3 +11,13 @@ workData = 'StatData.xlsx'
 PathToGIS = "C:/PAUL/Science/GISofBALI/"
 ThematicDataset = 'ThematicData'
 gisName = "GISEcologyBali"
+
+# Final Parameters
+# Folders
+ProjectFolder = 'C:/PAUL/Science/GISofBALI/ProjectFolder/'
+InputData = ProjectFolder+"InputData/"
+TempData = ProjectFolder+"TempData/"
+GISData = ProjectFolder+"GISEcologyBali.gdb/"
+ThematicDataset = GISData + 'ThematicData'
+BasemapDataset = GISData + 'BasemapData'
+AnalysisDataset = GISData + 'AnalysisData'
