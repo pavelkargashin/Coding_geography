@@ -7,7 +7,7 @@ import arcpy
 def create_folders(inputpath):
     try:
        os.makedirs(inputpath)
-       print "Папка для проекта создана"
+       print "Папка {} создана".format(inputpath)
     except OSError:
         if not os.path.isdir(inputpath):
             raise
@@ -15,21 +15,21 @@ def create_folders(inputpath):
 
 def create_database(inputpath, GISName):
     if arcpy.Exists(inputpath+GISName+'.gdb/'):
-       print "There is a GDB", inputpath+GISName+'.gdb/'
+       print "База геоданных: ", inputpath+GISName+'.gdb/'
     else:
-        print "Now we are creating GDB"
+
         arcpy.CreateFileGDB_management(inputpath, GISName)
-        print "GDB was created", inputpath+GISName + '.gdb/'
+        print "База геоданных создана: ", inputpath+GISName + '.gdb/'
     return inputpath+GISName + '.gdb'
 
 
 def create_dataset(GDB,FDname):
     arcpy.env.workspace = GDB
     if arcpy.Exists(FDname):
-        print "We have the sufficient dataset"
+        print "dataset {} уже существует".format(FDname)
     else:
         arcpy.CreateFeatureDataset_management(GDB, FDname, spatial_reference=arcpy.SpatialReference(4326))
-        print 'dataset {} was created'.format(FDname)
+        print 'dataset {} создан'.format(FDname)
 
 
 
@@ -38,15 +38,19 @@ if __name__ == "__main__":
     ProjectFolder = parameters.ProjectFolder
     InputData = parameters.InputData
     TempData = parameters.TempData
+    OutputData = parameters.OutputData
     GISName = parameters.GISDataName
 
     create_folders(ProjectFolder)
     create_folders(InputData)
     create_folders(TempData)
+    create_folders(OutputData)
     GDB = create_database(ProjectFolder, GISName)
 
     create_dataset(GDB, parameters.BasemapDatasetName)
     create_dataset(GDB, parameters.ThematicDatasetName)
-    print "The structure of our project was created"
+    create_dataset(GDB, parameters.AnalysisDatasetName)
+    print "Структура хранения информации создана!"
+    print "Самостоятельно скопируйте файл excel с данными в папку {}".format(InputData)
 
 
