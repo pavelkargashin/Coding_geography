@@ -23,5 +23,10 @@ AnalysisDatasetName = 'AnalysisData'
 #Processing constants
 excelName = 'StatData.xlsx'#название файла с тематическими данными
 keyword4search = "Kualitas Air"# используется при выборе нужных листов в excel
+Danau = 'AirDanau'
+Sumur = 'AirSumur'
+Sungai = 'AirSungai'
+Laut = 'AirLaut'
+
 fieldname = 'Year'#Параметр для разбивки данных по годам
 fieldname_2 = 'Stage'#Параметр для разбивки данных по месяцам
