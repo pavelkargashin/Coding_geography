@@ -1,9 +1,9 @@
 # coding: utf8
-import sys, arcpy, parameters
+import sys, arcpy, os, parameters, re
 reload(sys)
 sys.setdefaultencoding('utf8')
 arcpy.env.overwriteOutput=True
-arcpy.env.workspace = parameters.TestDataFolder
+arcpy.env.workspace = parameters.ProjectFolder + "/Bali.gdb"
 # Local variables:
 Basins = "Basins"
 samples = "AirSungai_Copy" # Сюда на вход должны подаваться пробы, разбитые по средам, годам и месяцам
@@ -40,10 +40,22 @@ Samples_Dissolve = arcpy.Dissolve_management(samples_identity, str(samples) + "_
 
 # Полигональный класс бассейнов
 arcpy.SpatialJoin_analysis(Basins, Samples_Dissolve, "Basins_Samples", "JOIN_ONE_TO_ONE", "KEEP_ALL")
-
-path = r"D:\YandexDisk\Projects\Bali"
-mxd = arcpy.mapping.MapDocument() #
-for lyr in arcpy.mapping.ListLayers(mxd):
-    print lyr.name
-
+# Создание серии карт по тематическим показателям
+fields = [f.name for f in arcpy.ListFields("Basins_Samples")]
+mxd = arcpy.mapping.MapDocument(str(parameters.ProjectFolder) + "/Bali_scripting.mxd")
+df = arcpy.mapping.ListDataFrames(mxd)[0]
+lyr = arcpy.mapping.ListLayers(mxd, "Basins_Samples_2", df)[0]
+lyrFile = arcpy.mapping.Layer("Basins_Samples.lyr")
+for field in fields[13:-9]:
+    print field
+    arcpy.mapping.UpdateLayer(df, lyr, lyrFile, True)
+    lyr.symbology.reclassify()
+    lyr.symbology.valueField = str(field)
+    lyr.symbology.numClasses = 5
+    lyr.name = str(re.sub(r'_', ' ', field))
+    legend = arcpy.mapping.ListLayoutElements(mxd, "LEGEND_ELEMENT")[0]
+    legend.autoAdd = True
+    arcpy.mapping.AddLayer(df, lyr, "BOTTOM")
+    arcpy.mapping.ExportToPNG(mxd, parameters.OutputData + "/" + str(field)+ ".png")
+    legend.removeItem(legend.listLegendItemLayers()[0])
 
