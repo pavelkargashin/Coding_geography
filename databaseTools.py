@@ -1,16 +1,6 @@
 # -*- coding:utf-8-*-
 import arcpy
 import os
-def set_database(PathToFolder, gisName, ThematicDatasetName):
-    if os.path.exists(PathToFolder+gisName+'.gdb'):
-        print "Our Database exists and it will be set as default!"
-    else:
-        arcpy.CreateFileGDB_management(PathToFolder, gisName)
-        arcpy.CreateFeatureDataset_management(PathToFolder+gisName+'.gdb', ThematicDatasetName, spatial_reference= arcpy.SpatialReference(4326))
-
-    currentGDB = PathToFolder + gisName + '.gdb'
-    return currentGDB
-
 def select_shapefiles(filepath):
     mylist = []
     alllist = os.listdir(filepath)
