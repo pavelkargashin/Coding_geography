@@ -72,7 +72,7 @@ def move_data2basin(feature_class, basin_data ):
 fieldlist = ["RiverName", "NameLocati", "KoordinatL"]
 dataFolder = parameters.TempData
 GISData = parameters.ProjectFolder+parameters.GISDataName+'.gdb/'+parameters.BasemapDatasetName+'/BasinsPolygon'
-dataType = "AirSungaiCopy.shp"
+dataType = "AirSungai.shp"
 fields = [0,1]
 basin_data = dataFolder+'basinTemp.shp'
 
@@ -86,6 +86,12 @@ change_basin_name(basin_data,["Basin"], 0)
 arcpy.AddXY_management(basin_data)
 
 move_data2basin(dataFolder+dataType, basin_data)
+river_fields_list = arcpy.ListFields(dataFolder+dataType)
+
+for field in river_fields_list[-6:]:
+    arcpy.DeleteField_management(dataFolder+dataType,field.name)
+
+
 
 # move_point(dataFolder, parameters.Danau)
 # move_point(dataFolder, parameters.Laut)
