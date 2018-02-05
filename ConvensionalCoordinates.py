@@ -5,7 +5,6 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 arcpy.env.overwriteOutput=True
 
-
 def move_point(dataFolder, dataType):
     inputData=dataFolder+dataType+'.shp'
     rows = arcpy.da.UpdateCursor(inputData, ["SHAPE@X", "SHAPE@Y", "KoordinatL", "NameLocati"])
@@ -28,9 +27,8 @@ def move_point(dataFolder, dataType):
     del row
     del rows
 
-
-def change_basin_name(feature_class, fieldlist, fieldnumber):
-    rows = arcpy.da.UpdateCursor(feature_class, fieldlist)
+def alter_name(samples, fieldlist, fieldnumber):
+    rows = arcpy.da.UpdateCursor(samples, fieldlist)
     for row in rows:
         row[fieldnumber] = re.sub(r'Tukad\s', '', row[fieldnumber])
         row[fieldnumber] = re.sub(r'Tukad', '', row[fieldnumber])
@@ -43,23 +41,25 @@ def change_basin_name(feature_class, fieldlist, fieldnumber):
         row[fieldnumber] = re.sub(r'YehPenet', 'Penet', row[fieldnumber])
         row[fieldnumber] = re.sub(r'\(s\. musima', '', row[fieldnumber])
         row[fieldnumber] = re.sub(r'\(s\. mus', '', row[fieldnumber])
+        row[fieldnumber] = re.sub(r'Danau', '', row[fieldnumber])
         rows.updateRow(row)
     del row
     del rows
     return
 
-def fill_missed_names(feature_class, fieldlist):
-    rows = arcpy.da.UpdateCursor(feature_class, fieldlist)
+def fill_missed_names(samples, fieldlist):
+    rows = arcpy.da.UpdateCursor(samples, fieldlist)
     for row in rows:
         if row[2] == "99999999":
             if row[0] == " ":
                 row[0] = row[1]
         rows.updateRow(row)
 
-def move_data2basin(feature_class, basin_data ):
-    arcpy.JoinField_management(feature_class, "RiverName", basin_data, "Basin")
+def move_data2polygon(sample_type):
+    arcpy.JoinField_management(sample_type, parameters.field_dict[sample_type],
+                               parameters.centroid_dict[sample_type], parameters.polyg_attr_name_dict[sample_type])
     # Переместим непривязанные точки в координаты центроидов соответствующих бассейнов
-    cursor = arcpy.da.UpdateCursor(feature_class, ["SHAPE@X", "SHAPE@Y", "POINT_X", "POINT_Y", "KoordinatL"])
+    cursor = arcpy.da.UpdateCursor(sample_type, ["SHAPE@X", "SHAPE@Y", "POINT_X", "POINT_Y", "KoordinatL"])
     for row in cursor:
         if row[4] == "99999999" and row[2] is not None:
             row[0] = row[2]
@@ -67,30 +67,30 @@ def move_data2basin(feature_class, basin_data ):
         cursor.updateRow(row)
     del row
     del cursor
+    return
 
+def create_centroid(sample_type):
+    arcpy.FeatureToPoint_management(parameters.polyg_name_dict[sample_type], parameters.centroid_dict[sample_type],
+                                    "INSIDE")
+    alter_name(parameters.centroid_dict[sample_type], parameters.polyg_attr_name_dict[sample_type], 0)
+    arcpy.AddXY_management(parameters.centroid_dict[sample_type])
+    return
 
-fieldlist = ["RiverName", "NameLocati", "KoordinatL"]
-dataFolder = parameters.TempData
-GISData = parameters.ProjectFolder+parameters.GISDataName+'.gdb/'+parameters.BasemapDatasetName+'/BasinsPolygon'
-dataType = "AirSungai.shp"
-fields = [0,1]
-basin_data = dataFolder+'basinTemp.shp'
-
-
-fill_missed_names(dataFolder+dataType, fieldlist)
-for x in fields:
-    change_basin_name(dataFolder+dataType,fieldlist, x)
-
-arcpy.FeatureToPoint_management(GISData, basin_data, "INSIDE")
-change_basin_name(basin_data,["Basin"], 0)
-arcpy.AddXY_management(basin_data)
-
-move_data2basin(dataFolder+dataType, basin_data)
-river_fields_list = arcpy.ListFields(dataFolder+dataType)
-
-for field in river_fields_list[-6:]:
-    arcpy.DeleteField_management(dataFolder+dataType,field.name)
-
+sample_list = [parameters.Sungai, parameters.Danau]
+for sample in sample_list:
+    fieldlist = [parameters.field_dict[sample], "NameLocati", "KoordinatL"]
+    dataFolder = parameters.TempData
+    GISData = parameters.polyg_name_dict[sample]
+    sample_type = sample + ".shp"
+    fields = [0, 1]
+    fill_missed_names(dataFolder + sample_type, fieldlist)
+    for x in fields:
+        alter_name(dataFolder + sample_type, fieldlist, x)
+    create_centroid(sample)
+    move_data2polygon(sample)
+    delete_fields_list = arcpy.ListFields(dataFolder + sample_type)
+    for field in delete_fields_list[-6:]:
+        arcpy.DeleteField_management(dataFolder+sample_type,field.name)
 
 
 # move_point(dataFolder, parameters.Danau)
