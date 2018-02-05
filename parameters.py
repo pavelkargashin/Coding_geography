@@ -40,8 +40,8 @@ polyg_attr_name_dict = {Danau: 'Name',
 centroid_dict = {Danau: TempData+'/Lake_Center.shp',
                  Sungai: TempData+'/Basin_Center.shp'}
 #Accordance of sample type and polygon feature class name
-polyg_name_dict = {Danau: ProjectFolder+GISDataName+".gdb"+ThematicDatasetName + '/Lakes',
-                 Sungai: ProjectFolder+GISDataName+".gdb"+ThematicDatasetName + '/Basins'}
+polyg_name_dict = {Danau: ProjectFolder+GISDataName+".gdb/"+BasemapDatasetName + '/Lakes',
+                 Sungai: ProjectFolder+GISDataName+".gdb/"+BasemapDatasetName + '/Basins'}
 
 fieldname = 'Year'#Параметр для разбивки данных по годам
 fieldname_2 = 'Stage'#Параметр для разбивки данных по месяцам
