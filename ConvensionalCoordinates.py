@@ -35,13 +35,14 @@ def alter_name(samples, fieldlist, fieldnumber):
         row[fieldnumber] = re.sub(r'Tk', '', row[fieldnumber])
         row[fieldnumber] = re.sub(r'\d', '', row[fieldnumber])
         row[fieldnumber] = re.sub(r'\s+', '', row[fieldnumber])
+        row[fieldnumber] = re.sub(r'\(', '', row[fieldnumber])
+        row[fieldnumber] = re.sub(r'\)', '', row[fieldnumber])
         row[fieldnumber] = re.sub(r'BilukPoh', 'Bilukpoh', row[fieldnumber])
-        row[fieldnumber] = re.sub(r'\(s\. musiman\)', '', row[fieldnumber])
+        row[fieldnumber] = re.sub(r's\.musiman', '', row[fieldnumber])
+        row[fieldnumber] = re.sub(r's\.musima', '', row[fieldnumber])
+        row[fieldnumber] = re.sub(r's\.mus', '', row[fieldnumber])
         row[fieldnumber] = re.sub(r'YehPenet', 'Penet', row[fieldnumber])
-        row[fieldnumber] = re.sub(r'Tukadyeh Empas', 'Empas', row[fieldnumber])
-        row[fieldnumber] = re.sub(r'TukadyehEmpas', 'Empas', row[fieldnumber])
-        row[fieldnumber] = re.sub(r'\(s\. musima', '', row[fieldnumber])
-        row[fieldnumber] = re.sub(r'\(s\. mus', '', row[fieldnumber])
+        row[fieldnumber] = re.sub(r'yeh', '', row[fieldnumber])
         row[fieldnumber] = re.sub(r'Danau', '', row[fieldnumber])
         row[fieldnumber] = re.sub(r'Bendungan', '', row[fieldnumber])
         rows.updateRow(row)
@@ -57,6 +58,9 @@ def fill_missed_names(samples, fieldlist):
             if row[0] == " ":
                 row[0] = row[1]
         rows.updateRow(row)
+    del row
+    del rows
+    return
 
 
 def move_data2polygon(sample_type):
@@ -75,9 +79,9 @@ def move_data2polygon(sample_type):
 
 
 def create_centroid(sample_type):
+    alter_name(parameters.polyg_name_dict[sample_type], parameters.polyg_attr_name_dict[sample_type], 0)
     arcpy.FeatureToPoint_management(parameters.polyg_name_dict[sample_type], parameters.centroid_dict[sample_type],
                                     "INSIDE")
-    alter_name(parameters.centroid_dict[sample_type], parameters.polyg_attr_name_dict[sample_type], 0)
     arcpy.AddXY_management(parameters.centroid_dict[sample_type])
     return
 
@@ -89,18 +93,36 @@ for sample in sample_list:
     GISData = parameters.polyg_name_dict[sample]
     sample_type = sample + ".shp"
     fields = [0, 1]
+    arcpy.RefreshCatalog(dataFolder)
     fill_missed_names(dataFolder + sample_type, fieldlist)
     for x in fields:
         alter_name(dataFolder + sample_type, fieldlist, x)
     create_centroid(sample)
     arcpy.env.workspace = dataFolder
     move_data2polygon(sample)
+    # sj = arcpy.SpatialJoin_analysis(sample_type, parameters.polyg_name_dict[sample], dataFolder+sample+"_SJ.shp",
+    #                            "JOIN_ONE_TO_MANY", "KEEP_ALL", "INTERSECT")
+    # print parameters.polyg_attr_name_dict[sample], parameters.field_dict[sample]
+    # rows = arcpy.da.UpdateCursor(sj,
+    #                              [parameters.field_dict[sample], parameters.polyg_attr_name_dict[sample], "Doubt"])
+    # for row in rows:
+    #     if row[2] == 1 and row[0] != row[1]:
+    #         rows.deleteRow()
+    # del row
+    # del rows
+    # arcpy.Delete_management(sample_type)
+    # arcpy.Rename_management(sj, sample_type)
+    # arcpy.Delete_management(sj)
+
+
+
     delete_fields_list = arcpy.ListFields(sample_type)
     for field in delete_fields_list[-6:]:
         arcpy.DeleteField_management(sample_type,field.name)
 
-arcpy.Delete_management(parameters.centroid_dict[parameters.Danau])
-arcpy.Delete_management(parameters.centroid_dict[parameters.Sungai])
+
+# arcpy.Delete_management(parameters.centroid_dict[parameters.Danau])
+# arcpy.Delete_management(parameters.centroid_dict[parameters.Sungai])
 # move_point(dataFolder, parameters.Danau)
 move_point(dataFolder, parameters.Laut)
 
