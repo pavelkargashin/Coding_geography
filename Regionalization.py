@@ -52,7 +52,10 @@ def regionalisation_process(samples, Basins, tempGISFolder):
     print mxd.filePath, mxd.title
     df = arcpy.mapping.ListDataFrames(mxd)[0]
     lyr = arcpy.mapping.ListLayers(mxd, "Basins_Samples_2", df)[0]
-    lyrFile = arcpy.mapping.Layer("Basins_Samples.lyr")
+    if lyr.isBroken == True:
+        lyr.replaceDataSource(parameters.ProjectFolder, "SHAPEFILE_WORKSPACE")
+        lyr.save()
+    lyrFile = arcpy.mapping.Layer(parameters.ProjectFolder+"/Basins_Samples.lyr")
     for field in fields[13:-2]:
         print field
         arcpy.mapping.UpdateLayer(df, lyr, lyrFile, True)
@@ -73,6 +76,6 @@ if __name__ == "__main__":
     tempGISFolder = GISFolder+'/'+parameters.AnalysisDatasetName
 
     samples = InputThematic+"/AirSungai_2013"
-    Basin = InputBaseMap+'/Basins'
+    Basin = parameters.polyg_name_dict[parameters.Sungai]
     regionalisation_process(samples, Basin, tempGISFolder)
 
