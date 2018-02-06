@@ -88,7 +88,7 @@ def create_shapefile(ShapeName, column_names, inputTable):
     srs.ImportFromEPSG(4326)
     layer = datasource.CreateLayer('test', srs, ogr.wkbPoint)
     i=1
-    layer.CreateField(ogr.FieldDefn("LoadID"), ogr.OFTReal)
+    layer.CreateField(ogr.FieldDefn("LoadID", ogr.OFTReal))
     for item in column_names:
         fieldname = 'field'+str(i)
         if item == 'RiverName' or item=='NameLocati' or item =='Stage' or item == "Monitoring" or  item == 'KoordinatB' or  item == 'KoordinatL' or item == 'PossibleVa' or item=='LakeName' or item=='Area' or item=='Point':
@@ -98,6 +98,7 @@ def create_shapefile(ShapeName, column_names, inputTable):
            i+=1
         else:
            layer.CreateField(ogr.FieldDefn(str(item), ogr.OFTReal))
+    layer.CreateField(ogr.FieldDefn("Doubt", ogr.OFTInteger))
     tempi = 1
     for row in inputTable:
         if row['Year']!=None:
@@ -112,6 +113,7 @@ def create_shapefile(ShapeName, column_names, inputTable):
                 feature = ogr.Feature(layer.GetLayerDefn())
                 feature.SetGeometry(point)
                 feature.SetField("LoadID", tempi)
+                feature.SetField("Doubt", int(outputcoord[0][2]))
                 for name in column_names:
                     feature.SetField(str(name), row[str(name)])
                 layer.CreateFeature(feature)
@@ -123,6 +125,7 @@ def create_shapefile(ShapeName, column_names, inputTable):
                     feature = ogr.Feature(layer.GetLayerDefn())
                     feature.SetGeometry(point)
                     feature.SetField("LoadID", tempi)
+                    feature.SetField("Doubt", int(outputcoord[1][2]))
                     for name in column_names:
                         feature.SetField(str(name), row[str(name)])
                     layer.CreateFeature(feature)
