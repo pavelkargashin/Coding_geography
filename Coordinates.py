@@ -81,14 +81,18 @@ def Conversion(Text):
                     for Value in Text:
                         Output.append(decimating_pseudoDMS(Value))
                         Output_Alternative.append(decimating_pseudoDDD(Value))
+                    Output.append(1)
+                    Output_Alternative.append(1)
                     # print str(Output) + "_decimating_pseudoDMS"
                     # print str(Output_Alternative) + "_decimating_pseudoDDD"
             else:
                 for Value in Text:
                     Output.append(decimating_FalseDDD(Value))
-                # print Output
+    if len(Output) == 2:
+        Output.append(0)
     Output[0] = Output[0]*(-1)
     if len(Output_Alternative)>0:
         Output_Alternative[0] = Output_Alternative[0]*(-1)
+
     return Output, Output_Alternative
 # print str(Conversion(Text))
