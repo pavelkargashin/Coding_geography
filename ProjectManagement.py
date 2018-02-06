@@ -32,8 +32,7 @@ def create_dataset(GDB,FDname):
         print 'dataset {} создан'.format(FDname)
 
 
-
-if __name__ == "__main__":
+def main():
     # Declare actual parameters
     ProjectFolder = parameters.ProjectFolder
     InputData = parameters.InputData
@@ -53,4 +52,5 @@ if __name__ == "__main__":
     print "Структура хранения информации создана!"
     print "Самостоятельно скопируйте файл excel с данными в папку {}".format(InputData)
 
-
+if __name__ == "__main__":
+    main()
