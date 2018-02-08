@@ -1,6 +1,7 @@
 # -*-coding:utf-8 -*-
 import os
 import parameters
+import parameters_test
 import arcpy
 
 # создание папок по заданной в файле parameters струкутре
@@ -38,6 +39,25 @@ def main():
     InputData = parameters.InputData
     TempData = parameters.TempData
     OutputData = parameters.OutputData
+    GISName = parameters.GISDataName
+
+    create_folders(ProjectFolder)
+    create_folders(InputData)
+    create_folders(TempData)
+    create_folders(OutputData)
+    GDB = create_database(ProjectFolder, GISName)
+
+    create_dataset(GDB, parameters.BasemapDatasetName)
+    create_dataset(GDB, parameters.ThematicDatasetName)
+    create_dataset(GDB, parameters.AnalysisDatasetName)
+    print "Структура хранения информации создана!"
+    print "Самостоятельно скопируйте файл excel с данными в папку {}".format(InputData)
+
+
+def main_2(ProjectFolder):
+    InputData = ProjectFolder+parameters_test.InputDataName
+    TempData = ProjectFolder+parameters_test.TempDataName
+    OutputData = ProjectFolder+parameters_test.OutputDataName
     GISName = parameters.GISDataName
 
     create_folders(ProjectFolder)

@@ -1,70 +1,87 @@
 #!/usr/bin
 # -*-coding:utf-8-*-
 import os
-import subprocess
+import re
 import sys
 import ProjectManagement
 from PyQt4 import QtGui, QtCore
-
-
-class InputWindow(QtGui.QWidget):
-    def __init__(self, parent = None):
-        super(InputWindow,self).__init__(parent, QtCore.Qt.Window)
-        self.build()
-
-
-    def build(self):
-        self.mainLayout = QtGui.QVBoxLayout()
-
-        self.lbl = QtGui.QLabel("some text", self)
-        self.edit = QtGui.QLineEdit(self)
-        self.clbut = QtGui.QPushButton('close', self)
-        self.clbut.clicked.connect(self.close_window)
-
-        self.mainLayout.addWidget(self.lbl)
-        self.mainLayout.addWidget(self.edit)
-        self.mainLayout.addWidget(self.clbut)
-        self.setLayout(self.mainLayout)
-
-
-    def close_window(self):
-        self.close()
-        self.parent().nameLbl.setText(self.edit.text())
-
+home = os.getenv("HOME")
 
 class MainWindow(QtGui.QWidget):
+    projectPath = "NoFolder"
+    projectName = "NoName"
+    projectFolder = projectPath + '/' + projectName
+    projectFolder.replace('\\', '/')
+
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        self.secondWin=None
         self.build()
 
     def build(self):
-        self.setGeometry(300, 100, 250, 150)
-        self.setWindowTitle("Welcome to Wizard")
 
+        gr = QtGui.QGridLayout()
 
-        # Кнопки для работы
-        self.nameButton = QtGui.QPushButton('Set Project name', self)
-        self.nameButton.clicked.connect(self.inputWindow)
-        self.nameLbl = QtGui.QLabel('temp', self)
-        self.nameLbl.move(0, 100)
+        self.btn1 = QtGui.QPushButton('Set Name', self)
+        gr.addWidget(self.btn1, 0,0)
+        self.btn1.clicked.connect(self.showDialog)
 
+        self.btn2 = QtGui.QPushButton('Select path', self)
+        gr.addWidget(self.btn2, 1, 0)
+        self.btn2.clicked.connect(self.showSelector)
+
+        self.btn3 = QtGui.QPushButton('Set data', self)
+        gr.addWidget(self.btn3, 2, 0)
+        self.btn3.clicked.connect(self.setPath)
+
+        btn4 = QtGui.QPushButton('Run create project', self)
+        btn4.clicked.connect(self.createProject)
+        gr.addWidget(btn4, 4, 4)
+
+        self.lbl1 = QtGui.QLabel(MainWindow.projectName, self)
+        gr.addWidget(self.lbl1, 0, 1)
+        self.lbl2 = QtGui.QLabel(MainWindow.projectPath)
+        gr.addWidget(self.lbl2, 1,1)
+        self.lbl3 =QtGui.QLabel(MainWindow.projectFolder, self)
+        gr.addWidget(self.lbl3, 3, 0, 3, 2)
+
+        self.setLayout(gr)
+        self.setGeometry(300, 300, 250, 180)
+        self.setWindowTitle('Project Deployment')
         self.show()
 
-    def on_show(self):
-        if not self.secondWin:
-            self.secondWin = InputWindow(self)
-        self.secondWin.edit.setText('that text')
-        self.secondWin.show()
 
-    def inputWindow(self):
-        newtext, ok = QtGui.QInputDialog.getText(None, "Attention", "Password?")
+    def showDialog(self):
+        newtext, ok = QtGui.QInputDialog.getText(None, "Input", "Enter the name of the Project (in English)")
         if ok:
-            self.nameLbl.setText(newtext)
+            self.lbl1.setText(str(newtext))
+        MainWindow.projectName = str(newtext)
+        return MainWindow.projectName
 
+    def showSelector(self):
+        options = QtGui.QFileDialog.DontResolveSymlinks | QtGui.QFileDialog.ShowDirsOnly
+        foldername = QtGui.QFileDialog.getExistingDirectory(self, "Select folder for the project", self.lbl2.text(), options)
+        if foldername:
+            self.lbl2.setText(foldername)
+        MainWindow.projectPath = foldername + '/'
+        return MainWindow.projectPath
 
+    def setPath(self):
+        MainWindow.projectFolder = MainWindow.projectPath + MainWindow.projectName
+        tempdata = MainWindow.projectFolder
+        tempdata.replace('\\', '/')
+        self.lbl3.setText(tempdata)
+        MainWindow.projectFolder = tempdata
+        print  MainWindow.projectFolder
+        return tempdata
 
+    def createProject(self):
+        print MainWindow.projectFolder
+        myDoc = open(MainWindow.projectPath + 'Pathtofolder.txt', 'w')
+        myDoc.write(str(MainWindow.projectFolder))
+        myDoc.close()
+        inputdata = str(MainWindow.projectFolder)+'/'
 
+        ProjectManagement.main_2(inputdata)
 
 
 

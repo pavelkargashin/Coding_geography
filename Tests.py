@@ -1,2 +1,7 @@
-list = [15,11,128,13,785,67,52,476,53,87]
-print(list[2:-2])
+myDoc = open('C:/PAUL/Science/GISofBALI/TEST.txt', 'w')
+myDoc.write('newdata')
+myDoc.close()
+
+myDoc = open('C:/PAUL/Science/GISofBALI/TEST.txt', 'r')
+message = myDoc.read()
+print type(message)
