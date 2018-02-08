@@ -89,6 +89,7 @@ def create_shapefile(ShapeName, column_names, inputTable):
     layer = datasource.CreateLayer('test', srs, ogr.wkbPoint)
     i=1
     layer.CreateField(ogr.FieldDefn("LoadID", ogr.OFTReal))
+    layer.CreateField(ogr.FieldDefn("Doubt", ogr.OFTInteger))
     for item in column_names:
         fieldname = 'field'+str(i)
         if item == 'RiverName' or item=='NameLocati' or item =='Stage' or item == "Monitoring" or  item == 'KoordinatB' or  item == 'KoordinatL' or item == 'PossibleVa' or item=='LakeName' or item=='Area' or item=='Point':
@@ -98,7 +99,6 @@ def create_shapefile(ShapeName, column_names, inputTable):
            i+=1
         else:
            layer.CreateField(ogr.FieldDefn(str(item), ogr.OFTReal))
-    layer.CreateField(ogr.FieldDefn("Doubt", ogr.OFTInteger))
     tempi = 1
     for row in inputTable:
         if row['Year']!=None:
