@@ -1,22 +1,20 @@
 # coding: utf8
 import sys, arcpy, os, parameters, re
-import parameters
 reload(sys)
 sys.setdefaultencoding('utf8')
 arcpy.env.overwriteOutput=True
 
-def update_fields(input_fc_identity):
+def update_fields(input_fc_identity, start_field):
     field_names = [f.name for f in arcpy.ListFields(input_fc_identity)]
-    fields = []
-    for item in field_names[13:]: #список полей с показателями
-        item_renamed = str(item)
-        fields.append(item_renamed)
+    fields = field_names[start_field:]
     rows = arcpy.da.UpdateCursor(input_fc_identity, fields) # замена всех значений 999999999 на Null
     for row in rows:
         for field in fields:
-            if row[fields.index(field)] == 99999999:
+            if row[fields.index(field)] == 99999999 or row[fields.index(field)] == "99999999":
                 row[fields.index(field)] = None
-                rows.updateRow(row)
+        rows.updateRow(row)
+    del row
+    del rows
     return fields
 
 
@@ -38,7 +36,7 @@ def regionalisation_process(samples, Basins, tempGISFolder):
 # Process: Identity
     samples_identity = arcpy.Identity_analysis(samples, Basins, tempGISFolder+"/Samples_Identity", "ALL", "", "NO_RELATIONSHIPS")
     arcpy.env.workspace = tempGISFolder
-    fields2process = update_fields(samples_identity)
+    fields2process = update_fields(samples_identity, 13)
     text = dissolving_fields(fields2process, "MAX") # Расчет максимальных показателей
     # Process: Dissolve
     Samples_Dissolve = arcpy.Dissolve_management(samples_identity, str(samples) + "_Dissolve", "Basin", text,
