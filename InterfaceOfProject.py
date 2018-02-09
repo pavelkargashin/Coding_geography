@@ -1,11 +1,11 @@
 #!/usr/bin
 # -*-coding:utf-8-*-
 import os
-import re
 import sys
 import ProjectManagement
 from PyQt4 import QtGui, QtCore
 home = os.getenv("HOME")
+
 
 class MainWindow(QtGui.QWidget):
     projectPath = "NoFolder"
@@ -71,16 +71,11 @@ class MainWindow(QtGui.QWidget):
         tempdata.replace('\\', '/')
         self.lbl3.setText(tempdata)
         MainWindow.projectFolder = tempdata
-        print  MainWindow.projectFolder
         return tempdata
 
     def createProject(self):
         print MainWindow.projectFolder
-        myDoc = open(MainWindow.projectPath + 'Pathtofolder.txt', 'w')
-        myDoc.write(str(MainWindow.projectFolder))
-        myDoc.close()
         inputdata = str(MainWindow.projectFolder)+'/'
-
         ProjectManagement.main_2(inputdata)
 
 

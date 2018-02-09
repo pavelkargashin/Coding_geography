@@ -3,6 +3,7 @@ import os
 import parameters
 import parameters_test
 import arcpy
+configFileName = 'CONFIGURATION.ini'
 
 # создание папок по заданной в файле parameters струкутре
 def create_folders(inputpath):
@@ -55,20 +56,26 @@ def main():
 
 
 def main_2(ProjectFolder):
-    InputData = ProjectFolder+parameters_test.InputDataName
-    TempData = ProjectFolder+parameters_test.TempDataName
-    OutputData = ProjectFolder+parameters_test.OutputDataName
-    GISName = parameters.GISDataName
-
     create_folders(ProjectFolder)
+    parameters_test.create_config(ProjectFolder, configFileName)
+
+    section = 'Paths'
+    InputData = parameters_test.get_setting(ProjectFolder, configFileName, section, setting = 'InputData')
+    TempData = parameters_test.get_setting(ProjectFolder, configFileName, section, setting = 'TempData')
+    OutputData = parameters_test.get_setting(ProjectFolder, configFileName, section, setting = 'OutputData')
+    GISName = parameters_test.get_setting(ProjectFolder, configFileName, section, setting = 'GISDataName')
+    BasemapDatasetName = parameters_test.get_setting(ProjectFolder, configFileName, section, setting='BasemapDatasetName')
+    ThematicDatasetName = parameters_test.get_setting(ProjectFolder, configFileName, section, setting='ThematicDatasetName')
+    AnalysisDatasetName = parameters_test.get_setting(ProjectFolder, configFileName, section, setting='AnalysisDatasetName')
+
     create_folders(InputData)
     create_folders(TempData)
     create_folders(OutputData)
     GDB = create_database(ProjectFolder, GISName)
 
-    create_dataset(GDB, parameters.BasemapDatasetName)
-    create_dataset(GDB, parameters.ThematicDatasetName)
-    create_dataset(GDB, parameters.AnalysisDatasetName)
+    create_dataset(GDB, BasemapDatasetName)
+    create_dataset(GDB, ThematicDatasetName)
+    create_dataset(GDB, AnalysisDatasetName)
     print "Структура хранения информации создана!"
     print "Самостоятельно скопируйте файл excel с данными в папку {}".format(InputData)
 
