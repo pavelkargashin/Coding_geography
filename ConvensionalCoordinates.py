@@ -107,7 +107,7 @@ for sample in sample_list:
         arcpy.DeleteField_management(sample_type,field.name)
 
 # Проверка на неправильно привязанные точки
-basins = parameters.ProjectFolder + parameters.GISDataName + ".gdb/" + parameters.BasemapDatasetName + "/Basins"
+basins = parameters.polyg_name_dict[parameters.Sungai]
 samples_identity = arcpy.Identity_analysis(dataFolder + parameters.Sungai + ".shp", basins, "Samples_Identity")
 rows = arcpy.da.UpdateCursor(samples_identity, ["RiverName", "Basin", "Doubt"])
 for row in rows:
