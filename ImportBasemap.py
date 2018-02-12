@@ -3,8 +3,11 @@ import arcpy
 import os
 import re
 import parameters
+import parameters_test
 import sys
-
+destSpatRef = 4326
+inputfiletype = '.shp'
+postfix = '_ProjectedFile'
 
 def check_files(path2files, inputfiletype):
     list2load = []
@@ -12,10 +15,8 @@ def check_files(path2files, inputfiletype):
     inputfiles = os.listdir(path2files)
     for item in inputfiles:
         if item.endswith(inputfiletype) and re.search(r'Air', item)==None:
-            print item
             desc = arcpy.Describe(path2files+item)
             spatReference = desc.spatialReference
-            print spatReference.factoryCode
             if spatReference.factoryCode != destSpatRef:
                 list2project.append(item)
             else:
@@ -25,7 +26,7 @@ def check_files(path2files, inputfiletype):
     return list2load, list2project
 
 
-def project_files(list2load, list2project):
+def project_files(inputFolder, list2load, list2project):
     for item in list2project:
         outname = re.sub(inputfiletype,'',item)+postfix+inputfiletype
         arcpy.Project_management(inputFolder+item,inputFolder+outname,destSpatRef)
@@ -33,24 +34,25 @@ def project_files(list2load, list2project):
     return list2load
 
 
-def load_files(list2load):
+def load_files(inputFolder, list2load, outputFolder):
     for item in list2load:
         outputname =re.sub(postfix,'',item)
         arcpy.FeatureClassToFeatureClass_conversion(inputFolder+item,outputFolder, re.sub(inputfiletype, '', outputname))
     return
 
-if __name__ == "__main__":
+
+def main(ProjectFolder, ConfigurationFileName):
     arcpy.env.overwriteOutput = True
-    inputFolder = parameters.InputData
-    inputfiletype = '.shp'
-    outputFolder = parameters.ProjectFolder + parameters.GISDataName + '.gdb/' + parameters.BasemapDatasetName+'/'
-    postfix = '_ProjectedFile'
-    destSpatRef = 4326
+    inputFolder = parameters_test.get_setting(ProjectFolder, ConfigurationFileName,'Paths', 'InputData')
+    outputFolder = ProjectFolder + parameters_test.get_setting(ProjectFolder, ConfigurationFileName,'Paths', 'GISDataName') + '.gdb/' + parameters_test.get_setting(ProjectFolder, ConfigurationFileName,'Paths', 'BasemapDatasetName') + '/'
 
     list2load, list2project = check_files(inputFolder, inputfiletype)
+    loadings = project_files(inputFolder, list2load, list2project)
+    load_files(inputFolder,loadings, outputFolder)
+    print '\n#####################\nBaseMap imported\n#####################'
 
-    loadings = project_files(list2load,list2project)
-    print 'For data loads',loadings
-    load_files(loadings)
+
+if __name__ == "__main__":
+    main()
 
 
