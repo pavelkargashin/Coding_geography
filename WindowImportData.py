@@ -7,14 +7,14 @@ from PyQt4 import QtGui, QtCore
 home = os.getenv("HOME")
 import ProjectManagement
 import parameters_test
-
-
-
+import ImportBasemap
+import importProcessing
+import databaseProcessing
 
 
 class MainWindow(QtGui.QWidget):
     ProjectFolder = "No Project"
-    ConfigFileName = ProjectFolder+ ProjectManagement.configFileName
+    ConfigFileName = ProjectManagement.configFileName
     BaseMapFolder = 'NoFolder'
 
     def __init__(self, parent=None):
@@ -25,80 +25,96 @@ class MainWindow(QtGui.QWidget):
 
         gr = QtGui.QGridLayout()
 
-        self.btn4 = QtGui.QPushButton('Set the project', self)
-        gr.addWidget(self.btn4, 5, 0)
-        self.btn4.clicked.connect(self.runImport)
+        self.ImportBut = QtGui.QPushButton('Run Import!', self)
+        gr.addWidget(self.ImportBut, 5, 0)
+        self.ImportBut.clicked.connect(self.runImport)
 
-        self.btn3 = QtGui.QPushButton('Set the project', self)
-        gr.addWidget(self.btn3, 0, 0)
-        self.btn3.clicked.connect(self.showSelector3)
+        self.ProjectSetBut = QtGui.QPushButton('Set the project', self)
+        gr.addWidget(self.ProjectSetBut, 0, 0)
+        self.ProjectSetBut.clicked.connect(self.SetProject)
 
-        self.lbl3 = QtGui.QLabel(MainWindow.ProjectFolder, self)
-        gr.addWidget(self.lbl3, 0, 1)
+        self.ProjectNameLbl = QtGui.QLabel(MainWindow.ProjectFolder, self)
+        gr.addWidget(self.ProjectNameLbl, 0, 1)
 
+        self.ThematicBut = QtGui.QPushButton('Select *.xslx file', self)
+        gr.addWidget(self.ThematicBut, 1, 0)
+        self.ThematicBut.clicked.connect(self.SelectThematic)
 
+        self.BasemapBut = QtGui.QPushButton('Select path to basemap data (*.shp)', self)
+        gr.addWidget(self.BasemapBut, 2, 0)
+        self.BasemapBut.clicked.connect(self.SelectBasemap)
 
-        self.btn1 = QtGui.QPushButton('Select *.xslx file', self)
-        gr.addWidget(self.btn1, 1, 0)
-        self.btn1.clicked.connect(self.showSelector1)
+        self.ThematicLbl = QtGui.QLabel('ThematicFileName', self)
+        gr.addWidget(self.ThematicLbl, 1, 1)
 
-        self.btn2 = QtGui.QPushButton('Select path to basemap data (*.shp)', self)
-        gr.addWidget(self.btn2, 2, 0)
-        self.btn2.clicked.connect(self.showSelector2)
-
-        self.lbl1 = QtGui.QLabel('ThematicFileName', self)
-        gr.addWidget(self.lbl1, 1, 1)
-
-        self.lbl2 = QtGui.QLabel('Basemap Data', self)
-        gr.addWidget(self.lbl2, 2, 1)
+        self.BasemapLbl = QtGui.QLabel('Basemap Data', self)
+        gr.addWidget(self.BasemapLbl, 2, 1)
 
 
         self.lbl4 = QtGui.QLabel('IMPORT TO DATABASE', self)
         gr.addWidget(self.lbl4, 4,0)
+
+        closeBut = QtGui.QPushButton('Close', self)
+        closeBut.clicked.connect(QtCore.QCoreApplication.instance().quit)
+        gr.addWidget(closeBut, 5, 4)
+
 
         self.setLayout(gr)
         self.setGeometry(300, 300, 250, 180)
         self.setWindowTitle('Collect Data')
         self.show()
 
-    def showSelector1(self):
-        selectedFileName = QtGui.QFileDialog.getOpenFileName(self, "Select *.xlsx with your data", self.lbl1.text())
-        print selectedFileName
-        thematicFileName = str(selectedFileName)
+    def SelectThematic(self):
+        selectedFileName = QtGui.QFileDialog.getOpenFileName(self, "Select *.xlsx with your data", self.ThematicLbl.text())
+        self.ThematicLbl.setText(selectedFileName)
+        thematicFileName = parameters_test.update_filepath(selectedFileName)
         thematicFileName.replace('\\', '/')
         pathToCopy = parameters_test.get_setting(MainWindow.ProjectFolder, ProjectManagement.configFileName, 'Paths', 'InputData')
         dstFileName = pathToCopy+os.path.basename(thematicFileName)
-        print dstFileName
         shutil.copy(thematicFileName, dstFileName)
+        print 'Thematic data has been copied!'
         return thematicFileName
 
-    def showSelector2(self):
+    def SelectBasemap(self):
         options = QtGui.QFileDialog.DontResolveSymlinks | QtGui.QFileDialog.ShowDirsOnly
-        foldername = QtGui.QFileDialog.getExistingDirectory(self, "Set folder with Basemap data", self.lbl2.text(), options)
+        foldername = QtGui.QFileDialog.getExistingDirectory(self, "Set folder with Basemap data", self.BasemapLbl.text(), options)
         if foldername:
-            self.lbl2.setText(foldername)
-        tempfolder = str(foldername)
-        tempfolder.replace('\\', '/')
-        MainWindow.BaseMapFolder = tempfolder + '/'
+            self.BasemapLbl.setText(parameters_test.update_filepath(foldername))
+
+        MainWindow.BaseMapFolder = parameters_test.update_filepath(foldername) + '/'
         pathToCopy = parameters_test.get_setting(MainWindow.ProjectFolder, ProjectManagement.configFileName, 'Paths', 'InputData')
         for item in os.listdir(MainWindow.BaseMapFolder):
-            print item
             shutil.copy(MainWindow.BaseMapFolder+item, pathToCopy+item)
+        print 'Shapefiles has been copied!'
 
         return MainWindow.BaseMapFolder
 
-    def showSelector3(self):
+    def SetProject(self):
         options = QtGui.QFileDialog.DontResolveSymlinks | QtGui.QFileDialog.ShowDirsOnly
-        foldername = QtGui.QFileDialog.getExistingDirectory(self, "Path to project", self.lbl3.text(), options)
+        foldername = QtGui.QFileDialog.getExistingDirectory(self, "Path to project", self.ProjectNameLbl.text(), options)
         if foldername:
-            self.lbl3.setText(foldername)
-        tempfolder = str(foldername)
-        tempfolder.replace('\\', '/')
-        MainWindow.ProjectFolder = tempfolder + '/'
+            self.ProjectNameLbl.setText(parameters_test.update_filepath(foldername))
+        MainWindow.ProjectFolder = parameters_test.update_filepath(foldername) + '/'
         return MainWindow.ProjectFolder
 
 
     def runImport(self):
+        print MainWindow.ProjectFolder
+        ImportBasemap.main(MainWindow.ProjectFolder, ProjectManagement.configFileName)
+        inputFolder = parameters_test.get_setting(MainWindow.ProjectFolder, ProjectManagement.configFileName, 'Paths', 'InputData')
+        # Convert thematic data to shapefiles
+        excelName = self.ThematicLbl.text()
+        dstFileName = os.path.basename(str(excelName))
+        outputFolder = parameters_test.get_setting(MainWindow.ProjectFolder, ProjectManagement.configFileName, 'Paths', 'TempData')
+        importProcessing.main(inputFolder, dstFileName, "Kualitas Air", outputFolder)
+        # Import data to geodatabase
+        inputfolder_shp = parameters_test.get_setting(MainWindow.ProjectFolder, ProjectManagement.configFileName, 'Paths', 'TempData')
+        envDatabase = parameters_test.get_setting(MainWindow.ProjectFolder, ProjectManagement.configFileName, 'Paths', 'ProjectFolder')\
+                      +parameters_test.get_setting(MainWindow.ProjectFolder, ProjectManagement.configFileName, 'Paths', 'GISDataName')+'.gdb'
+        ThematicDataset = envDatabase+'/' + parameters_test.get_setting(MainWindow.ProjectFolder, ProjectManagement.configFileName, 'Paths', 'ThematicDatasetName')
+        fieldname = parameters_test.get_setting(MainWindow.ProjectFolder, ProjectManagement.configFileName, 'ImportParameters', 'fieldname')
+        fieldname_2 = parameters_test.get_setting(MainWindow.ProjectFolder, ProjectManagement.configFileName, 'ImportParameters', 'fieldname_2')
+        databaseProcessing.main(inputfolder_shp, envDatabase,ThematicDataset, fieldname, fieldname_2)
         return
 
 
