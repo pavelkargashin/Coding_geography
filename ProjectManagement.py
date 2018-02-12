@@ -5,11 +5,11 @@ import parameters_test
 import arcpy
 configFileName = 'CONFIGURATION.ini'
 
-# создание папок по заданной в файле parameters струкутре
+# создание папок по заданной в файле конфигурации структуре
 def create_folders(inputpath):
     try:
        os.makedirs(inputpath)
-       print "Папка {} создана".format(inputpath)
+       print "Folder {} has been created".format(inputpath)
     except OSError:
         if not os.path.isdir(inputpath):
             raise
@@ -17,21 +17,21 @@ def create_folders(inputpath):
 
 def create_database(inputpath, GISName):
     if arcpy.Exists(inputpath+GISName+'.gdb/'):
-       print "База геоданных: ", inputpath+GISName+'.gdb/'
+       print "Geodatabase: ", inputpath+GISName+'.gdb/'
     else:
 
         arcpy.CreateFileGDB_management(inputpath, GISName)
-        print "База геоданных создана: ", inputpath+GISName + '.gdb/'
+        print "Geodatabase has been created: ", inputpath+GISName + '.gdb/'
     return inputpath+GISName + '.gdb'
 
 
 def create_dataset(GDB,FDname):
     arcpy.env.workspace = GDB
     if arcpy.Exists(FDname):
-        print "dataset {} уже существует".format(FDname)
+        print "dataset {} exists".format(FDname)
     else:
         arcpy.CreateFeatureDataset_management(GDB, FDname, spatial_reference=arcpy.SpatialReference(4326))
-        print 'dataset {} создан'.format(FDname)
+        print 'dataset {} has been created'.format(FDname)
 
 
 def main():
@@ -51,8 +51,8 @@ def main():
     create_dataset(GDB, parameters.BasemapDatasetName)
     create_dataset(GDB, parameters.ThematicDatasetName)
     create_dataset(GDB, parameters.AnalysisDatasetName)
-    print "Структура хранения информации создана!"
-    print "Самостоятельно скопируйте файл excel с данными в папку {}".format(InputData)
+    print "Storage has been created!\nYou can check it via Windows Explorer"
+
 
 
 def main_2(ProjectFolder):
@@ -76,8 +76,8 @@ def main_2(ProjectFolder):
     create_dataset(GDB, BasemapDatasetName)
     create_dataset(GDB, ThematicDatasetName)
     create_dataset(GDB, AnalysisDatasetName)
-    print "Структура хранения информации создана!"
-    print "Самостоятельно скопируйте файл excel с данными в папку {}".format(InputData)
+    print "\n#####################\nStorage has been created!\nYou can check it via Windows Explorer\n" \
+          "#####################\nNow you should import data\n Please execute file - WindowImportData.py"
 
 if __name__ == "__main__":
     main()
