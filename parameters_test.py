@@ -20,6 +20,10 @@ def create_config(ProjectFolder, ConfigFileName):
     config.set('Paths', 'BasemapDatasetName', 'BasemapData')
     config.set('Paths', 'AnalysisDatasetName', 'AnalysisData')
 
+    config.add_section('ImportParameters')
+    config.set('ImportParameters', 'fieldname', 'Year')
+    config.set('ImportParameters', 'fieldname_2', 'Stage')
+
     with open(ProjectFolder+ConfigFileName, 'w') as config_file:
         config.write(config_file)
 
@@ -43,6 +47,11 @@ def update_setting(path, ConfigFileName, section, setting, value):
     config.set(section, setting, value)
     with open(path, "w") as config_file:
         config.write(config_file)
+
+def update_filepath(inputpath):
+    temppath = str(inputpath)
+    outputpath = temppath.replace('\\', '/')
+    return outputpath
 
 
 
