@@ -1,17 +1,13 @@
 # -*-coding:utf-8-*-
 import re
 import configparser
-import parameters_test
 import arcpy
-projectfolder = 'C:/PAUL/AAGISTesting/MYGIS/'
-configFileName = 'CONFIGURATION.ini'
-GIS = projectfolder+parameters_test.get_setting(projectfolder, configFileName, 'Paths', 'GISDataName')+'.gdb/'
-ThematicDataset = GIS+parameters_test.get_setting(projectfolder, configFileName, 'Paths', 'ThematicDatasetName')+'/'
-print GIS
-print ThematicDataset
-arcpy.env.workspace = ThematicDataset
-listfc = arcpy.ListFeatureClasses()
-print 'Total count of data '+ str(len(listfc)) + ' tables'
+
+def create_listfc(ThematicDataset, criteria):
+    arcpy.env.workspace = ThematicDataset
+    listfc = arcpy.ListFeatureClasses(criteria)
+    print 'Total count of data '+ str(len(listfc)) + ' tables'
+    return listfc
 
 
 def create_stat(listfc):
@@ -35,4 +31,3 @@ def set_current_config(projectfolder, configFileName, listfc):
     with open(projectfolder+configFileName, 'a') as f:
         config.write(f)
 
-set_current_config(projectfolder, configFileName, listfc)
