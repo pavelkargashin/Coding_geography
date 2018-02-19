@@ -19,6 +19,7 @@ def create_config(ProjectFolder, ConfigFileName):
     config.set('Paths', 'ThematicDatasetName', 'ThematicData')
     config.set('Paths', 'BasemapDatasetName', 'BasemapData')
     config.set('Paths', 'AnalysisDatasetName', 'AnalysisData')
+    config.set('Paths', 'mxdName', ProjectFolder+'GISEcologyBali.mxd')
 
     config.add_section('ImportParameters')
     config.set('ImportParameters', 'fieldname', 'Year')
