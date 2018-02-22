@@ -15,8 +15,9 @@ def check_files(path2files, inputfiletype):
     inputfiles = os.listdir(path2files)
     for item in inputfiles:
         if item.endswith(inputfiletype) and re.search(r'Air', item)==None:
-            desc = arcpy.Describe(path2files+item)
-            spatReference = desc.spatialReference
+            item_prj = item.replace('.shp', '.prj')
+            spatReference = arcpy.SpatialReference(path2files+item_prj)
+
             if spatReference.factoryCode != destSpatRef:
                 list2project.append(item)
             else:
