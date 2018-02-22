@@ -67,12 +67,14 @@ def create_fields_list(inputexcel, currentSheet):
     mySheet = myExcel[currentSheet]
     for col_val in range(1, mySheet.max_column):
         list_temp.append(mySheet.cell(column=col_val, row=1).value)
+        print
     return list_temp
 
 #Функция для обрезки названий полей до 10 симоволов. Ограничение из-за шейпфайла
 def shorten_field_name(field_list):
     new_list = []
     for item in field_list:
+        print str(item)
         if len(item)>10:
             tempVal = item[0:10]
             new_list.append(tempVal)
