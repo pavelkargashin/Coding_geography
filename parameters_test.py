@@ -16,6 +16,7 @@ def create_config(ProjectFolder, ConfigFileName):
     config.set('Paths', 'TempData', ProjectFolder + "TempData/")
     config.set('Paths', 'OutputData', ProjectFolder + "OutputData/")
     config.set('Paths', 'GISDataName', "GISEcologyBali")
+    config.set('Paths', 'Decoration', ProjectFolder + "Decoration/")
     config.set('Paths', 'ThematicDatasetName', 'ThematicData')
     config.set('Paths', 'BasemapDatasetName', 'BasemapData')
     config.set('Paths', 'AnalysisDatasetName', 'AnalysisData')
