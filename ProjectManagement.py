@@ -71,6 +71,7 @@ def main_2(ProjectFolder):
     InputData = parameters_test.get_setting(ProjectFolder, configFileName, section, setting = 'InputData')
     TempData = parameters_test.get_setting(ProjectFolder, configFileName, section, setting = 'TempData')
     OutputData = parameters_test.get_setting(ProjectFolder, configFileName, section, setting = 'OutputData')
+    DecorationFolder = parameters_test.get_setting(ProjectFolder, configFileName, section, setting = 'Decoration')
     GISName = parameters_test.get_setting(ProjectFolder, configFileName, section, setting = 'GISDataName')
     BasemapDatasetName = parameters_test.get_setting(ProjectFolder, configFileName, section, setting='BasemapDatasetName')
     ThematicDatasetName = parameters_test.get_setting(ProjectFolder, configFileName, section, setting='ThematicDatasetName')
@@ -80,6 +81,7 @@ def main_2(ProjectFolder):
     create_folders(InputData)
     create_folders(TempData)
     create_folders(OutputData)
+    create_folders(DecorationFolder)
     create_mxd(mxdName)
     GDB = create_database(ProjectFolder, GISName)
 
