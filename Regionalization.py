@@ -1,6 +1,6 @@
 # coding: utf8
 import sys, arcpy, os, parameters, re
-import databaseTools
+import databaseTools, parameters_test, configparser
 reload(sys)
 sys.setdefaultencoding('utf8')
 arcpy.env.overwriteOutput=True
@@ -66,31 +66,43 @@ def regionalisation_process(samples, Basins, tempGISFolder, year, env):
     mxd = arcpy.mapping.MapDocument(str(parameters.ProjectFolder) + "Bali_scripting1.mxd")
     print mxd.filePath, mxd.title
     df = arcpy.mapping.ListDataFrames(mxd)[0]
-    lyr = arcpy.mapping.ListLayers(mxd, "Basins_Samples_2", df)[0]
+    lyr = arcpy.mapping.ListLayers(mxd, "Basins_Samples", df)[0]
     if lyr.isBroken == True:
         lyr.replaceDataSource(parameters.ProjectFolder, "SHAPEFILE_WORKSPACE")
         lyr.save()
-    lyrFile = arcpy.mapping.Layer(parameters.ProjectFolder+"/Basins_Samples.lyr")
-
-
+    lyrFile = arcpy.mapping.Layer(parameters.ProjectFolder+"/Basins_Samples_1.lyr")
     for field in fields[13:-7]:
-
         print field
         fieldData = databaseTools.extract_unique_values("Basins_Samples", field)
-        print fieldData, len(fieldData)
         if len(fieldData) == 1 and fieldData[0] == None:
             continue
         else:
+            lyr.name = str(re.sub(r'_', ' ', field))
             arcpy.mapping.UpdateLayer(df, lyr, lyrFile, True)
             lyr.symbology.reclassify()
             lyr.symbology.valueField = str(field)
-            lyr.symbology.numClasses = 5
-            lyr.name = str(re.sub(r'_', ' ', field))
-            legend = arcpy.mapping.ListLayoutElements(mxd, "LEGEND_ELEMENT")[0]
-            legend.autoAdd = True
-            arcpy.mapping.AddLayer(df, lyr, "BOTTOM")
+            breaks_ini = parameters_test.get_setting(r'd:\YandexDisk\Projects\Bali_Test\\', r'CONFIGURATION.ini',
+                                                     "BreakValues", setting=str(field)[4:])
+            separated = breaks_ini[1:-1].split(", ")
+            max = len(separated)
+            print separated
+            labels = []
+            label_first = "Less than " + separated[1]
+            labels.append(label_first)
+            for i in range(1,max-2):
+                label = separated[i] + " - " + separated[i+1]
+                labels.append(label)
+            label_last = "More than " + separated[max - 2]
+            labels.append(label_last)
+            print labels
+            breaks = []
+            for item in separated:
+                item_float = float(item)
+                breaks.append(item_float)
+            print breaks
+            lyr.symbology.classBreakValues = breaks
+            lyr.symbology.classBreakLabels = labels
             arcpy.mapping.ExportToPNG(mxd, parameters.OutputData + "/" + env+'_'+year+'_'+str(field) + ".png")
-            legend.removeItem(legend.listLegendItemLayers()[0])
 
 
 
@@ -101,14 +113,16 @@ if __name__ == "__main__":
     InputBaseMap = GISFolder+'/'+parameters.BasemapDatasetName
     tempGISFolder = GISFolder+'/'+parameters.AnalysisDatasetName
     Basin = parameters.polyg_name_dict[parameters.Sungai]
-    year = '2016'
+    year = '2014'
     env = 'AirSungai'
     searchCriteria = env+'_'+year+'*'
+    print InputThematic
 
-    get_initial_data(InputThematic, tempGISFolder, env, year)
+    #get_initial_data(InputThematic, tempGISFolder, env, year)
     arcpy.env.workspace = tempGISFolder
 
     listFC = arcpy.ListFeatureClasses(wild_card=searchCriteria)
+    print listFC
     for item in listFC:
         samples = tempGISFolder+'/'+item
         print samples
