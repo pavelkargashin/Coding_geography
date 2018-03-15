@@ -1,5 +1,7 @@
 import re
 import arcpy
+import configparser
+import parameters
 
 def getJenksBreaks(dataList, numClass):
   dataList.sort()
@@ -63,6 +65,17 @@ def create_fc_environment(inputdataset, environment, outputdataset):
     return env_data
 
 
+def set_current_config(projectfolder, configFileName,Sample, Breaks):
+    config = configparser.ConfigParser()
+    config.add_section("BreakValues")
+    config.set("BreakValues", Sample, Breaks)
+
+
+
+    with open(projectfolder+configFileName, 'a') as f:
+        config.write(f)
+
+
 def find_breaks(inputdataset, field):
     templist=[]
     rows = arcpy.da.SearchCursor(env_data, field)
@@ -83,10 +96,12 @@ def find_breaks(inputdataset, field):
 
 
 arcpy.env.overwriteOutput = True
+ProjectFolder = parameters.ProjectFolder
 inputdataset = 'C:/PAUL/AAGISTesting/MYGIS/GISEcologyBali.gdb/ThematicData'
 outputdataset = 'C:/PAUL/AAGISTesting/MYGIS/GISEcologyBali.gdb/AnalysisData'
 environment = "AirSungai"
 env_data = create_fc_environment(inputdataset, environment, outputdataset)
 field_names = [f.name for f in arcpy.ListFields(env_data,  field_type="Double")]
 for field in field_names:
-    find_breaks(env_data, field)
+    breaks = find_breaks(env_data, field)
+    set_current_config(ProjectFolder, "CONFIGURATION.ini", field, breaks)

@@ -65,9 +65,9 @@ def create_fields_list(inputexcel, currentSheet):
     list_temp = []
     myExcel = openpyxl.load_workbook(inputexcel)
     mySheet = myExcel[currentSheet]
-    for col_val in range(1, mySheet.max_column):
+    for col_val in range(1, mySheet.max_column+1):
         list_temp.append(mySheet.cell(column=col_val, row=1).value)
-        print
+        print list_temp
     return list_temp
 
 #Функция для обрезки названий полей до 10 симоволов. Ограничение из-за шейпфайла
