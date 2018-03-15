@@ -51,7 +51,7 @@ def export_data_to_dictionary(inputexcel, currentSheet, attr_names):
     myExcel = openpyxl.load_workbook(inputexcel)
     mySheet = myExcel[currentSheet]
     for row_val in range(2, mySheet.max_row):
-        for col_val in range(1,mySheet.max_column):
+        for col_val in range(1,mySheet.max_column+1):
             list_temp.append(mySheet.cell(column = col_val, row = row_val).value)
         myRow = dict(zip(attr_names,list_temp))
         myTable.append(myRow)
