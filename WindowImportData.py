@@ -85,7 +85,7 @@ class MainWindow(QtGui.QWidget):
         pathToCopy = parameters_test.get_setting(MainWindow.ProjectFolder, ProjectManagement.configFileName, 'Paths', 'InputData')
         for item in os.listdir(MainWindow.BaseMapFolder):
             shutil.copy(MainWindow.BaseMapFolder+item, pathToCopy+item)
-        print 'Shapefiles has been copied!'
+        print 'Shapefiles have been copied!'
 
         return MainWindow.BaseMapFolder
 

@@ -2,6 +2,7 @@ import re
 import arcpy
 import configparser
 import parameters
+import parameters_test
 
 def getJenksBreaks(dataList, numClass):
   dataList.sort()
@@ -64,16 +65,19 @@ def create_fc_environment(inputdataset, environment, outputdataset):
     arcpy.Merge_management(datalist, env_data)
     return env_data
 
-
-def set_current_config(projectfolder, configFileName,Sample, Breaks):
+def add_section(projectfolder, configFileName, SectionName):
     config = configparser.ConfigParser()
-    config.add_section("BreakValues")
-    config.set("BreakValues", Sample, Breaks)
-
-
-
-    with open(projectfolder+configFileName, 'a') as f:
+    config.add_section(SectionName)
+    with open(projectfolder + configFileName, 'a') as f:
         config.write(f)
+    f.close()
+
+def set_current_config(projectfolder, configFileName, SectionName, Sample, Breaks):
+    config = parameters_test.get_config(projectfolder, configFileName)
+    config.set(SectionName, Sample, Breaks)
+    with open(projectfolder + configFileName, 'w') as f:
+        config.write(f)
+    f.close()
 
 
 def find_breaks(inputdataset, field):
@@ -91,17 +95,22 @@ def find_breaks(inputdataset, field):
     print "Another data"
     del row
     del rows
-    return templist
+    return myBreaks
 
 
 
 arcpy.env.overwriteOutput = True
 ProjectFolder = parameters.ProjectFolder
-inputdataset = 'C:/PAUL/AAGISTesting/MYGIS/GISEcologyBali.gdb/ThematicData'
-outputdataset = 'C:/PAUL/AAGISTesting/MYGIS/GISEcologyBali.gdb/AnalysisData'
-environment = "AirSungai"
+configFileName = "CONFIGURATION.ini"
+environment = "AirSumur"
+SectionName="BreakValues_" + str(environment)
+inputdataset = 'd:/YandexDisk/Projects/Bali_Test/GISEcologyBali.gdb/ThematicData'
+outputdataset = 'd:/YandexDisk/Projects/Bali_Test/GISEcologyBali.gdb/AnalysisData'
 env_data = create_fc_environment(inputdataset, environment, outputdataset)
 field_names = [f.name for f in arcpy.ListFields(env_data,  field_type="Double")]
+add_section(ProjectFolder, configFileName, SectionName)
 for field in field_names:
+    print field
     breaks = find_breaks(env_data, field)
-    set_current_config(ProjectFolder, "CONFIGURATION.ini", field, breaks)
+    set_current_config(ProjectFolder, "CONFIGURATION.ini", SectionName, field, breaks)
+
