@@ -62,6 +62,7 @@ def create_fc_environment(inputdataset, environment, outputdataset):
     arcpy.env.workspace = inputdataset
     env_data = outputdataset + '/' + environment
     datalist = arcpy.ListFeatureClasses(environment + '*')
+    print datalist
     arcpy.Merge_management(datalist, env_data)
     return env_data
 
@@ -84,18 +85,23 @@ def find_breaks(inputdataset, field):
     templist=[]
     rows = arcpy.da.SearchCursor(env_data, field)
     for row in rows:
-        if row[0] != 99999999:
-            templist.append(row[0])
-        else:
+        if row[0] is None:
             continue
-    print field, max(templist), min(templist)
-    myBreaks = getJenksBreaks(templist, 5)
-    print sorted(templist)
-    print myBreaks
-    print "Another data"
-    del row
-    del rows
-    return myBreaks
+        elif row[0] == 99999999:
+            continue
+        else:
+            templist.append(row[0])
+    print templist
+    if len(templist) == 0:
+        print "empty list"
+    else:
+        myBreaks = getJenksBreaks(templist, 5)
+        print sorted(templist)
+        print myBreaks
+        print "Another data"
+        del row
+        del rows
+        return myBreaks
 
 
 
@@ -108,6 +114,7 @@ inputdataset = 'd:/YandexDisk/Projects/Bali_Test/GISEcologyBali.gdb/ThematicData
 outputdataset = 'd:/YandexDisk/Projects/Bali_Test/GISEcologyBali.gdb/AnalysisData'
 env_data = create_fc_environment(inputdataset, environment, outputdataset)
 field_names = [f.name for f in arcpy.ListFields(env_data,  field_type="Double")]
+print field_names
 add_section(ProjectFolder, configFileName, SectionName)
 for field in field_names:
     print field
