@@ -47,7 +47,7 @@ def get_initial_data(inputdataset, outputdataset, env, year):
 
 
 
-def regionalisation_process(samples, regions, tempGISFolder, year, env):
+def regionalisation_process(samples, regions, tempGISFolder, year, env, stats):
     # Process: Identity
     regions_multy = tempGISFolder+"/Regions_Multy"
     arcpy.MultipartToSinglepart_management(regions, regions_multy)
@@ -55,7 +55,7 @@ def regionalisation_process(samples, regions, tempGISFolder, year, env):
     arcpy.env.workspace = tempGISFolder
     fields2process = update_fields(samples_identity, env)
     end = fields2process.index(parameters.end_field[env]) + 1 # Последнее тематическое поле
-    text = dissolving_fields(fields2process[:end], "MAX") # Расчет максимальных показателей
+    text = dissolving_fields(fields2process[:end], stats) # Расчет максимальных показателей
     # Process: Dissolve
     Samples_Dissolve = arcpy.Dissolve_management(samples_identity, str(samples) + "_Dissolve",
                                                  parameters.polyg_attr_name_dict[env], text, "SINGLE_PART",
@@ -72,14 +72,16 @@ def regionalisation_process(samples, regions, tempGISFolder, year, env):
         lyr.save()
     lyrFile = arcpy.mapping.Layer(parameters.ProjectFolder+"/Basins_Samples_1.lyr")
     lyrFile_inverted = arcpy.mapping.Layer(parameters.ProjectFolder + "/Basins_Samples_2.lyr")
-    for field in fields[fields.index("MAX_"+str(parameters.first_field[env])):-2]:
+    for field in fields[fields.index(stats+"_"+str(parameters.first_field[env])):-2]:
         print field
         fieldData = databaseTools.extract_unique_values("Basins_Samples", field)
         if len(fieldData) == 1 and fieldData[0] == None:
             continue
         else:
+            # Replacing symbols in layer name in legend
             lyr.name0 = str(re.sub(r'_', ' ', field))
             lyr.name = str(re.sub(r'mgL', 'mg/L', lyr.name0))
+            # Applying direct or inverted color scheme
             if field == parameters.end_field[env]:
                 arcpy.mapping.UpdateLayer(df, lyr, lyrFile_inverted, True)
             else:
@@ -87,7 +89,8 @@ def regionalisation_process(samples, regions, tempGISFolder, year, env):
             lyr.symbology.reclassify()
             lyr.symbology.valueField = str(field)
             breaks_ini = parameters_test.get_setting(r'd:\YandexDisk\Projects\Bali_Test\\', r'CONFIGURATION.ini',
-                                                     "BreakValues_" + str(env), setting=str(field)[4:])
+                                                     "BreakValues_AirSungai", setting=str(field)[4:])
+            # Creating labels for legend
             separated = breaks_ini[1:-1].split(", ")
             max = len(separated)
             labels = []
@@ -98,6 +101,7 @@ def regionalisation_process(samples, regions, tempGISFolder, year, env):
                 labels.append(label)
             label_last = "More than " + separated[max - 2]
             labels.append(label_last)
+            # Creating break value list
             breaks = []
             for item in separated:
                 item_float = float(item)
@@ -105,6 +109,7 @@ def regionalisation_process(samples, regions, tempGISFolder, year, env):
             print breaks
             lyr.symbology.classBreakValues = breaks
             lyr.symbology.classBreakLabels = labels
+            # Creating current year of the samples title
             titleItem = arcpy.mapping.ListLayoutElements(mxd, "TEXT_ELEMENT")[0]
             titleItem.text = str(year)
             arcpy.mapping.ExportToPNG(mxd, parameters.OutputData + "/" + env+'_'+year+'_'+str(field) + ".png",
@@ -119,8 +124,9 @@ if __name__ == "__main__":
     InputBaseMap = GISFolder+'/'+parameters.BasemapDatasetName
     tempGISFolder = GISFolder+'/'+parameters.AnalysisDatasetName
     regions = parameters.polyg_name_dict[parameters.Sumur]
+    stats = "MIN"
     years = ['2009', '2011', '2012', '2013', '2014', '2016']
-    #years = ['2016']
+    #years = ['2013']
     for year in years:
         print year
         env = parameters.Sumur
@@ -131,7 +137,7 @@ if __name__ == "__main__":
         arcpy.env.workspace = tempGISFolder
 
         samples = InputThematic + '/' + searchCriteria
-        regionalisation_process(samples, regions, tempGISFolder, year, env)
+        regionalisation_process(samples, regions, tempGISFolder, year, env, stats)
 
     # listFC = arcpy.ListFeatureClasses(wild_card=searchCriteria)
     # print listFC
