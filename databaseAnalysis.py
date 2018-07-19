@@ -57,21 +57,21 @@ def getJenksBreaks(dataList, numClass):
     countNum -= 1
   return kclass
 
-
 def create_fc_environment(inputdataset, environment, outputdataset):
     arcpy.env.workspace = inputdataset
     env_data = outputdataset + '/' + environment
     datalist = arcpy.ListFeatureClasses(environment + '*')
-    print datalist
     arcpy.Merge_management(datalist, env_data)
     return env_data
 
-def add_section(projectfolder, configFileName, SectionName):
+def add_section(projectfolder, configFileName, env):
+    SectionName = "BreakValues_" + str(env)
     config = configparser.ConfigParser()
     config.add_section(SectionName)
     with open(projectfolder + configFileName, 'a') as f:
         config.write(f)
     f.close()
+    return SectionName
 
 def set_current_config(projectfolder, configFileName, SectionName, Sample, Breaks):
     config = parameters_test.get_config(projectfolder, configFileName)
@@ -80,10 +80,9 @@ def set_current_config(projectfolder, configFileName, SectionName, Sample, Break
         config.write(f)
     f.close()
 
-
 def find_breaks(inputdataset, field):
     templist=[]
-    rows = arcpy.da.SearchCursor(env_data, field)
+    rows = arcpy.da.SearchCursor(inputdataset, field)
     for row in rows:
         if row[0] is None:
             continue
@@ -96,28 +95,23 @@ def find_breaks(inputdataset, field):
         print "empty list"
     else:
         myBreaks = getJenksBreaks(templist, 5)
-        print sorted(templist)
         print myBreaks
-        print "Another data"
         del row
         del rows
         return myBreaks
 
 
-
 arcpy.env.overwriteOutput = True
 ProjectFolder = parameters.ProjectFolder
 configFileName = "CONFIGURATION.ini"
-environment = "AirSumur"
-SectionName="BreakValues_" + str(environment)
+env = "AirSungai"
 inputdataset = 'd:/YandexDisk/Projects/Bali_Test/GISEcologyBali.gdb/ThematicData'
 outputdataset = 'd:/YandexDisk/Projects/Bali_Test/GISEcologyBali.gdb/AnalysisData'
-env_data = create_fc_environment(inputdataset, environment, outputdataset)
+env_data = create_fc_environment(inputdataset, env, outputdataset)
 field_names = [f.name for f in arcpy.ListFields(env_data,  field_type="Double")]
-print field_names
-add_section(ProjectFolder, configFileName, SectionName)
+section_name = add_section(ProjectFolder, configFileName, env)
 for field in field_names:
     print field
     breaks = find_breaks(env_data, field)
-    set_current_config(ProjectFolder, "CONFIGURATION.ini", SectionName, field, breaks)
+    set_current_config(ProjectFolder, "CONFIGURATION.ini", section_name, field, breaks)
 
