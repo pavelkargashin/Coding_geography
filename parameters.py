@@ -55,5 +55,8 @@ first_field = {Danau: "DHL_mgL",
              Sungai: "TDS_mgL",
              Sumur: "TDS_mgL",
              Laut: "Color_CU"}
-fieldname = 'Year'#Параметр для разбивки данных по годам
-fieldname_2 = 'Stage'#Параметр для разбивки данных по месяцам
+fieldname = 'Year' # Параметр для разбивки данных по годам
+fieldname_2 = 'Stage' # Параметр для разбивки данных по месяцам
+
+field_list_sungai = [u'Temperatur', u'pH', u'DHL_MosCm', u'TDS_mgL', u'TSS_mgL', u'DO_mgL', u'BOD_mgL', u'COD_mgL', u'NO2_N_mgL', u'NO3_N_mgL', u'NH3_N_mgL', u'FreeChlori', u'TotalP_mgL', u'Phenol_mgL', u'OilAndFat_', u'Detergent_', u'FecalColif', u'TotalColif', u'Cyanide_mg', u'Sulfide_mg', u'Turbidity_', u'Cd_mgL', u'Fe_mgL', u'PO4_mgL', u'SO4_mgL', u'Pb_mgL', u'Mn_mgL', u'Zn_mgL', u'Cr_mgL']
+field_list_sumur = [u'Temperatur', u'TDS_mgL', u'TSS_mgL', u'pH', u'BOD_mgL', u'COD_mgL', u'DO_mgL', u'TotalP_mgL', u'NO3_N_mgL', u'NH3_N_mgL', u'As_mgL', u'Co_mgL', u'Ba_mgL', u'B_mgL', u'Se_mgL', u'Cd_mgL', u'Cr_V_mgLI', u'Cu_mgL', u'Fe_mgL', u'Pb_mgL', u'Mn_mgL', u'Hg_mgL', u'Zn_mgL', u'Chloride_m', u'Cyanide_mg', u'Fluoride_m', u'NO2_N_mgL', u'Sulphate_m', u'FreeChlori', u'Sulfide_mg', u'Salinity_m', u'FecalColif', u'TotalColif', u'Gloss_A_mg', u'Gloss_B_mg', u'DHL_mgL', u'Phenol_mgL', u'OilAndFat_', u'Detergent_', u'PO4_mgL', u'Turbidity_']
