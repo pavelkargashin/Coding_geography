@@ -90,12 +90,10 @@ def find_breaks(inputdataset, field):
             continue
         else:
             templist.append(row[0])
-    print templist
     if len(templist) == 0:
         print "empty list"
     else:
         myBreaks = getJenksBreaks(templist, 5)
-        print myBreaks
         del row
         del rows
         return myBreaks
@@ -111,7 +109,6 @@ env_data = create_fc_environment(inputdataset, env, outputdataset)
 field_names = [f.name for f in arcpy.ListFields(env_data,  field_type="Double")]
 section_name = add_section(ProjectFolder, configFileName, env)
 for field in field_names:
-    print field
     breaks = find_breaks(env_data, field)
     set_current_config(ProjectFolder, "CONFIGURATION.ini", section_name, field, breaks)
 
