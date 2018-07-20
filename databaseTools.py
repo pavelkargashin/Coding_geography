@@ -34,7 +34,6 @@ def split_data_stage(shapefile, datapath, fieldname):
     datalist = extract_unique_values(shapefile, fieldname)
     for datavalue in datalist:
         criteria = "{}='{}'".format(fieldname, str(datavalue))
-        print criteria
         if datavalue == '99999999':
             arcpy.Select_analysis(shapefile, datapath + '_' + "NoStage", criteria)
         else:
