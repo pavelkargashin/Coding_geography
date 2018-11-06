@@ -1,6 +1,5 @@
 # -*-coding:utf-8-*-
 import sys
-import random
 import csv
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtGui import QDialog, QVBoxLayout, QLabel, QWidget, QApplication,\
@@ -8,9 +7,9 @@ from PyQt4.QtGui import QDialog, QVBoxLayout, QLabel, QWidget, QApplication,\
 
 
 filePath = "C:/PAUL/Science/Python/Files/"
-fileName = filePath+"output.csv"
-field_list_sungai = [u'Year', u'RiverName', u'Location', u'KoordinatLS',
-                     u'KoordinatBT', u'Stage', u'Time', u'Temperatur',
+fileName = filePath+"Sungai.csv"
+field_list_sungai = [u'RiverName', u'Basin', u'Location', u'Longitude',
+                     u'Latitude', u'Year', u'Stage', u'Temperatur',
                      u'pH', u'DHL_MosCm', u'TDS_mgL', u'TSS_mgL',
                      u'DO_mgL', u'BOD_mgL', u'COD_mgL', u'NO2_N_mgL',
                      u'NO3_N_mgL', u'NH3_N_mgL', u'FreeChlori', u'TotalP_mgL',
@@ -19,7 +18,7 @@ field_list_sungai = [u'Year', u'RiverName', u'Location', u'KoordinatLS',
                      u'Cd_mgL', u'Fe_mgL', u'PO4_mgL', u'SO4_mgL',
                      u'Pb_mgL', u'Mn_mgL', u'Zn_mgL', u'Cr_mgL']
 
-str_list = [1, 2, 5, 6]
+str_list = [0, 1, 2, 6]
 
 
 def is_number(val):
@@ -50,9 +49,6 @@ class Form(QDialog):
         self.resetBut = QPushButton()
         self.resetBut.setText("Reset")
 
-        self.connectBut = QPushButton()
-        self.connectBut.setText("Data to Console")
-
         self.checkBut = QPushButton()
         self.checkBut.setText("Verify data")
 
@@ -76,7 +72,6 @@ class Form(QDialog):
             scrlayout.addWidget(QLineEdit(str('Enter data')))
         scroll.setWidget(scrollcontent)
 
-        layout.addWidget(self.connectBut)
         layout.addWidget(self.checkBut)
         layout.addWidget(self.writeBut)
         layout.addWidget(self.resetBut)
@@ -84,11 +79,10 @@ class Form(QDialog):
 
         self.setLayout(layout)
         self.connect(self.checkBut, SIGNAL("clicked()"), self.check_click)
-        self.connect(self.connectBut, SIGNAL("clicked()"), self.console_click)
         self.connect(self.resetBut, SIGNAL("clicked()"), self.reset_click)
         self.connect(self.writeBut, SIGNAL("clicked()"), self.write_click)
         self.connect(self.clsBut, SIGNAL("clicked()"), self.cls_click)
-        self.setWindowTitle("My data input")
+        self.setWindowTitle("Sungai new data")
 
     def write_click(self):
         print ("write data to Excel file!")
@@ -107,8 +101,8 @@ class Form(QDialog):
             val = str(line_edits[item].text()).replace(',', '.')
             line_edits[item].setText(val)
             current_data.append(str(val))
-        if current_data[0].isdigit() == False:
-            line_edits[0].setText('Bad Value!')
+        if is_number(current_data[5]) == False:
+            line_edits[5].setText('Bad Value!')
         if is_number(current_data[3]) == False:
             line_edits[3].setText('Bad Value!')
         if is_number(current_data[4]) == False:
@@ -129,15 +123,9 @@ class Form(QDialog):
         print('your data has been erased!')
         line_edits = self.findChildren(QLineEdit)
         for item in range(len(line_edits)):
-            line_edits[item].setText('')  # постоянная часть кода для обнуления данных
-            line_edits[item].setText(str(random.randint(1, 100)))  # временная часть кода
+            line_edits[item].setText('Enter Data')  # постоянная часть кода для обнуления данных
 
-    def console_click(self):
-        print ("the test")
-        line_edits = self.findChildren(QLineEdit)
-        for item in range(len(line_edits)):
-            data = line_edits[item].text()
-            print str(data)
+
 
     def cls_click(self):
         self.close()
