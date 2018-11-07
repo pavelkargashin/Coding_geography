@@ -20,6 +20,7 @@ class MainWindow(QtGui.QWidget):
 
     def build(self):
 
+
         gr = QtGui.QGridLayout()
 
         self.btn1 = QtGui.QPushButton('Set Name', self)
