@@ -5,8 +5,13 @@ import sys
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import SIGNAL
 import configparser
+import shutil
 
 home = os.getenv("HOME")
+
+def move_config(path, file):
+
+    shutil.move(path+'/'+file, os.getcwd().replace('\\', '/')+'/'+file)
 
 # defs to create congigfile
 def create_config(ProjectFolder, ConfigFileName):
@@ -141,6 +146,7 @@ class MainWindow(QtGui.QWidget):
     def createConf(self):
         temp = MainWindow.projectPath.replace('\\', '/')
         create_config(temp, MainWindow.ConfigFileName)
+        move_config(temp, str(MainWindow.ConfigFileName))
         print ('WOW!')
         return
 
