@@ -14,10 +14,10 @@ def get_setting(configFileName, section, setting):
     return value
 
 
-def update_setting(path, configFileName, section, setting, value):
-    config = get_config(path, configFileName)
+def update_setting(configFileName, section, setting, value):
+    config = get_config(configFileName)
     config.set(section, setting, value)
-    with open(path, "w") as config_file:
+    with open(configFileName, "w") as config_file:
         config.write(config_file)
 
 
@@ -26,7 +26,14 @@ def update_filepath(inputpath):
     outputpath = temppath.replace('\\', '/')
     return outputpath
 
+def read_as_list(configFileName, section, setting):
+    value = get_setting(configFileName, section, setting)
+    return value.split(',')
 
+def read_as_dict(configFileName, section, setting1, setting2):
+    list_keys = read_as_list(configFileName, section, setting1)
+    list_values = read_as_list(configFileName, section, setting2)
+    return dict(zip(list_keys, list_values))
 
 
 
