@@ -2,14 +2,14 @@
 import configparser
 
 
-def get_config(path, configFileName):
+def get_config(configFileName):
     config = configparser.ConfigParser()
-    config.read(path + configFileName)
+    config.read(configFileName)
     return config
 
 
-def get_setting(path, configFileName, section, setting):
-    config = get_config(path, configFileName)
+def get_setting(configFileName, section, setting):
+    config = get_config(configFileName)
     value = config.get(section, setting)
     return value
 
