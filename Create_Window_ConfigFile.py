@@ -34,16 +34,23 @@ def create_config(ProjectFolder, ConfigFileName):
     config.set('ProcessingConstants', 'Laut', 'AirLaut')
 
     config.add_section('Dictionaries')
-    config.set('Dictionaries', 'field_dict', "{Danau: 'LakeName', Sungai: 'RiverName',Sumur: 'Area',Laut: 'Point'}")
-    config.set('Dictionaries', 'polyg_attr_name_dict', "{Danau: 'Name', Sungai: 'Basin',Sumur: 'Regency'}")
-    config.set('Dictionaries', 'centroid_dict', "{Danau: TempData+'/Lake_Center.shp',Sungai: TempData+'/Basin_Center.shp', Sumur: TempData+'/Regency_Center.shp'}")
-    config.set('Dictionaries', 'polyg_name_dict', "{Danau: ProjectFolder + GISDataName + '.gdb/' + BasemapDatasetName + '/Lakes',Sungai: ProjectFolder + GISDataName + '.gdb/' + BasemapDatasetName + '/Basins', Sumur: ProjectFolder + GISDataName + '.gdb/' + BasemapDatasetName + '/Regency'}")
-    config.set('Dictionaries', 'end_field', "{Danau: 'PO4_mgL', Sungai: 'Cr_mgL', Sumur: 'Turbidity_', Laut: 'TotalColif'}")
-    config.set('Dictionaries', 'first_field', "{Danau: 'DHL_mgL', Sungai: 'TDS_mgL', Sumur: 'TDS_mgL', Laut: 'Color_CU'}")
+    config.set('Dictionaries', 'field_dict_keys', "Danau,Sungai,Sumur,Laut")
+    config.set('Dictionaries', 'field_dict_values', "LakeName,RiverName,Area,Point")
+    config.set('Dictionaries', 'polyg_attr_name_dict_keys', "Danau,Sungai,Sumur")
+    config.set('Dictionaries', 'polyg_attr_name_dict_values', "Name,Basin,Regency")
+    config.set('Dictionaries', 'centroid_dict_keys', "Danau,Sungai,Sumur")
+    config.set('Dictionaries', 'centroid_dict_values',"TempData+'/Lake_Center.shp',TempData+'/Basin_Center.shp',TempData+'/Regency_Center.shp'")
+    config.set('Dictionaries', 'polyg_name_dict_keys', "Danau,Sungai,Sumur")
+    config.set('Dictionaries', 'polyg_name_dict_values', "ProjectFolder+GISDataName+'.gdb/'+BasemapDatasetName+'/Lakes',ProjectFolder+GISDataName+'.gdb/'+BasemapDatasetName+'/Basins',ProjectFolder+GISDataName+'.gdb/'+BasemapDatasetName+'/Regency'")
+
+    config.set('Dictionaries', 'end_field_keys', "Danau,Sungai,Sumur,Laut")
+    config.set('Dictionaries', 'end_field_values', "PO4_mgL,Cr_mgL,Turbidity_,TotalColif")
+    config.set('Dictionaries', 'first_field_keys', "Danau,Sungai,Sumur,Laut")
+    config.set('Dictionaries', 'first_field_values', "DHL_mgL,TDS_mgL,TDS_mgL,Color_CU")
 
     config.add_section('FieldLists')
-    config.set('FieldLists', 'field_list_sungai', [u'TDS_mgL', u'TSS_mgL', u'DO_mgL', u'BOD_mgL', u'COD_mgL', u'NO2_N_mgL', u'NO3_N_mgL', u'NH3_N_mgL', u'FreeChlori', u'TotalP_mgL', u'Phenol_mgL', u'OilAndFat_', u'Detergent_', u'FecalColif', u'TotalColif', u'Cyanide_mg', u'Sulfide_mg', u'Turbidity_', u'Cd_mgL', u'Fe_mgL', u'PO4_mgL', u'SO4_mgL', u'Pb_mgL', u'Mn_mgL', u'Zn_mgL', u'Cr_mgL'])
-    config.set('FieldLists', 'field_list_sumur', [u'Temperatur', u'TDS_mgL', u'TSS_mgL', u'pH', u'BOD_mgL', u'COD_mgL', u'DO_mgL', u'TotalP_mgL',u'NO3_N_mgL', u'NH3_N_mgL', u'As_mgL', u'Co_mgL', u'Ba_mgL', u'B_mgL', u'Se_mgL', u'Cd_mgL',u'Cr_V_mgLI', u'Cu_mgL', u'Fe_mgL', u'Pb_mgL', u'Mn_mgL', u'Hg_mgL', u'Zn_mgL', u'Chloride_m',u'Cyanide_mg', u'Fluoride_m', u'NO2_N_mgL', u'Sulphate_m', u'FreeChlori', u'Sulfide_mg',u'Salinity_m', u'FecalColif', u'TotalColif', u'Gloss_A_mg', u'Gloss_B_mg', u'DHL_mgL',u'Phenol_mgL', u'OilAndFat_', u'Detergent_', u'PO4_mgL', u'Turbidity_'])
+    config.set('FieldLists', 'field_list_sungai', "u'TDS_mgL',u'TSS_mgL',u'DO_mgL',u'BOD_mgL',u'COD_mgL',u'NO2_N_mgL',u'NO3_N_mgL',u'NH3_N_mgL',u'FreeChlori',u'TotalP_mgL',u'Phenol_mgL',u'OilAndFat_',u'Detergent_',u'FecalColif',u'TotalColif',u'Cyanide_mg',u'Sulfide_mg',u'Turbidity_',u'Cd_mgL',u'Fe_mgL',u'PO4_mgL',u'SO4_mgL',u'Pb_mgL',u'Mn_mgL',u'Zn_mgL',u'Cr_mgL'")
+    config.set('FieldLists', 'field_list_sumur', "u'Temperatur',u'TDS_mgL',u'TSS_mgL',u'pH',u'BOD_mgL',u'COD_mgL',u'DO_mgL',u'TotalP_mgL',u'NO3_N_mgL',u'NH3_N_mgL',u'As_mgL',u'Co_mgL',u'Ba_mgL',u'B_mgL',u'Se_mgL',u'Cd_mgL',u'Cr_V_mgLI',u'Cu_mgL',u'Fe_mgL',u'Pb_mgL',u'Mn_mgL',u'Hg_mgL',u'Zn_mgL',u'Chloride_m',u'Cyanide_mg',u'Fluoride_m',u'NO2_N_mgL',u'Sulphate_m',u'FreeChlori',u'Sulfide_mg',u'Salinity_m',u'FecalColif',u'TotalColif',u'Gloss_A_mg',u'Gloss_B_mg',u'DHL_mgL',u'Phenol_mgL',u'OilAndFat_',u'Detergent_',u'PO4_mgL',u'Turbidity_'")
 
     with open(ProjectFolder+ConfigFileName, 'w') as config_file:
         config.write(config_file)
@@ -125,7 +132,7 @@ class MainWindow(QtGui.QWidget):
         return MainWindow.projectPath
 
     def setPath(self):
-        MainWindow.projectFolder = MainWindow.projectPath + MainWindow.ConfigFileName+'.ini'
+        MainWindow.projectFolder = MainWindow.projectPath + MainWindow.ConfigFileName
         tempdata = update_filepath(MainWindow.projectFolder)
         self.lbl3.setText(tempdata)
         MainWindow.projectFolder = tempdata
