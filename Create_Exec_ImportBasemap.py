@@ -2,12 +2,12 @@
 import arcpy
 import os
 import re
-import parameters
-import parameters_test
-import sys
+import General_Tools_ConfigFile as GTC
 destSpatRef = 4326
 inputfiletype = '.shp'
+projfiletype = '.prj'
 postfix = '_ProjectedFile'
+Paths = 'Paths'
 
 def check_files(path2files, inputfiletype):
     list2load = []
@@ -15,7 +15,7 @@ def check_files(path2files, inputfiletype):
     inputfiles = os.listdir(path2files)
     for item in inputfiles:
         if item.endswith(inputfiletype) and re.search(r'Air', item)==None:
-            item_prj = item.replace('.shp', '.prj')
+            item_prj = item.replace(inputfiletype, projfiletype)
             spatReference = arcpy.SpatialReference(path2files+item_prj)
 
             if spatReference.factoryCode != destSpatRef:
@@ -42,10 +42,10 @@ def load_files(inputFolder, list2load, outputFolder):
     return
 
 
-def main(ProjectFolder, ConfigurationFileName):
+def main(ConfigurationFileName):
     arcpy.env.overwriteOutput = True
-    inputFolder = parameters_test.get_setting(ProjectFolder, ConfigurationFileName,'Paths', 'InputData')
-    outputFolder = ProjectFolder + parameters_test.get_setting(ProjectFolder, ConfigurationFileName,'Paths', 'GISDataName') + '.gdb/' + parameters_test.get_setting(ProjectFolder, ConfigurationFileName,'Paths', 'BasemapDatasetName') + '/'
+    inputFolder = GTC.get_setting(ConfigurationFileName,Paths, 'inputdata')
+    outputFolder = GTC.get_setting(ConfigurationFileName, Paths, 'projectfolder') + GTC.get_setting(ConfigurationFileName,Paths, 'gisdataname') + '.gdb/' + GTC.get_setting(ConfigurationFileName, Paths, 'basemapdatasetname') + '/'
 
     list2load, list2project = check_files(inputFolder, inputfiletype)
     loadings = project_files(inputFolder, list2load, list2project)
