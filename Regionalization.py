@@ -1,8 +1,6 @@
 # coding: utf8
-import sys, arcpy, re, os, parameters
-import databaseTools, parameters_test, databaseAnalysis
-reload(sys)
-sys.setdefaultencoding('utf8')
+import sys, arcpy, re, os
+import databaseTools, databaseAnalysis, General_Tools_ConfigFile as GTC
 arcpy.env.overwriteOutput=True
 
 
@@ -78,26 +76,30 @@ def legend_labeling(breaks_ini, lyr):
     return lyr
 
 
-def making_map(mxd, year, stat_field, regions):
+def making_map(mxd, env, year, stat_field, regions):
     titleItem = arcpy.mapping.ListLayoutElements(mxd, "TEXT_ELEMENT")[0]
     titleItem.text = str(year)
-    path = parameters.projectfolder + "OutputData" + "\\" + env + '_' + str(year) + '_' + str(stat_field) + '_' + str(
+    project_folder = GTC.get_setting("CONFIGURATION.ini", "Paths", "projectfolder")
+    path = project_folder + "OutputData" + "\\" + env + '_' + str(year) + '_' + str(stat_field) + '_' + str(
         os.path.basename(regions)) + ".png"
     arcpy.AddMessage(path)
     arcpy.mapping.ExportToPNG(mxd, path, resolution=300)
 
 
 def regionalisation_process(GISFolder, regions, env, stats, years, value_list):
-    GISFolder = parameters.ProjectFolder + "\\GISEcologyBali.gdb"
+    # If script runs from ArcGIS
+    project_folder = GISFolder.split("GISEcologyBali.gdb")[0]
     indexes = re.split(r";", value_list)
-    InputThematic = GISFolder + '\\' + parameters.ThematicDatasetName
-    InputBaseMap = GISFolder + '\\' + parameters.BasemapDatasetName
-    tempGISFolder = GISFolder + '\\' + parameters.AnalysisDatasetName
+    # If script runs without ArcGIS
+    GISFolder = project_folder + "\\" + GTC.get_setting("CONFIGURATION.ini", "Paths", "gisdataname") + ".gdb"
+    InputThematic = GISFolder + '\\' + GTC.get_setting("CONFIGURATION.ini", "Paths", "thematicdatasetname")
+    InputBaseMap = GISFolder + '\\' + GTC.get_setting("CONFIGURATION.ini", "Paths", "basemapdatasetname")
+    tempGISFolder = GISFolder + '\\' + GTC.get_setting("CONFIGURATION.ini", "Paths", "analysisdatasetname")
     arcpy.env.workspace = tempGISFolder
     # Creation of merged feature class within which statistics should be calculated
     env_data = databaseAnalysis.create_fc_environment(InputThematic, env, tempGISFolder)
     # Adding section to configuration file
-    section_name = databaseAnalysis.add_section(ProjectFolder, "CONFIGURATION.ini", env)
+    section_name = databaseAnalysis.add_section(project_folder, "CONFIGURATION.ini", env)
     # Searching feature_classes based on parameters
     years_list = re.split(r";", years)
     for year in years_list:
@@ -113,21 +115,22 @@ def regionalisation_process(GISFolder, regions, env, stats, years, value_list):
         # Creation of text argument for statistics calculation
         text = dissolving_fields(indexes, stats) # calculation of statistics
         # Dissolving samples within regions and calculation of statistics
-        samples_dissolve = arcpy.Dissolve_management(samples_identity, str(samples) + "_Dissolve",
-                                                     parameters.polyg_attr_name_dict[env], text, "MULTI_PART", "DISSOLVE_LINES")
+        dict = GTC.read_as_dict("CONFIGURATION.ini", "Dictionaries", "polyg_attr_name_dict_keys", "polyg_attr_name_dict_values")
+        samples_dissolve = arcpy.Dissolve_management(samples_identity, str(samples) + "_Dissolve", dict[env],
+                                                     text, "MULTI_PART", "DISSOLVE_LINES")
         # Spatial join of dissolved samples and regions
         regionalized_samples = arcpy.SpatialJoin_analysis(regions_multy, samples_dissolve, tempGISFolder +
                                                           "\\Regionalized_Samples", "JOIN_ONE_TO_ONE", "KEEP_ALL")
         arcpy.Delete_management(samples_dissolve)
         # Creation of map series based on parameters
         # Arcmap map project file
-        mxd = arcpy.mapping.MapDocument(str(ProjectFolder) + "Bali_scripting1.mxd")
+        mxd = arcpy.mapping.MapDocument(str(project_folder) + "Bali_scripting1.mxd")
         # Dataframe
         df = arcpy.mapping.ListDataFrames(mxd)[0]
         lyr = arcpy.mapping.ListLayers(mxd, "Regionalized_Samples", df)[0]
-        lyrFile = arcpy.mapping.Layer(ProjectFolder+"\\Regionalized_Samples_1.lyr")
-        lyrFile_inverted = arcpy.mapping.Layer(ProjectFolder + "\\Regionalized_Samples_2.lyr")
-        lyrFile_count = arcpy.mapping.Layer(ProjectFolder + "\\Regionalized_Samples_3.lyr")
+        lyrFile = arcpy.mapping.Layer(project_folder+"\\Regionalized_Samples_1.lyr")
+        lyrFile_inverted = arcpy.mapping.Layer(project_folder + "\\Regionalized_Samples_2.lyr")
+        lyrFile_count = arcpy.mapping.Layer(project_folder + "\\Regionalized_Samples_3.lyr")
         for field in indexes:
             stat_field = str(stats) + "_" + str(field)
             fieldData = databaseTools.extract_unique_values(regionalized_samples, stat_field)
@@ -152,7 +155,7 @@ def regionalisation_process(GISFolder, regions, env, stats, years, value_list):
                 for field in indexes:
                     breaks = databaseAnalysis.find_breaks(env_data, field)
                     # Writing breaks to configuration file
-                    databaseAnalysis.set_current_config(ProjectFolder, "CONFIGURATION.ini", section_name, field, breaks)
+                    databaseAnalysis.set_current_config(project_folder, "CONFIGURATION.ini", section_name, field, breaks)
                 layer_name_correction(lyr, stats, stat_field)
                 if stat_field == stats + "_" + "DO_mgL":
                     arcpy.mapping.UpdateLayer(df, lyr, lyrFile_inverted, True)
@@ -160,10 +163,7 @@ def regionalisation_process(GISFolder, regions, env, stats, years, value_list):
                     arcpy.mapping.UpdateLayer(df, lyr, lyrFile, True)
                 lyr.symbology.reclassify()
                 lyr.symbology.valueField = stat_field
-                breaks_ini = parameters_test.get_setting(ProjectFolder, r'CONFIGURATION.ini',
+                breaks_ini = GTC.get_setting(project_folder, r'CONFIGURATION.ini',
                                                          section_name, setting=str(field))
                 legend_labeling(breaks_ini, lyr)
-            making_map(mxd, year, stat_field, regions)
-
-
-regionalisation_process(GISFolder, regions, env, stats, years, indexes)
+            making_map(mxd, env, year, stat_field, regions)
