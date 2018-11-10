@@ -84,9 +84,9 @@ class MainWindow(QtGui.QWidget):
         gr = QtGui.QGridLayout()
 
         self.btn1 = QtGui.QPushButton()
-        self.btn1.setText('Set Name')
+        self.btn1.setText('File Name')
         gr.addWidget(self.btn1, 1, 0)
-        self.btn1.clicked.connect(self.showDialog)
+        # self.btn1.clicked.connect(self.showDialog)
 
         self.btn2 = QtGui.QPushButton('Select path', self)
         gr.addWidget(self.btn2, 0, 0)
@@ -120,12 +120,12 @@ class MainWindow(QtGui.QWidget):
         self.show()
 
 
-    def showDialog(self):
-        newtext, ok = QtGui.QInputDialog.getText(None, "Input", "Enter the name of the Project (in English)")
-        if ok:
-            self.lbl1.setText(str(newtext))
-        MainWindow.ConfigFileName = str(newtext)
-        return MainWindow.ConfigFileName
+    # def showDialog(self):
+    #     newtext, ok = QtGui.QInputDialog.getText(None, "Input", "Enter the name of the Project (in English)")
+    #     if ok:
+    #         self.lbl1.setText(str(newtext))
+    #     MainWindow.ConfigFileName = str(newtext)
+    #     return MainWindow.ConfigFileName
 
     def showSelector(self):
         options = QtGui.QFileDialog.DontResolveSymlinks | QtGui.QFileDialog.ShowDirsOnly
@@ -147,15 +147,12 @@ class MainWindow(QtGui.QWidget):
         temp = MainWindow.projectPath.replace('\\', '/')
         create_config(temp, MainWindow.ConfigFileName)
         move_config(temp, str(MainWindow.ConfigFileName))
-        print ('WOW!')
+        print ('The Configuration has been created\n ####################\nExecute Create_Window_CreateProject.py for further project deployment')
         return
 
 if __name__ == '__main__':
-    # Создание окна
-    # pyhtonProjectPath = 'C:/PAUL/Science/Coding_geography/'
 
     myApp = QtGui.QApplication(sys.argv)
     myProg = MainWindow()
     myProg.show()
-    # Закрытие окна
     sys.exit(myApp.exec_())
