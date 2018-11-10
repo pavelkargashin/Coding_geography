@@ -1,8 +1,7 @@
 import re
 import arcpy
 import configparser
-import parameters
-import parameters_test
+import General_Tools_ConfigFile as GTC
 
 def getJenksBreaks(dataList, numClass):
   dataList.sort()
@@ -64,19 +63,19 @@ def create_fc_environment(inputdataset, environment, outputdataset):
     arcpy.Merge_management(datalist, env_data)
     return env_data
 
-def add_section(projectfolder, configFileName, env):
+def add_section(configFileName, env):
     SectionName = "BreakValues_" + str(env)
     config = configparser.ConfigParser()
     config.add_section(SectionName)
-    with open(projectfolder + configFileName, 'a') as f:
+    with open(configFileName, 'a') as f:
         config.write(f)
     f.close()
     return SectionName
 
-def set_current_config(projectfolder, configFileName, SectionName, Sample, Breaks):
-    config = parameters_test.get_config(projectfolder, configFileName)
+def set_current_config(configFileName, SectionName, Sample, Breaks):
+    config = GTC.get_config(configFileName)
     config.set(SectionName, Sample, Breaks)
-    with open(projectfolder + configFileName, 'w') as f:
+    with open(configFileName, 'w') as f:
         config.write(f)
     f.close()
 
@@ -100,15 +99,21 @@ def find_breaks(inputdataset, field):
 
 
 arcpy.env.overwriteOutput = True
-ProjectFolder = parameters.ProjectFolder
-configFileName = "CONFIGURATION.ini"
+configFileName = "CONFIGURATION"
+Paths = 'Paths'
+ProjectFolder = GTC.get_setting(configFileName,Paths, setting='projectfolder')
+
 env = "AirSungai"
-inputdataset = 'd:/YandexDisk/Projects/Bali_Test/GISEcologyBali.gdb/ThematicData'
-outputdataset = 'd:/YandexDisk/Projects/Bali_Test/GISEcologyBali.gdb/AnalysisData'
+inputdataset = ProjectFolder + GTC.get_setting(configFileName, Paths, 'gisdataname')+'.gdb/'+GTC.get_setting(configFileName, Paths, 'thematicdatasetname')
+print 'inds is ', inputdataset
+# inputdataset = 'd:/YandexDisk/Projects/Bali_Test/GISEcologyBali.gdb/ThematicData'
+outputdataset = ProjectFolder + GTC.get_setting(configFileName, Paths, 'gisdataname')+'.gdb/'+GTC.get_setting(configFileName, Paths, 'analysisdatasetname')
+print 'outds is ', outputdataset
+# outputdataset = 'd:/YandexDisk/Projects/Bali_Test/GISEcologyBali.gdb/AnalysisData'
 env_data = create_fc_environment(inputdataset, env, outputdataset)
 field_names = [f.name for f in arcpy.ListFields(env_data,  field_type="Double")]
-section_name = add_section(ProjectFolder, configFileName, env)
+section_name = add_section(configFileName, env)
 for field in field_names:
     breaks = find_breaks(env_data, field)
-    set_current_config(ProjectFolder, "CONFIGURATION.ini", section_name, field, breaks)
+    set_current_config(configFileName, section_name, field, breaks)
 
