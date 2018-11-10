@@ -1,21 +1,13 @@
 #-*-coding:utf-8-*-
 
-import csv
+
 import openpyxl
-import parameters
-import Coordinates
 import ogr
 import osr
 import re
-import os
 
 
-# TestDataFolder = parameters.TestDataFolder
-# workData = parameters.workData
-# exceldata = TestDataFolder+workData
-
-
-# Функция для считывания файла ехсеl и выдачи списка листов. Список дистов записывается в файл txt
+# Функция для считывания файла ехсеl и выдачи списка листов. Список листов записывается в файл txt
 def explore_workbook(inputDataFolder, excelName):
     myExcel = openpyxl.load_workbook(inputDataFolder+excelName)
     mySheets = myExcel.sheetnames # get all sheets via list
@@ -40,8 +32,7 @@ def choose_sheets(sheet_list, keyword4search):
 def form_names(list_of_sheets):
     naming_dictionary = {}
     for item in list_of_sheets:
-        dic_value = re.split(r' ', item)
-        naming_dictionary[item] = dic_value[2]+dic_value[3]
+        naming_dictionary[item] = str(item)
     return naming_dictionary
 
 
@@ -55,8 +46,8 @@ def export_data_to_dictionary(inputexcel, currentSheet, attr_names):
             list_temp.append(mySheet.cell(column = col_val, row = row_val).value)
         myRow = dict(zip(attr_names,list_temp))
         myTable.append(myRow)
-        list_temp=[]
-        myRow={}
+        list_temp = []
+        myRow = {}
     return myTable
 
 
@@ -91,10 +82,10 @@ def create_shapefile(ShapeName, column_names, inputTable):
     layer = datasource.CreateLayer('test', srs, ogr.wkbPoint)
     i=1
     layer.CreateField(ogr.FieldDefn("LoadID", ogr.OFTReal))
-    layer.CreateField(ogr.FieldDefn("Doubt", ogr.OFTInteger))
     for item in column_names:
         fieldname = 'field'+str(i)
-        if item == 'RiverName' or item=='NameLocati' or item =='Stage' or item == "Monitoring" or  item == 'KoordinatB' or  item == 'KoordinatL' or item == 'PossibleVa' or item=='LakeName' or item=='Area' or item=='Point':
+        textfields = ('RiverName', 'Location', 'Stage', 'Longitude', 'Latitude', 'LakeName', 'Area', 'Point', 'Basin')
+        if item in textfields:
            fieldname = ogr.FieldDefn(str(item), ogr.OFTString)
            fieldname.SetWidth(50)
            layer.CreateField(fieldname)
@@ -106,33 +97,49 @@ def create_shapefile(ShapeName, column_names, inputTable):
         if row['Year']!=None:
             # Создание точек с атрибутами
             inputcoord = []
-            inputcoord.append(str(row['KoordinatL']))
-            inputcoord.append(str(row['KoordinatB']))
-            outputcoord = Coordinates.Conversion(inputcoord)
-            if len(outputcoord[1])==0:
-                wkt="POINT(%f %f)" % (float(outputcoord[0][1]), float(outputcoord[0][0]))
-                point = ogr.CreateGeometryFromWkt(wkt)
-                feature = ogr.Feature(layer.GetLayerDefn())
-                feature.SetGeometry(point)
-                feature.SetField("LoadID", tempi)
-                feature.SetField("Doubt", int(outputcoord[0][2]))
-                for name in column_names:
-                    feature.SetField(str(name), row[str(name)])
-                layer.CreateFeature(feature)
-                feature = None
-            elif len(outputcoord[1])>0:
-                for item in outputcoord:
-                    wkt = "POINT(%f %f)" % (float(item[1]), float(item[0]))
-                    point = ogr.CreateGeometryFromWkt(wkt)
-                    feature = ogr.Feature(layer.GetLayerDefn())
-                    feature.SetGeometry(point)
-                    feature.SetField("LoadID", tempi)
-                    feature.SetField("Doubt", int(outputcoord[1][2]))
-                    for name in column_names:
-                        feature.SetField(str(name), row[str(name)])
-                    layer.CreateFeature(feature)
-                    feature = None
-            tempi+=1
+            inputcoord.append(str(row['Longitude']))
+            inputcoord.append(str(row['Latitude']))
+            wkt = "POINT(%f %f)" % (float(inputcoord[0]), float(inputcoord[1]))
+            point = ogr.CreateGeometryFromWkt(wkt)
+            feature = ogr.Feature(layer.GetLayerDefn())
+            feature.SetGeometry(point)
+            feature.SetField("LoadID", tempi)
+            for name in column_names:
+                feature.SetField(str(name), row[str(name)])
+            layer.CreateFeature(feature)
+            feature = None
+            tempi += 1
         else:
             continue
+
     datasource = None
+
+
+        # outputcoord = Coordinates.Conversion(inputcoord)
+        #     if len(outputcoord[1])==0:
+        #         wkt="POINT(%f %f)" % (float(outputcoord[0][1]), float(outputcoord[0][0]))
+        #         point = ogr.CreateGeometryFromWkt(wkt)
+        #         feature = ogr.Feature(layer.GetLayerDefn())
+        #         feature.SetGeometry(point)
+        #         feature.SetField("LoadID", tempi)
+        #         # feature.SetField("Doubt", int(outputcoord[0][2]))
+        #         for name in column_names:
+        #             feature.SetField(str(name), row[str(name)])
+        #         layer.CreateFeature(feature)
+        #         feature = None
+        #     elif len(outputcoord[1])>0:
+        #         for item in outputcoord:
+        #             wkt = "POINT(%f %f)" % (float(item[1]), float(item[0]))
+        #             point = ogr.CreateGeometryFromWkt(wkt)
+        #             feature = ogr.Feature(layer.GetLayerDefn())
+        #             feature.SetGeometry(point)
+        #             feature.SetField("LoadID", tempi)
+        #             # feature.SetField("Doubt", int(outputcoord[1][2]))
+        #             for name in column_names:
+        #                 feature.SetField(str(name), row[str(name)])
+        #             layer.CreateFeature(feature)
+        #             feature = None
+        #     tempi+=1
+        # else:
+        #     continue
+
