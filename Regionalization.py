@@ -1,6 +1,6 @@
 # coding: utf8
 import arcpy, re, os
-import databaseTools, databaseAnalysis, General_Tools_ConfigFile as GTC
+import Create_Tools_MakeShapefiles, databaseAnalysis, General_Tools_ConfigFile as GTC
 arcpy.env.overwriteOutput=True
 config_file = "CONFIGURATION.ini"
 paths = "Paths"
@@ -82,7 +82,7 @@ def making_map(mxd, env, year, stat_field, regions):
     titleItem = arcpy.mapping.ListLayoutElements(mxd, "TEXT_ELEMENT")[0]
     titleItem.text = str(year)
     project_folder = GTC.get_setting(config_file, paths, "projectfolder")
-    path = project_folder + "OutputData" + "\\" + env + '_' + str(year) + '_' + str(stat_field) + '_' + str(
+    path = project_folder + "OutputData\\" + env + '_' + str(year) + '_' + str(stat_field) + '_' + str(
         os.path.basename(regions)) + ".png"
     arcpy.AddMessage(path)
     arcpy.mapping.ExportToPNG(mxd, path, resolution=300)
@@ -135,7 +135,7 @@ def regionalisation_process(regions, env, stats, years, value_list, GISFolder = 
         lyrFile_count = arcpy.mapping.Layer(project_folder + "\\Regionalized_Samples_3.lyr")
         for field in indexes:
             stat_field = str(stats) + "_" + str(field)
-            fieldData = databaseTools.extract_unique_values(regionalized_samples, stat_field)
+            fieldData = Create_Tools_MakeShapefiles.extract_unique_values(regionalized_samples, stat_field)
             if fieldData[0] == None:
                 fieldData.remove(None)
             elif len(fieldData) == 0:
