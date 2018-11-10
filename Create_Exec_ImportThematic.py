@@ -1,11 +1,12 @@
 # coding:utf-8
-import parameters
-import Funcs_excel2shp as cur_tools
-import ConvensionalCoordinates as coord
+
+import Create_Tools_excel2shp as cur_tools
+
 
 def main(exceldataFolder, excelName, keyword4search, OutputFolder):
     sheet_list = cur_tools.explore_workbook(exceldataFolder, excelName)
     data2process = cur_tools.choose_sheets(sheet_list, keyword4search)# список названий тех листов, которые подходят для обработки
+    print 'selected sheets ',data2process
     mydict = cur_tools.form_names(data2process)#В этом словаре хранятся наименования для всех будущих шейпов
     for item in data2process:
         attr_fields = cur_tools.create_fields_list(exceldataFolder+excelName, currentSheet=item)
@@ -17,9 +18,6 @@ def main(exceldataFolder, excelName, keyword4search, OutputFolder):
         cur_tools.create_shapefile(OutputFolder+myshape, shorten_field_names, testData)
 
     print '\n#####################\nData has been imported\n#####################\n'
-    coord.correct_coords(parameters.Sungai, parameters.Danau)
-
-    print '\n#####################\nPointes were moved\n#####################\n'
 if __name__ == "__main__":
     main()
 
