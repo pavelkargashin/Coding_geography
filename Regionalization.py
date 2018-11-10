@@ -1,9 +1,10 @@
 # coding: utf8
-import sys, arcpy, re, os
+import arcpy, re, os
 import databaseTools, databaseAnalysis, General_Tools_ConfigFile as GTC
 arcpy.env.overwriteOutput=True
 config_file = "CONFIGURATION.ini"
 paths = "Paths"
+project_folder = GTC.get_setting(config_file, paths, "projectfolder")
 
 def update_fields(input_fc_identity):
     field_names = [f.name for f in arcpy.ListFields(input_fc_identity)]
@@ -87,7 +88,7 @@ def making_map(mxd, env, year, stat_field, regions):
     arcpy.mapping.ExportToPNG(mxd, path, resolution=300)
 
 
-def regionalisation_process(GISFolder, regions, env, stats, years, value_list):
+def regionalisation_process(regions, env, stats, years, value_list, GISFolder = project_folder):
     # If script runs from ArcGIS
     project_folder = GISFolder.split(GTC.get_setting(config_file, paths, "gisdataname") + ".gdb")[0]
     indexes = re.split(r";", value_list)
