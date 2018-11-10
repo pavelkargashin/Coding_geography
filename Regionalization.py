@@ -2,7 +2,7 @@
 import arcpy, re, os
 import Create_Tools_MakeShapefiles, databaseAnalysis, General_Tools_ConfigFile as GTC
 arcpy.env.overwriteOutput=True
-config_file = "CONFIGURATION.ini"
+config_file = "CONFIGURATION"
 paths = "Paths"
 project_folder = GTC.get_setting(config_file, paths, "projectfolder")
 
