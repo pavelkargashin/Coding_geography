@@ -4,11 +4,10 @@ import os
 import sys
 import shutil
 from PyQt4 import QtGui, QtCore
-import ProjectManagement
 import General_Tools_ConfigFile as GTC
 import Create_Exec_ImportBasemap
-import importProcessing
-import databaseProcessing
+import Create_Exec_ImportThematic
+import Create_Exec_DatabaseProcessing
 
 home = os.getenv("HOME")
 
@@ -18,6 +17,7 @@ class MainWindow(QtGui.QWidget):
     ConfigFileName = "CONFIGURATION"
     ProjectFolder = "No Project"
     BaseMapFolder = 'NoFolder'
+    ThematicFileName = 'NoFile'
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -46,10 +46,10 @@ class MainWindow(QtGui.QWidget):
         gr.addWidget(self.BasemapBut, 2, 0)
         self.BasemapBut.clicked.connect(self.SelectBasemap)
 
-        self.ThematicLbl = QtGui.QLabel('ThematicFileName', self)
+        self.ThematicLbl = QtGui.QLabel(MainWindow.ThematicFileName, self)
         gr.addWidget(self.ThematicLbl, 1, 1)
 
-        self.BasemapLbl = QtGui.QLabel('Basemap Data', self)
+        self.BasemapLbl = QtGui.QLabel('No Data', self)
         gr.addWidget(self.BasemapLbl, 2, 1)
 
 
@@ -69,13 +69,15 @@ class MainWindow(QtGui.QWidget):
     def SelectThematic(self):
         selectedFileName = QtGui.QFileDialog.getOpenFileName(self, "Select *.xlsx with your data", self.ThematicLbl.text())
         self.ThematicLbl.setText(selectedFileName)
-        thematicFileName = GTC.update_filepath(selectedFileName)
-        thematicFileName.replace('\\', '/')
-        pathToCopy = GTC.get_setting(MainWindow.ProjectFolder, ProjectManagement.configFileName, Paths, 'InputData')
-        dstFileName = pathToCopy+os.path.basename(thematicFileName)
-        shutil.copy(thematicFileName, dstFileName)
+        MainWindow.ThematicFileName = GTC.update_filepath(selectedFileName)
+        MainWindow.ThematicFileName.replace('\\', '/')
+        pathToCopy = GTC.get_setting(MainWindow.ConfigFileName, Paths, 'inputdata')
+        dstFileName = pathToCopy+os.path.basename(MainWindow.ThematicFileName)
+        shutil.copy(MainWindow.ThematicFileName, dstFileName)
         print 'Thematic data has been copied!'
-        return thematicFileName
+        MainWindow.ThematicFileName = dstFileName
+        print 'Data will be imported from ',MainWindow.ThematicFileName
+        return MainWindow.ThematicFileName
 
     def SelectBasemap(self):
         options = QtGui.QFileDialog.DontResolveSymlinks | QtGui.QFileDialog.ShowDirsOnly
@@ -101,30 +103,27 @@ class MainWindow(QtGui.QWidget):
     def runImport(self):
         print 'initial value of project folder is ', MainWindow.ProjectFolder
         Create_Exec_ImportBasemap.main(MainWindow.ConfigFileName)
-        sys.exit()
-        inputFolder = GTC.get_setting(MainWindow.ConfigFileName, Paths, 'InputData')
+        inputFolder = GTC.get_setting(MainWindow.ConfigFileName, Paths, 'inputdata')
         # Convert thematic data to shapefiles
-        excelName = self.ThematicLbl.text()
+        excelName = MainWindow.ThematicFileName
         dstFileName = os.path.basename(str(excelName))
+        print dstFileName
         outputFolder = GTC.get_setting(MainWindow.ConfigFileName, Paths, 'tempdata')
-        importProcessing.main(inputFolder, dstFileName, "Kualitas Air", outputFolder)
+        Create_Exec_ImportThematic.main(inputFolder, dstFileName, "Air", outputFolder)
         # Import data to geodatabase
         inputfolder_shp = GTC.get_setting(MainWindow.ConfigFileName, Paths, 'tempdata')
         envDatabase = GTC.get_setting(MainWindow.ConfigFileName, Paths, 'projectfolder')\
-                      +GTC.get_setting(MainWindow.ConfigFileName, Paths, 'gisdataname')+'.gdb'
-        ThematicDataset = envDatabase+'/' + GTC.get_setting(MainWindow.ConfigFileName, Paths, 'thematicdatasetname')
+                      +GTC.get_setting(MainWindow.ConfigFileName, Paths, 'gisdataname') + '.gdb'
+        ThematicDataset = envDatabase + '/' + GTC.get_setting(MainWindow.ConfigFileName, Paths, 'thematicdatasetname')
         fieldname = GTC.get_setting(MainWindow.ConfigFileName, 'ImportParameters', 'fieldname')
         fieldname_2 = GTC.get_setting(MainWindow.ConfigFileName, 'ImportParameters', 'fieldname_2')
-        databaseProcessing.main(inputfolder_shp, envDatabase,ThematicDataset, fieldname, fieldname_2)
+        Create_Exec_DatabaseProcessing.main(inputfolder_shp, envDatabase, ThematicDataset, fieldname, fieldname_2)
         return
 
 
 if __name__ == '__main__':
-    # Создание окна
-    # pyhtonProjectPath = 'C:/PAUL/Science/Coding_geography/'
 
     myApp = QtGui.QApplication(sys.argv)
     myProg = MainWindow()
     myProg.show()
-    # Закрытие окна
     sys.exit(myApp.exec_())
