@@ -2,7 +2,8 @@
 import sys, arcpy, re, os
 import databaseTools, databaseAnalysis, General_Tools_ConfigFile as GTC
 arcpy.env.overwriteOutput=True
-
+config_file = "CONFIGURATION.ini"
+paths = "Paths"
 
 def update_fields(input_fc_identity):
     field_names = [f.name for f in arcpy.ListFields(input_fc_identity)]
@@ -79,7 +80,7 @@ def legend_labeling(breaks_ini, lyr):
 def making_map(mxd, env, year, stat_field, regions):
     titleItem = arcpy.mapping.ListLayoutElements(mxd, "TEXT_ELEMENT")[0]
     titleItem.text = str(year)
-    project_folder = GTC.get_setting("CONFIGURATION.ini", "Paths", "projectfolder")
+    project_folder = GTC.get_setting(config_file, paths, "projectfolder")
     path = project_folder + "OutputData" + "\\" + env + '_' + str(year) + '_' + str(stat_field) + '_' + str(
         os.path.basename(regions)) + ".png"
     arcpy.AddMessage(path)
@@ -88,18 +89,18 @@ def making_map(mxd, env, year, stat_field, regions):
 
 def regionalisation_process(GISFolder, regions, env, stats, years, value_list):
     # If script runs from ArcGIS
-    project_folder = GISFolder.split("GISEcologyBali.gdb")[0]
+    project_folder = GISFolder.split(GTC.get_setting(config_file, paths, "gisdataname") + ".gdb")[0]
     indexes = re.split(r";", value_list)
     # If script runs without ArcGIS
-    GISFolder = project_folder + "\\" + GTC.get_setting("CONFIGURATION.ini", "Paths", "gisdataname") + ".gdb"
-    InputThematic = GISFolder + '\\' + GTC.get_setting("CONFIGURATION.ini", "Paths", "thematicdatasetname")
-    InputBaseMap = GISFolder + '\\' + GTC.get_setting("CONFIGURATION.ini", "Paths", "basemapdatasetname")
-    tempGISFolder = GISFolder + '\\' + GTC.get_setting("CONFIGURATION.ini", "Paths", "analysisdatasetname")
+    GISFolder = project_folder + "\\" + GTC.get_setting(config_file, paths, "gisdataname") + ".gdb"
+    InputThematic = GISFolder + '\\' + GTC.get_setting(config_file, paths, "thematicdatasetname")
+    InputBaseMap = GISFolder + '\\' + GTC.get_setting(config_file, paths, "basemapdatasetname")
+    tempGISFolder = GISFolder + '\\' + GTC.get_setting(config_file, paths, "analysisdatasetname")
     arcpy.env.workspace = tempGISFolder
     # Creation of merged feature class within which statistics should be calculated
     env_data = databaseAnalysis.create_fc_environment(InputThematic, env, tempGISFolder)
     # Adding section to configuration file
-    section_name = databaseAnalysis.add_section(project_folder, "CONFIGURATION.ini", env)
+    section_name = databaseAnalysis.add_section(project_folder, config_file, env)
     # Searching feature_classes based on parameters
     years_list = re.split(r";", years)
     for year in years_list:
@@ -115,7 +116,7 @@ def regionalisation_process(GISFolder, regions, env, stats, years, value_list):
         # Creation of text argument for statistics calculation
         text = dissolving_fields(indexes, stats) # calculation of statistics
         # Dissolving samples within regions and calculation of statistics
-        dict = GTC.read_as_dict("CONFIGURATION.ini", "Dictionaries", "polyg_attr_name_dict_keys", "polyg_attr_name_dict_values")
+        dict = GTC.read_as_dict(config_file, "Dictionaries", "polyg_attr_name_dict_keys", "polyg_attr_name_dict_values")
         samples_dissolve = arcpy.Dissolve_management(samples_identity, str(samples) + "_Dissolve", dict[env],
                                                      text, "MULTI_PART", "DISSOLVE_LINES")
         # Spatial join of dissolved samples and regions
@@ -155,7 +156,7 @@ def regionalisation_process(GISFolder, regions, env, stats, years, value_list):
                 for field in indexes:
                     breaks = databaseAnalysis.find_breaks(env_data, field)
                     # Writing breaks to configuration file
-                    databaseAnalysis.set_current_config(project_folder, "CONFIGURATION.ini", section_name, field, breaks)
+                    databaseAnalysis.set_current_config(project_folder, config_file, section_name, field, breaks)
                 layer_name_correction(lyr, stats, stat_field)
                 if stat_field == stats + "_" + "DO_mgL":
                     arcpy.mapping.UpdateLayer(df, lyr, lyrFile_inverted, True)
@@ -163,7 +164,6 @@ def regionalisation_process(GISFolder, regions, env, stats, years, value_list):
                     arcpy.mapping.UpdateLayer(df, lyr, lyrFile, True)
                 lyr.symbology.reclassify()
                 lyr.symbology.valueField = stat_field
-                breaks_ini = GTC.get_setting(project_folder, r'CONFIGURATION.ini',
-                                                         section_name, setting=str(field))
+                breaks_ini = GTC.get_setting(project_folder, config_file, section_name, setting=str(field))
                 legend_labeling(breaks_ini, lyr)
             making_map(mxd, env, year, stat_field, regions)
