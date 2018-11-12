@@ -1,4 +1,4 @@
-import sys, arcpy, parameters, Regionalization, databaseTools
+import sys, arcpy, parameters, Maps_Tools_Regionalization, databaseTools
 reload(sys)
 sys.setdefaultencoding('utf8')
 arcpy.env.workspace = parameters.ProjectFolder + parameters.GISDataName + ".gdb"
@@ -24,7 +24,7 @@ samples_shp = parameters.TempData + parameters.Danau+".shp"
 samples = arcpy.FeatureClassToFeatureClass_conversion(samples_shp, arcpy.env.workspace, "Danau")
 # Creating of table structure in a new feature class
 years_list = databaseTools.extract_unique_values(samples, "Year")
-field_names = Regionalization.update_fields(samples, 11)
+field_names = Maps_Tools_Regionalization.update_fields(samples, 11)
 field_names.append(NTotal_calculation(samples))
 for field in field_names:
     for year in years_list:
@@ -34,7 +34,7 @@ for field in field_names:
         arcpy.AddField_management(lake_centroids, new_field, "FLOAT")
 # Calculating of values for parameters, lakes and years
 stats = "MAX" # Statistics type as parameter
-text = Regionalization.dissolving_fields(field_names, stats)
+text = Maps_Tools_Regionalization.dissolving_fields(field_names, stats)
 output_dissolve = arcpy.env.workspace + "/" + parameters.AnalysisDatasetName + "/Danau_Dissolve"
 samples_dissolve = arcpy.Dissolve_management(samples, output_dissolve, "LakeName;Year", text, "MULTI_PART")
 lakes_list = databaseTools.extract_unique_values(samples_dissolve, "LakeName")
