@@ -144,7 +144,7 @@ class MainWindow(QtGui.QWidget):
         return tempdata
 
     def createConf(self):
-        temp = MainWindow.projectPath.replace('\\', '/')
+        temp = str(MainWindow.projectPath.replace('\\', '/'))
         create_config(temp, MainWindow.ConfigFileName)
         move_config(temp, str(MainWindow.ConfigFileName))
         print ('The Configuration has been created\n ####################\nExecute Create_Window_CreateProject.py for further project deployment')
