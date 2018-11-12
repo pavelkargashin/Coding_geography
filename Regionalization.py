@@ -2,7 +2,7 @@
 import arcpy, re, os
 import Create_Tools_MakeShapefiles, databaseAnalysis, General_Tools_ConfigFile as GTC
 arcpy.env.overwriteOutput=True
-config_file = "CONFIGURATION"
+config_file = os.getcwd()+ '/'+"CONFIGURATION"
 paths = "Paths"
 project_folder = GTC.get_setting(config_file, paths, "projectfolder")
 
@@ -93,24 +93,25 @@ def regionalisation_process(regions, env, stats, years, value_list, GISFolder = 
     project_folder = GISFolder.split(GTC.get_setting(config_file, paths, "gisdataname") + ".gdb")[0]
     indexes = re.split(r";", value_list)
     # If script runs without ArcGIS
-    GISFolder = project_folder + "\\" + GTC.get_setting(config_file, paths, "gisdataname") + ".gdb"
-    InputThematic = GISFolder + '\\' + GTC.get_setting(config_file, paths, "thematicdatasetname")
-    InputBaseMap = GISFolder + '\\' + GTC.get_setting(config_file, paths, "basemapdatasetname")
-    tempGISFolder = GISFolder + '\\' + GTC.get_setting(config_file, paths, "analysisdatasetname")
+    GISFolder = project_folder + GTC.get_setting(config_file, paths, "gisdataname") + ".gdb"
+    InputThematic = GISFolder + '/' + GTC.get_setting(config_file, paths, "thematicdatasetname")
+    InputBaseMap = GISFolder + '/' + GTC.get_setting(config_file, paths, "basemapdatasetname")
+    tempGISFolder = GISFolder + '/' + GTC.get_setting(config_file, paths, "analysisdatasetname")
     arcpy.env.workspace = tempGISFolder
     # Creation of merged feature class within which statistics should be calculated
     env_data = databaseAnalysis.create_fc_environment(InputThematic, env, tempGISFolder)
     # Adding section to configuration file
-    section_name = databaseAnalysis.add_section(project_folder, config_file, env)
+    section_name = databaseAnalysis.add_section(config_file, env)
     # Searching feature_classes based on parameters
     years_list = re.split(r";", years)
     for year in years_list:
         searchCriteria = env + '_' + str(year)
         samples = InputThematic + '\\' + searchCriteria
         # Disaggregating of multipart feature class
-        regions_multy = arcpy.MultipartToSinglepart_management(regions, tempGISFolder+"\\Regions_Multy")
+
+        regions_multy = arcpy.MultipartToSinglepart_management(InputBaseMap + '/' + regions, tempGISFolder+"/Regions_Multy")
         # Overlay of samples with regions
-        samples_identity = arcpy.Identity_analysis(samples, regions_multy, tempGISFolder+"\\Samples_Identity", "ALL", "",
+        samples_identity = arcpy.Identity_analysis(samples, regions_multy, tempGISFolder+"/Samples_Identity", "ALL", "",
                                                    "NO_RELATIONSHIPS")
         # Replacement of 9999999 values on None on attribute table
         update_fields(samples_identity)
@@ -118,11 +119,11 @@ def regionalisation_process(regions, env, stats, years, value_list, GISFolder = 
         text = dissolving_fields(indexes, stats) # calculation of statistics
         # Dissolving samples within regions and calculation of statistics
         dict = GTC.read_as_dict(config_file, "Dictionaries", "polyg_attr_name_dict_keys", "polyg_attr_name_dict_values")
-        samples_dissolve = arcpy.Dissolve_management(samples_identity, str(samples) + "_Dissolve", dict[env],
+        samples_dissolve = arcpy.Dissolve_management(samples_identity, str(samples) + "_Dissolve", dict[env[3:]],
                                                      text, "MULTI_PART", "DISSOLVE_LINES")
         # Spatial join of dissolved samples and regions
         regionalized_samples = arcpy.SpatialJoin_analysis(regions_multy, samples_dissolve, tempGISFolder +
-                                                          "\\Regionalized_Samples", "JOIN_ONE_TO_ONE", "KEEP_ALL")
+                                                          "/Regionalized_Samples", "JOIN_ONE_TO_ONE", "KEEP_ALL")
         arcpy.Delete_management(samples_dissolve)
         # Creation of map series based on parameters
         # Arcmap map project file
@@ -130,9 +131,9 @@ def regionalisation_process(regions, env, stats, years, value_list, GISFolder = 
         # Dataframe
         df = arcpy.mapping.ListDataFrames(mxd)[0]
         lyr = arcpy.mapping.ListLayers(mxd, "Regionalized_Samples", df)[0]
-        lyrFile = arcpy.mapping.Layer(project_folder+"\\Regionalized_Samples_1.lyr")
-        lyrFile_inverted = arcpy.mapping.Layer(project_folder + "\\Regionalized_Samples_2.lyr")
-        lyrFile_count = arcpy.mapping.Layer(project_folder + "\\Regionalized_Samples_3.lyr")
+        lyrFile = arcpy.mapping.Layer(project_folder+"/Regionalized_Samples_1.lyr")
+        lyrFile_inverted = arcpy.mapping.Layer(project_folder + "/Regionalized_Samples_2.lyr")
+        lyrFile_count = arcpy.mapping.Layer(project_folder + "/Regionalized_Samples_3.lyr")
         for field in indexes:
             stat_field = str(stats) + "_" + str(field)
             fieldData = Create_Tools_MakeShapefiles.extract_unique_values(regionalized_samples, stat_field)
@@ -156,8 +157,10 @@ def regionalisation_process(regions, env, stats, years, value_list, GISFolder = 
                 # Statistics analysis for break values calculation
                 for field in indexes:
                     breaks = databaseAnalysis.find_breaks(env_data, field)
+                    print breaks, os.path.abspath(config_file), section_name, field
                     # Writing breaks to configuration file
-                    databaseAnalysis.set_current_config(project_folder, config_file, section_name, field, breaks)
+                    print 'current dir is ', os.getcwd()
+                    databaseAnalysis.set_current_config(config_file, section_name, field, breaks)
                 layer_name_correction(lyr, stats, stat_field)
                 if stat_field == stats + "_" + "DO_mgL":
                     arcpy.mapping.UpdateLayer(df, lyr, lyrFile_inverted, True)
@@ -165,6 +168,6 @@ def regionalisation_process(regions, env, stats, years, value_list, GISFolder = 
                     arcpy.mapping.UpdateLayer(df, lyr, lyrFile, True)
                 lyr.symbology.reclassify()
                 lyr.symbology.valueField = stat_field
-                breaks_ini = GTC.get_setting(project_folder, config_file, section_name, setting=str(field))
+                breaks_ini = GTC.get_setting(config_file, section_name, setting=str(field))
                 legend_labeling(breaks_ini, lyr)
             making_map(mxd, env, year, stat_field, regions)
