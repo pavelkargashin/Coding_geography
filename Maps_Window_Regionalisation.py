@@ -32,7 +32,7 @@ class ProcessDataWindow(QtGui.QWidget):
 
         param3 = QtGui.QLabel('Area Division', self)
         self.param3List = QtGui.QComboBox()
-        self.param3List.addItems(['Administrative Units', 'Basins'])
+        self.param3List.addItems(['Regency', 'Basins'])
         param4 = QtGui.QLabel('Statistics', self)
         self.param4List = QtGui.QComboBox()
         self.param4List.addItems(['MAX', 'MEAN', 'MIN', 'COUNT'])
