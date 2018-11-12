@@ -35,7 +35,7 @@ class ProcessDataWindow(QtGui.QWidget):
         self.param3List.addItems(['Administrative Units', 'Basins'])
         param4 = QtGui.QLabel('Statistics', self)
         self.param4List = QtGui.QComboBox()
-        self.param4List.addItems(['Maximum', 'Mean', 'Minimum'])
+        self.param4List.addItems(['MAX', 'MEAN', 'MIN', 'COUNT'])
         param5 = QtGui.QLabel('Chemistry', self)
         self.param5List = QtGui.QComboBox()
         self.param5List.addItems(field_list_sungai)
@@ -92,11 +92,12 @@ class ProcessDataWindow(QtGui.QWidget):
 
 
     def toConsoleData(self):
-        year = self.param1List.currentText()
-        env = ProcessDataWindow.env
-        regions = self.param3List.currentText()
-        stat = self.param4List.currentText()
-        chem = self.param5List.currentText()
+        year = str(self.param1List.currentText())
+        env = "Air" + str(ProcessDataWindow.env)
+        regions = str(self.param3List.currentText())
+        stat = str(self.param4List.currentText())
+        chem = str(self.param5List.currentText())
+        print year, env, regions, stat, chem
         Regionalization.regionalisation_process(regions, env, stat, year, chem)
 
     def selectionChange(self):
