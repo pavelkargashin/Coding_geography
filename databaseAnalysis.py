@@ -58,8 +58,11 @@ def getJenksBreaks(dataList, numClass):
 
 def create_fc_environment(inputdataset, environment, outputdataset):
     arcpy.env.workspace = inputdataset
+    print inputdataset
+    print environment
     env_data = outputdataset + '/' + environment
     datalist = arcpy.ListFeatureClasses(environment + '*')
+    print datalist, "datalist"
     arcpy.Merge_management(datalist, env_data)
     return env_data
 
@@ -96,24 +99,3 @@ def find_breaks(inputdataset, field):
         del row
         del rows
         return myBreaks
-
-
-arcpy.env.overwriteOutput = True
-configFileName = "CONFIGURATION"
-Paths = 'Paths'
-ProjectFolder = GTC.get_setting(configFileName,Paths, setting='projectfolder')
-
-env = "AirSungai"
-inputdataset = ProjectFolder + GTC.get_setting(configFileName, Paths, 'gisdataname')+'.gdb/'+GTC.get_setting(configFileName, Paths, 'thematicdatasetname')
-print 'inds is ', inputdataset
-# inputdataset = 'd:/YandexDisk/Projects/Bali_Test/GISEcologyBali.gdb/ThematicData'
-outputdataset = ProjectFolder + GTC.get_setting(configFileName, Paths, 'gisdataname')+'.gdb/'+GTC.get_setting(configFileName, Paths, 'analysisdatasetname')
-print 'outds is ', outputdataset
-# outputdataset = 'd:/YandexDisk/Projects/Bali_Test/GISEcologyBali.gdb/AnalysisData'
-env_data = create_fc_environment(inputdataset, env, outputdataset)
-field_names = [f.name for f in arcpy.ListFields(env_data,  field_type="Double")]
-section_name = add_section(configFileName, env)
-for field in field_names:
-    breaks = find_breaks(env_data, field)
-    set_current_config(configFileName, section_name, field, breaks)
-
