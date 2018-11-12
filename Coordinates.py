@@ -1,7 +1,5 @@
 # coding: utf8
-import sys, arcpy, re
-reload(sys)
-sys.setdefaultencoding('utf8')
+import arcpy, re
 arcpy.env.overwriteOutput=True
 
 # Transforming decimal degrees like хх.хх''хх''.хх'' и хх.хх''хх.хх'' in decimal degrees
