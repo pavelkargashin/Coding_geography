@@ -20,7 +20,7 @@ def main(inputfolder_shp, envDatabase, ThematicDataset, fieldname, fieldname_2):
     fc2process = Create_Tools_MakeShapefiles.list_feature_classes(ThematicDataset)
     for item in fc2process:
         Create_Tools_MakeShapefiles.split_data_stage(ThematicDataset + '/' + item, ThematicDataset + '/' + item, fieldname_2)
-        # arcpy.Delete_management(ThematicDataset+'/'+item) #Пока строка не используется. до тех пор пока не будет поправлен файл Regionalization.py
+        # arcpy.Delete_management(ThematicDataset+'/'+item) #Пока строка не используется. до тех пор пока не будет поправлен файл Maps_Tools_Regionalization.py
 
     print '\n#####################\nFin\n#####################\n\nAll data is in GIS!\nNow you can work with it!!!'
 
