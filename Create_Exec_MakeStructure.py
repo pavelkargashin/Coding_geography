@@ -34,13 +34,13 @@ def create_dataset(GDB,FDname):
         arcpy.CreateFeatureDataset_management(GDB, FDname, spatial_reference=arcpy.SpatialReference(4326))
         print 'dataset {} has been created'.format(FDname)
 
-def create_mxd(ProjectFile):
-    open(ProjectFile, 'w').close()
-    os.startfile(ProjectFile)
-    time.sleep(120)
-    os.system("taskkill /f /im arcmap.exe")
-    mxd = arcpy.mapping.MapDocument(ProjectFile)
-    print mxd.dateSaved
+# def create_mxd(ProjectFile):
+#     open(ProjectFile, 'w').close()
+#     os.startfile(ProjectFile)
+#     time.sleep(120)
+#     os.system("taskkill /f /im arcmap.exe")
+#     mxd = arcpy.mapping.MapDocument(ProjectFile)
+#     print mxd.dateSaved
 
 
 def main(configFileName):
@@ -62,7 +62,7 @@ def main(configFileName):
     create_folders(TempData)
     create_folders(OutputData)
     create_folders(DecorationFolder)
-    create_mxd(mxdName)
+    # create_mxd(mxdName)
     GDB = create_database(ProjectFolder, GISName)
 
     create_dataset(GDB, BasemapDatasetName)
