@@ -97,6 +97,7 @@ def regionalisation_process(regions, env, stats, years, value_list, GISFolder = 
     InputThematic = GISFolder + '/' + GTC.get_setting(config_file, paths, "thematicdatasetname")
     InputBaseMap = GISFolder + '/' + GTC.get_setting(config_file, paths, "basemapdatasetname")
     tempGISFolder = GISFolder + '/' + GTC.get_setting(config_file, paths, "analysisdatasetname")
+    decoration = project_folder + '/' + "Decoration"
     arcpy.env.workspace = tempGISFolder
     # Creation of merged feature class within which statistics should be calculated
     env_data = Analysis_Tools_databaseAnalysis.create_fc_environment(InputThematic, env, tempGISFolder)
@@ -108,7 +109,6 @@ def regionalisation_process(regions, env, stats, years, value_list, GISFolder = 
         searchCriteria = env + '_' + str(year)
         samples = InputThematic + '\\' + searchCriteria
         # Disaggregating of multipart feature class
-
         regions_multy = arcpy.MultipartToSinglepart_management(InputBaseMap + '/' + regions, tempGISFolder+"/Regions_Multy")
         # Overlay of samples with regions
         samples_identity = arcpy.Identity_analysis(samples, regions_multy, tempGISFolder+"/Samples_Identity", "ALL", "",
@@ -127,13 +127,14 @@ def regionalisation_process(regions, env, stats, years, value_list, GISFolder = 
         arcpy.Delete_management(samples_dissolve)
         # Creation of map series based on parameters
         # Arcmap map project file
-        mxd = arcpy.mapping.MapDocument(str(project_folder) + "Bali_scripting1.mxd")
+        print decoration + "/Regionalization_Template.mxd"
+        mxd = arcpy.mapping.MapDocument(decoration + "/Regionalization_Template103.mxd")
         # Dataframe
         df = arcpy.mapping.ListDataFrames(mxd)[0]
         lyr = arcpy.mapping.ListLayers(mxd, "Regionalized_Samples", df)[0]
-        lyrFile = arcpy.mapping.Layer(project_folder+"/Regionalized_Samples_1.lyr")
-        lyrFile_inverted = arcpy.mapping.Layer(project_folder + "/Regionalized_Samples_2.lyr")
-        lyrFile_count = arcpy.mapping.Layer(project_folder + "/Regionalized_Samples_3.lyr")
+        lyrFile = arcpy.mapping.Layer(decoration+"/Regionalized_Samples_1.lyr")
+        lyrFile_inverted = arcpy.mapping.Layer(decoration + "/Regionalized_Samples_2.lyr")
+        lyrFile_count = arcpy.mapping.Layer(decoration + "/Regionalized_Samples_3.lyr")
         for field in indexes:
             stat_field = str(stats) + "_" + str(field)
             fieldData = Create_Tools_MakeShapefiles.extract_unique_values(regionalized_samples, stat_field)
@@ -171,3 +172,6 @@ def regionalisation_process(regions, env, stats, years, value_list, GISFolder = 
                 breaks_ini = GTC.get_setting(config_file, section_name, setting=str(field))
                 legend_labeling(breaks_ini, lyr)
             making_map(mxd, env, year, stat_field, regions)
+            delete_list = [samples_dissolve, regions_multy, samples_identity, tempGISFolder + '\\' + env] #, regionalized_samples
+            for item in delete_list:
+                arcpy.Delete_management(item)
