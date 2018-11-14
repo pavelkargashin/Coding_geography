@@ -1,13 +1,14 @@
 # -*-coding:utf-8-*-
 import sys
 import csv
+import General_Tools_ConfigFile as GTC
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtGui import QDialog, QVBoxLayout, QLabel, QWidget, QApplication,\
     QPushButton, QLineEdit, QFormLayout, QScrollArea
 
 
-filePath = "C:/PAUL/Science/Python/Files/"
-fileName = filePath+"Sungai.csv"
+filePath = GTC.get_setting('CONFIGURATION', 'Paths', 'inputdata')
+fileName = filePath+"Sungai_add.csv"
 field_list_sungai = [u'RiverName', u'Basin', u'Location', u'Longitude',
                      u'Latitude', u'Year', u'Stage', u'Temperatur',
                      u'pH', u'DHL_MosCm', u'TDS_mgL', u'TSS_mgL',
