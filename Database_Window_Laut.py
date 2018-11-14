@@ -1,13 +1,14 @@
 # -*-coding:utf-8-*-
 import sys
 import csv
+import General_Tools_ConfigFile as GTC
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtGui import QDialog, QVBoxLayout, QLabel, QWidget, QApplication,\
     QPushButton, QLineEdit, QFormLayout, QScrollArea
 
 
-filePath = "C:/PAUL/Science/Python/Files/"
-fileName = filePath+"Laut.csv"
+filePath = filePath = GTC.get_setting('CONFIGURATION', 'Paths', 'inputdata')
+fileName = filePath+"Laut_add.csv"
 field_list_sungai = [u'Point', u'Location', u'Longitude',
                      u'Latitude', u'Year', u'Stage',
                      u'Color_CU', u'Smell', u'Brightness',
@@ -84,7 +85,7 @@ class Form(QDialog):
         self.connect(self.resetBut, SIGNAL("clicked()"), self.reset_click)
         self.connect(self.writeBut, SIGNAL("clicked()"), self.write_click)
         self.connect(self.clsBut, SIGNAL("clicked()"), self.cls_click)
-        self.setWindowTitle("Sungai new data")
+        self.setWindowTitle("Laut new data")
 
     def write_click(self):
         print ("write data to Excel file!")
