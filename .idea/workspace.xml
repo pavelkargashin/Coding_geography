@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ef7a5132-12a3-452a-bf74-3f4e9cd67597" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Coding_geography.iml" afterPath="$PROJECT_DIR$/.idea/Coding_geography.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Create_Tool_VerifyCoordinates.py" afterPath="$PROJECT_DIR$/Create_Tools_VerifyCoordinates.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Tool_Verify_Coordinates.py" afterPath="$PROJECT_DIR$/Create_Tools_Correct_Coordinates.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AG_Tools_RegionalizationBasin.py" afterPath="$PROJECT_DIR$/AG_Tools_RegionalizationBasin.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AG_Tools_RegionalizationCount.py" afterPath="$PROJECT_DIR$/AG_Tools_RegionalizationCount.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AG_Tools_RegionalizationGeneral.py" afterPath="$PROJECT_DIR$/AG_Tools_RegionalizationGeneral.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AG_Tools_RegionalizationRegency.py" afterPath="$PROJECT_DIR$/AG_Tools_RegionalizationRegency.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Analysis_Tools_databaseAnalysis.py" afterPath="$PROJECT_DIR$/Analysis_Tools_databaseAnalysis.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/General_Tools_ConfigFile.py" afterPath="$PROJECT_DIR$/General_Tools_ConfigFile.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Maps_Tools_Regionalization.py" afterPath="$PROJECT_DIR$/Maps_Tools_Regionalization.py" />
     </list>
     <ignored path="Coding_geography.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,49 +31,103 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
+  <component name="DockManager">
+    <window id="2">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file leaf-file-name="CONFIGURATION" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/CONFIGURATION">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="306">
+                    <caret line="20" column="12" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="Coding_geography" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Create_Window_ConfigFile.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Create_Window_ConfigFile.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Create_Tools_VerifyCoordinates.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Create_Tools_VerifyCoordinates.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="186" column="25" selection-start-line="186" selection-start-column="25" selection-end-line="186" selection-end-column="25" />
-              <folding>
-                <element signature="e#218#480#0" expanded="false" />
-                <element signature="e#619#894#0" expanded="false" />
-                <element signature="e#1002#1213#0" expanded="false" />
-                <element signature="e#1325#1548#0" expanded="false" />
-                <element signature="e#1617#3610#0" expanded="false" />
-                <element signature="e#3664#3870#0" expanded="false" />
-                <element signature="e#3953#4281#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Maps_Tools_Regionalization.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Maps_Tools_Regionalization.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="163" column="20" selection-start-line="163" selection-start-column="20" selection-end-line="163" selection-end-column="20" />
+            <state relative-caret-position="601">
+              <caret line="173" column="109" selection-start-line="173" selection-start-column="109" selection-end-line="173" selection-end-column="109" />
               <folding>
+                <element signature="e#15#35#0" expanded="true" />
                 <element signature="e#344#807#0" expanded="false" />
                 <element signature="e#924#1155#0" expanded="false" />
+                <element signature="e#1224#1705#0" expanded="false" />
+                <element signature="e#1763#2051#0" expanded="false" />
+                <element signature="e#2096#2697#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AG_Tools_RegionalizationBasin.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AG_Tools_RegionalizationBasin.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="46" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AG_Tools_RegionalizationCount.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AG_Tools_RegionalizationCount.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AG_Tools_RegionalizationGeneral.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AG_Tools_RegionalizationGeneral.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="33" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
+              <folding>
+                <element signature="e#15#36#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AG_Tools_RegionalizationRegency.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AG_Tools_RegionalizationRegency.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="46" selection-start-line="2" selection-start-column="46" selection-end-line="2" selection-end-column="46" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="General_Tools_ConfigFile.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/General_Tools_ConfigFile.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="11" column="39" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -78,14 +135,16 @@
       <file leaf-file-name="Analysis_Tools_databaseAnalysis.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Analysis_Tools_databaseAnalysis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="464">
-              <caret line="100" column="21" selection-start-line="100" selection-start-column="21" selection-end-line="100" selection-end-column="21" />
-              <folding />
+            <state relative-caret-position="107">
+              <caret line="64" column="29" selection-start-line="64" selection-start-column="29" selection-end-line="64" selection-end-column="29" />
+              <folding>
+                <element signature="e#125#1461#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Maps_Window_Regionalisation.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Maps_Window_Regionalisation.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Maps_Window_Regionalisation.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="311">
@@ -93,16 +152,6 @@
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Lake_Mapping.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Lake_Mapping.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="2" selection-end-column="30" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -147,10 +196,16 @@
         <option value="$PROJECT_DIR$/Database_Window_Laut.py" />
         <option value="$PROJECT_DIR$/WindowCreateProject.py" />
         <option value="$PROJECT_DIR$/parameters.py" />
-        <option value="$PROJECT_DIR$/General_Tools_ConfigFile.py" />
         <option value="$PROJECT_DIR$/Create_Window_ConfigFile.py" />
         <option value="$PROJECT_DIR$/Create_Tool_VerifyCoordinates.py" />
         <option value="$PROJECT_DIR$/Create_Tools_VerifyCoordinates.py" />
+        <option value="$PROJECT_DIR$/CONFIGURATION" />
+        <option value="$PROJECT_DIR$/General_Tools_ConfigFile.py" />
+        <option value="$PROJECT_DIR$/Analysis_Tools_databaseAnalysis.py" />
+        <option value="$PROJECT_DIR$/AG_Tools_RegionalizationRegency.py" />
+        <option value="$PROJECT_DIR$/AG_Tools_RegionalizationCount.py" />
+        <option value="$PROJECT_DIR$/AG_Tools_RegionalizationBasin.py" />
+        <option value="$PROJECT_DIR$/AG_Tools_RegionalizationGeneral.py" />
         <option value="$PROJECT_DIR$/Maps_Tools_Regionalization.py" />
       </list>
     </option>
@@ -539,20 +594,34 @@
       <option name="project" value="LOCAL" />
       <updated>1542210057171</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Исправлены шаблоны">
+      <created>1542210078087</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1542210078087</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Скрипты для запуска через аркгис">
+      <created>1542284258754</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1542284258754</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32875264" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328125" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37209302" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17336152" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -604,7 +673,8 @@
     <MESSAGE value="Новый файл для Danau" />
     <MESSAGE value="Новый файл для Laut" />
     <MESSAGE value="Исправлены шаблоны" />
-    <option name="LAST_COMMIT_MESSAGE" value="Исправлены шаблоны" />
+    <MESSAGE value="Скрипты для запуска через аркгис" />
+    <option name="LAST_COMMIT_MESSAGE" value="Скрипты для запуска через аркгис" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -620,22 +690,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/parameters.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="42" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Regionalization.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python27/ArcGIS10.2/Lib/os.py" />
-    <entry file="file://C:/Python27/ArcGIS10.2/Lib/genericpath.py" />
     <entry file="file://C:/Python27/ArcGIS10.2/Lib/site-packages/openpyxl/reader/excel.py" />
     <entry file="file://$PROJECT_DIR$/Air_Danau.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -804,14 +858,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/General_Tools_ConfigFile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/parameters_test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
@@ -850,17 +896,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Analysis_Tools_databaseAnalysis.py">
+    <entry file="file://$PROJECT_DIR$/Maps_Window_Regionalisation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
-          <caret line="100" column="21" selection-start-line="100" selection-start-column="21" selection-end-line="100" selection-end-column="21" />
-          <folding />
+        <state relative-caret-position="311">
+          <caret line="108" column="35" selection-start-line="108" selection-start-column="35" selection-end-line="108" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Create_Tools_VerifyCoordinates.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
+        <state relative-caret-position="753">
           <caret line="186" column="25" selection-start-line="186" selection-start-column="25" selection-end-line="186" selection-end-column="25" />
           <folding>
             <element signature="e#218#480#0" expanded="false" />
@@ -876,30 +924,82 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CONFIGURATION">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="50" selection-start-line="10" selection-start-column="50" selection-end-line="10" selection-end-column="50" />
+        <state relative-caret-position="306">
+          <caret line="20" column="12" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Analysis_Tools_databaseAnalysis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="64" column="29" selection-start-line="64" selection-start-column="29" selection-end-line="64" selection-end-column="29" />
+          <folding>
+            <element signature="e#125#1461#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AG_Tools_RegionalizationCount.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AG_Tools_RegionalizationRegency.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="46" selection-start-line="2" selection-start-column="46" selection-end-line="2" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AG_Tools_RegionalizationGeneral.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="33" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
+          <folding>
+            <element signature="e#15#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AG_Tools_RegionalizationBasin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Maps_Tools_Regionalization.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="163" column="20" selection-start-line="163" selection-start-column="20" selection-end-line="163" selection-end-column="20" />
+        <state relative-caret-position="601">
+          <caret line="173" column="109" selection-start-line="173" selection-start-column="109" selection-end-line="173" selection-end-column="109" />
           <folding>
+            <element signature="e#15#35#0" expanded="true" />
             <element signature="e#344#807#0" expanded="false" />
             <element signature="e#924#1155#0" expanded="false" />
+            <element signature="e#1224#1705#0" expanded="false" />
+            <element signature="e#1763#2051#0" expanded="false" />
+            <element signature="e#2096#2697#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Maps_Window_Regionalisation.py">
+    <entry file="file://$PROJECT_DIR$/General_Tools_ConfigFile.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="108" column="35" selection-start-line="108" selection-start-column="35" selection-end-line="108" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="187">
+          <caret line="11" column="39" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>

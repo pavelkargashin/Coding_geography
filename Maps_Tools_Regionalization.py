@@ -127,7 +127,6 @@ def regionalisation_process(regions, env, stats, years, value_list, GISFolder = 
         arcpy.Delete_management(samples_dissolve)
         # Creation of map series based on parameters
         # Arcmap map project file
-        print decoration + "/Regionalization_Template.mxd"
         mxd = arcpy.mapping.MapDocument(decoration + "/Regionalization_Template103.mxd")
         # Dataframe
         df = arcpy.mapping.ListDataFrames(mxd)[0]
@@ -172,6 +171,7 @@ def regionalisation_process(regions, env, stats, years, value_list, GISFolder = 
                 breaks_ini = GTC.get_setting(config_file, section_name, setting=str(field))
                 legend_labeling(breaks_ini, lyr)
             making_map(mxd, env, year, stat_field, regions)
-            delete_list = [samples_dissolve, regions_multy, samples_identity, tempGISFolder + '\\' + env] #, regionalized_samples
+            delete_list = [regions_multy, samples_identity, tempGISFolder + '\\' + env, regionalized_samples]
             for item in delete_list:
+                arcpy.AddMessage("Deleting " + str(item))
                 arcpy.Delete_management(item)

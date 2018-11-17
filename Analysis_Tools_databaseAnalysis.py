@@ -58,11 +58,11 @@ def getJenksBreaks(dataList, numClass):
 
 def create_fc_environment(inputdataset, environment, outputdataset):
     arcpy.env.workspace = inputdataset
-    print inputdataset
-    print environment
+    arcpy.AddMessage(outputdataset)
     env_data = outputdataset + '/' + environment
     datalist = arcpy.ListFeatureClasses(environment + '*')
-    print datalist, "datalist"
+    arcpy.AddMessage(datalist)
+    arcpy.AddMessage(env_data)
     arcpy.Merge_management(datalist, env_data)
     return env_data
 

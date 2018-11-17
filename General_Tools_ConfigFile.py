@@ -1,5 +1,5 @@
 # -*- coding:utf-8-*-
-import configparser
+import configparser, arcpy
 
 
 def get_config(configFileName):
