@@ -2,6 +2,7 @@ import re
 import arcpy
 import configparser
 import General_Tools_ConfigFile as GTC
+import sys
 
 def getJenksBreaks(dataList, numClass):
   dataList.sort()
@@ -66,9 +67,27 @@ def create_fc_environment(inputdataset, environment, outputdataset):
     arcpy.Merge_management(datalist, env_data)
     return env_data
 
+def remove_section(configFileName, section_name):
+    config = configparser.ConfigParser()
+    f = open(configFileName, 'r')
+    config.read_file(f)
+    if section_name in config.sections():
+        print "I have it"
+        config.remove_section(section_name)
+        f.close()
+        with open(configFileName, 'w') as f:
+            config.write(f)
+    else:
+        print "It is no need to delete anything"
+    f.close()
+
 def add_section(configFileName, env):
     SectionName = "BreakValues_" + str(env)
+    remove_section(configFileName, SectionName)
     config = configparser.ConfigParser()
+    with open(configFileName, 'r+') as f:
+        config.read(f)
+    f.close()
     config.add_section(SectionName)
     with open(configFileName, 'a') as f:
         config.write(f)
@@ -77,7 +96,9 @@ def add_section(configFileName, env):
 
 def set_current_config(configFileName, SectionName, Sample, Breaks):
     config = GTC.get_config(configFileName)
-    config.set(SectionName, Sample, Breaks)
+    print config
+    print "args are"+SectionName, Sample, Breaks
+    config.set(SectionName, Sample, str(Breaks))
     with open(configFileName, 'w') as f:
         config.write(f)
     f.close()

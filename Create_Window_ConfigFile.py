@@ -151,6 +151,7 @@ class MainWindow(QtGui.QWidget):
         return
 
 if __name__ == '__main__':
+    # create_config(temp, MainWindow.ConfigFileName)
 
     myApp = QtGui.QApplication(sys.argv)
     myProg = MainWindow()
