@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bali Environmental GIS</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="./materialize/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="./materialize/js/materialize.min.js"></script>
+  </head>
+  <body>
+    <nav class="nav-extended">
+      <div class="nav-wrapper container">
+        <ul id="nav-mobile" class="center">
+          <li class="active"><a href="index.html">Initialize</a></li>
+          <li><a href="maintain.html">Maintain</a></li>
+          <li><a href="analyse.html">Analyse</a></li>
+          <li><a href="info.html">Info</a></li>
+        </ul>
+      </div>
+      <div class="nav-content container">
+        <ul class="tabs tabs-transparent">
+          <li class="tab"><a class="active" href="#project">Project</a></li>
+          <li class="tab"><a href="#data">Data</a></li>
+        </ul>
+      </div>
+    </nav>
+
+
+    <!-- PROJECT TAB -->
+    <div id="project" class="container" style="min-height: 400px; margin-top: 20px">
+
+
+      <div class="row">
+        <a class="waves-effect waves-light btn" onclick="SetDir()">Select project folder</a>
+      </div>
+
+      <div class="row">
+        <p id="pathPr">No folder</p>
+      </div>
+
+      <div class="row">
+        <a class="waves-effect waves-light red lighten-1 btn" onclick="InitProject()">Deploy project</a>
+      </div>
+        
+
+    </div>
+
+
+    <!-- IMPORT TAB -->
+    <div id="data" class="container" style="min-height: 400px; margin-top: 20px">
+
+
+      <div class="row">
+        <a class="waves-effect waves-light btn" onclick="SetDir()">Change project folder</a>
+        <p id="pathImp">No project</p>
+      </div>
+
+      <div class="row">
+        <a class="waves-effect waves-light btn" onclick="SetXlsx()">Select table (*.xlsx file)</a>
+        <p id="pathXlsx">No table</p>
+      </div>
+
+      <div class="row">
+        <a class="waves-effect waves-light btn" onclick="SetShp()">Select basemap data folder</a>
+        <p id="pathShp">No basemap</p>
+      </div>
+
+      <div class="row">
+        <a class="waves-effect waves-light red lighten-1 btn" onclick="Import()">Import data</a>
+      </div>
+        
+
+    </div>
+  
+
+
+    <script>
+      M.AutoInit();
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
+
+
+    <script>
+      const { dialog } = require('electron').remote
+      let pyshell = require('python-shell')
+
+      var pProject
+      var pXlsx
+      var pShp
+
+      /* PROJECT */
+      function SetDir() {
+        console.log(dialog)
+        let options = {
+          title: "Select project folder",
+          buttonLabel: "Select",
+          properties: ["openDirectory"]
+        }
+
+        dialog.showOpenDialog(options, function(filePaths) {
+          pProject = filePaths[0] + '\\'  // filePaths is an array
+          pathPr.textContent = pProject
+          pathImp.textContent = pProject
+        })
+      }
+
+      function InitProject() {
+          let pyOptions = {
+            args: [pProject]
+          }
+          // pyshell.PythonShell.run('./resources/python_scripts/Create_Window_ConfigFile - Copy.py', pyOptions, function(err, results) {
+          pyshell.PythonShell.run('./python_scripts/Create_Window_ConfigFile - Copy.py', pyOptions, function(err, results) {
+            if (err) throw err
+            var toast_text = 'Project is initialized at ' + results
+            M.toast({html: toast_text})
+          })
+      }
+
+
+      /* DATA */
+      function SetXlsx() {
+        console.log(dialog)
+        let options = {
+          title: "Select table",
+          buttonLabel: "Select",
+          filters: [
+            { name: "Table (.xlsx)", extensions: ["xlsx"] }
+          ]
+        }
+
+        dialog.showOpenDialog(options, function(filename) {
+          pXlsx = filename
+          pathXlsx.textContent = pXlsx
+        })
+      }
+
+      function SetShp() {
+        console.log(dialog)
+        let options = {
+          title: "Select basemap data folder",
+          buttonLabel: "Select",
+          properties: ["openDirectory"]
+        }
+
+        dialog.showOpenDialog(options, function(filePaths) {
+          pShp = filePaths[0]
+          pathShp.textContent = pShp
+        })
+      }
+
+      function Import() {
+        // if all set 
+        M.toast({html: 'Data is imported'})
+
+        // else
+        // M.toast({html: 'Import failed'})
+      }
+
+
+      
+      // function CreateConfigFile() {
+      //   let pyOptions = {
+      //     args: [path]
+      //   }
+      //   pyshell.PythonShell.run('./python_scripts/Create_Window_ConfigFile.py', pyOptions, function(err, results) {
+      //     if (err) throw err;
+      //     M.toast({html: 'Configuration is created'})
+      //   })
+      // }
+    </script>
+
+
+
+  </body>
+</html>

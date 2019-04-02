@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bali Environmental GIS</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="./materialize/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="./materialize/js/materialize.min.js"></script>
+  </head>
+  <body>
+    <nav class="nav-extended">
+      <div class="nav-wrapper container">
+        <ul id="nav-mobile" class="center">
+          <li><a href="index.html">Initialize</a></li>
+          <li class="active"><a href="maintain.html">Maintain</a></li>
+          <li><a href="analyse.html">Analyse</a></li>
+          <li><a href="info.html">Info</a></li>
+        </ul>
+      </div>
+      <div class="nav-content container">
+        <ul class="tabs tabs-transparent">
+          <li class="tab"><a class="active" href="#danau">Danau</a></li>
+          <li class="tab"><a href="#laut">Laut</a></li>
+          <li class="tab"><a href="#sumnur">Sumnur</a></li>
+          <li class="tab"><a href="#sungai">Sungai</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div id="danau" class="container" style="min-height: 400px; margin-top: 20px">
+      <div class="row">
+          <form class="col s12">
+
+
+            <div class="row">
+              <div class="input-field col s6">
+                <input placeholder="Placeholder" id="d_lake" type="text" class="validate">
+                <label for="d_lake">Lake Name</label>
+              </div>
+              <div class="input-field col s6">
+                <input placeholder="Placeholder" id="d_location" type="text" class="validate">
+                <label for="d_location">Location</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <input placeholder="Placeholder" id="d_lon" type="number" step="any" class="validate">
+                <label for="d_lon">Longitude</label>
+              </div>
+              <div class="input-field col s6">
+                <input placeholder="Placeholder" id="d_lat" type="number" step="any" class="validate">
+                <label for="d_lat">Latitude</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s6">
+                <input placeholder="Placeholder" id="d_year" type="number" class="validate">
+                <label for="d_year">Year</label>
+              </div>
+              <div class="input-field col s6">
+                <input placeholder="Placeholder" id="d_stage" type="text" class="validate">
+                <label for="d_stage">Stage</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_temp" type="text" class="validate">
+                <label for="d_temp">Temperatur</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_pH" type="text" class="validate">
+                <label for="d_pH">pH</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_tds" type="text" class="validate">
+                <label for="d_tds">TDS_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_tss" type="text" class="validate">
+                <label for="d_tss">TSS_mgL</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_do" type="text" class="validate">
+                <label for="d_do">DO_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_bod" type="text" class="validate">
+                <label for="d_bod">BOD_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_cod" type="text" class="validate">
+                <label for="d_cod">COD_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_no2" type="text" class="validate">
+                <label for="d_no2">NO2_mgL</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_no3" type="text" class="validate">
+                <label for="d_no3">NO3_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_nh3" type="text" class="validate">
+                <label for="d_nh3">NH3_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_fchl" type="text" class="validate">
+                <label for="d_fchl">FreeChlori</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_tp" type="text" class="validate">
+                <label for="d_tp">TotalP_mgL</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_phen" type="text" class="validate">
+                <label for="d_phen">Phenol_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_oil" type="text" class="validate">
+                <label for="d_oil">OilAndFat_</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_det" type="text" class="validate">
+                <label for="d_det">Detergent_</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_fcol" type="text" class="validate">
+                <label for="d_fcol">FecalColif</label>
+              </div>
+            </div>    
+            
+            <div class="row">
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_tcol" type="text" class="validate">
+                <label for="d_tcol">TotalColif</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_cyan" type="text" class="validate">
+                <label for="d_cyan">Cyanide_mg</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_sulf" type="text" class="validate">
+                <label for="d_sulf">Sulfide_mg</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_turb" type="text" class="validate">
+                <label for="d_turb">Turbidity_</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_cd" type="text" class="validate">
+                <label for="d_cd">Cd_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_fe" type="text" class="validate">
+                <label for="d_fe">Fe_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="d_po4" type="text" class="validate">
+                <label for="d_po4">PO4_mgL</label>
+              </div>
+            </div>
+
+
+          </form>
+        </div>
+      </div>
+
+
+      <div id="laut" class="container" style="min-height: 400px; margin-top: 20px">
+        <div class="row">
+          <form class="col s12">
+
+
+            <div class="row">
+              <div class="input-field col s6">
+                <input placeholder="Placeholder" id="l_point" type="text" class="validate">
+                <label for="l_point">Point</label>
+              </div>
+              <div class="input-field col s6">
+                <input placeholder="Placeholder" id="l_location" type="text" class="validate">
+                <label for="l_location">Location</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <input placeholder="Placeholder" id="l_lon" type="number" step="any" class="validate">
+                <label for="l_lon">Longitude</label>
+              </div>
+              <div class="input-field col s6">
+                <input placeholder="Placeholder" id="l_lat" type="number" step="any" class="validate">
+                <label for="l_lat">Latitude</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s6">
+                <input placeholder="Placeholder" id="l_year" type="number" class="validate">
+                <label for="l_year">Year</label>
+              </div>
+              <div class="input-field col s6">
+                <input placeholder="Placeholder" id="l_stage" type="text" class="validate">
+                <label for="l_stage">Stage</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_col" type="text" class="validate">
+                <label for="l_col">Color_CU</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_sm" type="text" class="validate">
+                <label for="l_sm">Smell</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_br" type="text" class="validate">
+                <label for="l_br">Brightness</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_turb" type="text" class="validate">
+                <label for="l_turb">Turbidity_</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_tss" type="text" class="validate">
+                <label for="l_tss">TSS_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_was" type="text" class="validate">
+                <label for="l_was">Waste</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_oilc" type="text" class="validate">
+                <label for="l_oilc">OilCoating</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_temp" type="text" class="validate">
+                <label for="l_temp">Temperatur</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_pH" type="text" class="validate">
+                <label for="l_pH">pH</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_sal" type="text" class="validate">
+                <label for="l_sal">Salinity_m</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_do" type="text" class="validate">
+                <label for="l_do">DO_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_bod" type="text" class="validate">
+                <label for="l_bod">BOD5_mgL</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_cod" type="text" class="validate">
+                <label for="l_cod">COD_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_tamm" type="text" class="validate">
+                <label for="l_tamm">TotalAmmon</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_no2" type="text" class="validate">
+                <label for="l_no2">NO2_N_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_no3" type="text" class="validate">
+                <label for="l_no3">NO3_N_mgL</label>
+              </div>
+            </div>    
+            
+            <div class="row">
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_po4" type="text" class="validate">
+                <label for="l_po4">PO4_P_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_cyan" type="text" class="validate">
+                <label for="l_cyan">Cyanide_mg</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_sulf" type="text" class="validate">
+                <label for="l_sulf">Sulfide_mg</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_fchl" type="text" class="validate">
+                <label for="l_fchl">FreeChlori</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_coil" type="text" class="validate">
+                <label for="l_coil">CrudeOil_m</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_phen" type="text" class="validate">
+                <label for="l_phen">Phenol_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_pest" type="text" class="validate">
+                <label for="l_pest">Pesticide_</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_pcb" type="text" class="validate">
+                <label for="l_pcb">PCB_mgL</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_pho" type="text" class="validate">
+                <label for="l_pho">Phospat_mg</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_cd" type="text" class="validate">
+                <label for="l_cd">Cd_mgL</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="Placeholder" id="l_tcol" type="text" class="validate">
+                <label for="l_tcol">TotalColif</label>
+              </div>
+            </div>
+
+
+          </form>
+        </div>
+      </div>
+
+
+        <div id="sumnur" class="container" style="min-height: 400px; margin-top: 20px">
+          <div class="row">
+            <form class="col s12">
+  
+  
+              <div class="row">
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="sm_area" type="text" class="validate">
+                  <label for="sm_area">Area</label>
+                </div>
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="sm_location" type="text" class="validate">
+                  <label for="sm_location">Location</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="sm_lon" type="number" step="any" class="validate">
+                  <label for="sm_lon">Longitude</label>
+                </div>
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="sm_lat" type="number" step="any" class="validate">
+                  <label for="sm_lat">Latitude</label>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="sm_year" type="number" class="validate">
+                  <label for="sm_year">Year</label>
+                </div>
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="sm_stage" type="text" class="validate">
+                  <label for="sm_stage">Stage</label>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_temp" type="text" class="validate">
+                  <label for="sm_temp">Temperatur</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_tds" type="text" class="validate">
+                  <label for="sm_tds">TDS_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_tss" type="text" class="validate">
+                  <label for="sm_tss">TSS_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_pH" type="text" class="validate">
+                  <label for="sm_pH">pH</label>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_bod" type="text" class="validate">
+                  <label for="sm_bod">BOD_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_cod" type="text" class="validate">
+                  <label for="sm_cod">COD_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_do" type="text" class="validate">
+                  <label for="sm_do">DO_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_tp" type="text" class="validate">
+                  <label for="sm_tp">TotalP_mgL</label>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_nh3" type="text" class="validate">
+                  <label for="sm_nh3">NO3_N_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_nh3" type="text" class="validate">
+                  <label for="sm_nh3">NH3_N_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_as" type="text" class="validate">
+                  <label for="sm_as">As_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_co" type="text" class="validate">
+                  <label for="sm_co">Co_mgL</label>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_ba" type="text" class="validate">
+                  <label for="sm_ba">Ba_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_b" type="text" class="validate">
+                  <label for="sm_b">B_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_se" type="text" class="validate">
+                  <label for="sm_se">Se_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_cd" type="text" class="validate">
+                  <label for="sm_cd">Cd_mgL</label>
+                </div>
+              </div>    
+  
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_cr" type="text" class="validate">
+                  <label for="sm_cr">Cr_V_mgLI</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_cu" type="text" class="validate">
+                  <label for="sm_cu">Cu_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_fe" type="text" class="validate">
+                  <label for="sm_fe">Fe_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_pb" type="text" class="validate">
+                  <label for="sm_pb">Pb_mgL</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_mn" type="text" class="validate">
+                  <label for="sm_mn">Mn_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_hg" type="text" class="validate">
+                  <label for="sm_hg">Hg_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_zn" type="text" class="validate">
+                  <label for="sm_zn">Zn_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_chl" type="text" class="validate">
+                  <label for="sm_chl">Chloride_m</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_cyan" type="text" class="validate">
+                  <label for="sm_cyan">Cyanide_mg</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_fluo" type="text" class="validate">
+                  <label for="sm_fluo">Fluoride_m</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_no2" type="text" class="validate">
+                  <label for="sm_no2">NO2_N_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_sulph" type="text" class="validate">
+                  <label for="sm_sulph">Sulphate_m</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_fchl" type="text" class="validate">
+                  <label for="sm_fchl">FreeChlori</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_sulf" type="text" class="validate">
+                  <label for="sm_sulf">Sulfide_mg</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_sal" type="text" class="validate">
+                  <label for="sm_sal">Salinity_m</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_fcol" type="text" class="validate">
+                  <label for="sm_fcol">FecalColif</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_tcol" type="text" class="validate">
+                  <label for="sm_tcol">TotalColif</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_gla" type="text" class="validate">
+                  <label for="sm_gla">Gloss_A_mg</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_glb" type="text" class="validate">
+                  <label for="sm_glb">Gloss_B_mg</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_dhl" type="text" class="validate">
+                  <label for="sm_dhl">DHL_mgL</label>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_phen" type="text" class="validate">
+                  <label for="sm_phen">Phenol_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_oilf" type="text" class="validate">
+                  <label for="sm_oilf">OilAndFat_</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_det" type="text" class="validate">
+                  <label for="sm_det">Detergent_</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_po4" type="text" class="validate">
+                  <label for="sm_po4">PO4_mgL</label>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sm_turb" type="text" class="validate">
+                  <label for="sm_turb">Turbidity_</label>
+                </div>
+              </div>
+
+  
+            </form>
+          </div>
+        </div>
+
+        <div id="sungai" class="container" style="min-height: 400px; margin-top: 20px">
+          <div class="row">
+            <form class="col s12">
+  
+  
+              <div class="row">
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="sn_river" type="text" class="validate">
+                  <label for="sn_river">River Name</label>
+                </div>
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="sn_basin" type="text" class="validate">
+                  <label for="sn_basin">Basin</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="sn_lon" type="number" step="any" class="validate">
+                  <label for="sn_lon">Longitude</label>
+                </div>
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="sn_lat" type="number" step="any" class="validate">
+                  <label for="sn_lat">Latitude</label>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="sn_year" type="number" class="validate">
+                  <label for="sn_year">Year</label>
+                </div>
+                <div class="input-field col s6">
+                  <input placeholder="Placeholder" id="sn_stage" type="text" class="validate">
+                  <label for="sn_stage">Stage</label>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_temp" type="text" class="validate">
+                  <label for="sn_temp">Temperatur</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_pH" type="text" class="validate">
+                  <label for="sn_pH">pH</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_dhl" type="text" class="validate">
+                  <label for="sn_dhl">DHL_MosCm</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_tds" type="text" class="validate">
+                  <label for="sn_tds">TDS_mgL</label>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_tss" type="text" class="validate">
+                  <label for="sn_tss">TSS_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_do" type="text" class="validate">
+                  <label for="sn_do">DO_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_bod" type="text" class="validate">
+                  <label for="sn_bod">BOD_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_cod" type="text" class="validate">
+                  <label for="sn_cod">COD_mgL</label>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_no2" type="text" class="validate">
+                  <label for="sn_no2">NO2_N_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_no3" type="text" class="validate">
+                  <label for="sn_no3">NO3_N_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_nh3" type="text" class="validate">
+                  <label for="sn_nh3">NH3_N_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_fchl" type="text" class="validate">
+                  <label for="sn_fchl">FreeChlori</label>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_tp" type="text" class="validate">
+                  <label for="sn_tp">TotalP_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_phen" type="text" class="validate">
+                  <label for="sn_phen">Phenol_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_oilf" type="text" class="validate">
+                  <label for="sn_oilf">OilAndFat_</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_det" type="text" class="validate">
+                  <label for="sn_det">Detergent_</label>
+                </div>
+              </div>    
+  
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_fcol" type="text" class="validate">
+                  <label for="sn_fcol">FecalColif</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_tcol" type="text" class="validate">
+                  <label for="sn_tcol">TotalColif</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_cyan" type="text" class="validate">
+                  <label for="sn_cyan">Cyanide_mg</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_sulf" type="text" class="validate">
+                  <label for="sn_sulf">Sulfide_mg</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_turb" type="text" class="validate">
+                  <label for="sn_turb">Turbidity_</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_cd" type="text" class="validate">
+                  <label for="sn_cd">Cd_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_fe" type="text" class="validate">
+                  <label for="sn_fe">Fe_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_po4" type="text" class="validate">
+                  <label for="sn_po4">PO4_mgL</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_so4" type="text" class="validate">
+                  <label for="sn_so4">SO4_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_pb" type="text" class="validate">
+                  <label for="sn_pb">Pb_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_mn" type="text" class="validate">
+                  <label for="sn_mn">Mn_mgL</label>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_zn" type="text" class="validate">
+                  <label for="sn_zn">Zn_mgL</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s3">
+                  <input placeholder="Placeholder" id="sn_cr" type="text" class="validate">
+                  <label for="sn_cr">Cr_mgL</label>
+                </div>
+              </div>
+
+  
+            </form>
+          </div>
+        </div>
+
+    <script>
+       M.AutoInit();
+      // You can also require other files to run in this process
+      require('./renderer.js')
+      let pyshell = require('python-shell')
+      function py(num) {
+        var paragraph = document.getElementById("paragraph")
+        let options = {
+          args: [num]
+        };
+        // pyshell.PythonShell.run('./resources/python_scripts/hello.py', options, function(err, results){  // production
+        pyshell.PythonShell.run('./python_scripts/hello.py', options, function(err, results){  // debug
+          if (err) throw err;
+          paragraph.textContent += results
+          paragraph.textContent += '\n'
+        });
+      }
+    </script>
+  </body>
+</html>
