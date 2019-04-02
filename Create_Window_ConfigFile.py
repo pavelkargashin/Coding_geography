@@ -2,16 +2,11 @@
 # -*-coding:utf-8-*-
 import os
 import sys
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import SIGNAL
-import configparser
 import shutil
-
+import configparser
+import arcpy
+import General_Tools_ConfigFile as GTC
 home = os.getenv("HOME")
-
-def move_config(path, file):
-
-    shutil.move(path+'/'+file, os.getcwd().replace('\\', '/')+'/'+file)
 
 # defs to create congigfile
 def create_config(ProjectFolder, ConfigFileName):
@@ -57,7 +52,7 @@ def create_config(ProjectFolder, ConfigFileName):
     config.set('FieldLists', 'field_list_sungai', "u'TDS_mgL',u'TSS_mgL',u'DO_mgL',u'BOD_mgL',u'COD_mgL',u'NO2_N_mgL',u'NO3_N_mgL',u'NH3_N_mgL',u'FreeChlori',u'TotalP_mgL',u'Phenol_mgL',u'OilAndFat_',u'Detergent_',u'FecalColif',u'TotalColif',u'Cyanide_mg',u'Sulfide_mg',u'Turbidity_',u'Cd_mgL',u'Fe_mgL',u'PO4_mgL',u'SO4_mgL',u'Pb_mgL',u'Mn_mgL',u'Zn_mgL',u'Cr_mgL'")
     config.set('FieldLists', 'field_list_sumur', "u'Temperatur',u'TDS_mgL',u'TSS_mgL',u'pH',u'BOD_mgL',u'COD_mgL',u'DO_mgL',u'TotalP_mgL',u'NO3_N_mgL',u'NH3_N_mgL',u'As_mgL',u'Co_mgL',u'Ba_mgL',u'B_mgL',u'Se_mgL',u'Cd_mgL',u'Cr_V_mgLI',u'Cu_mgL',u'Fe_mgL',u'Pb_mgL',u'Mn_mgL',u'Hg_mgL',u'Zn_mgL',u'Chloride_m',u'Cyanide_mg',u'Fluoride_m',u'NO2_N_mgL',u'Sulphate_m',u'FreeChlori',u'Sulfide_mg',u'Salinity_m',u'FecalColif',u'TotalColif',u'Gloss_A_mg',u'Gloss_B_mg',u'DHL_mgL',u'Phenol_mgL',u'OilAndFat_',u'Detergent_',u'PO4_mgL',u'Turbidity_'")
 
-    with open(ProjectFolder+ConfigFileName, 'w') as config_file:
+    with open(ProjectFolder + '/' + ConfigFileName, 'w') as config_file:
         config.write(config_file)
 
 
@@ -66,94 +61,73 @@ def update_filepath(inputpath):
     outputpath = temppath.replace('\\', '/')
     return outputpath
 
+def move_config(path, file):
+    config_path = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/')+'/'+file
+    shutil.move(path+'/'+file, config_path)
+    return config_path
 
-#Description of the window
-class MainWindow(QtGui.QWidget):
-    projectPath = "NoFolder"
-    ConfigFileName = "CONFIGURATION"
-    projectPath.replace('\\', '/')
-    projectFolder = 'None'
-
-
-    def __init__(self, parent=None):
-        super(MainWindow, self).__init__(parent)
-        self.build()
-
-    def build(self):
-
-        gr = QtGui.QGridLayout()
-
-        self.btn1 = QtGui.QPushButton()
-        self.btn1.setText('File Name')
-        gr.addWidget(self.btn1, 1, 0)
-        # self.btn1.clicked.connect(self.showDialog)
-
-        self.btn2 = QtGui.QPushButton('Select path', self)
-        gr.addWidget(self.btn2, 0, 0)
-        self.btn2.clicked.connect(self.showSelector)
-
-        self.btn3 = QtGui.QPushButton('Set Path', self)
-        gr.addWidget(self.btn3, 2, 0)
-        self.btn3.clicked.connect(self.setPath)
-
-        self.btn4 = QtGui.QPushButton()
-        self.btn4.setText('Create Configuration')
-        gr.addWidget(self.btn4, 3, 0)
-        self.connect(self.btn4, SIGNAL("clicked()"), self.createConf)
+# создание папок по заданной в файле конфигурации структуре
+def create_folders(inputpath):
+    try:
+       os.makedirs(inputpath)
+       print "Folder {} has been created".format(inputpath)
+    except OSError:
+        if not os.path.isdir(inputpath):
+            raise
 
 
+def create_database(inputpath, GISName):
+    if arcpy.Exists(inputpath+GISName+'.gdb/'):
+       print "Geodatabase: ", inputpath+GISName+'.gdb/'
+    else:
 
-        closeBut = QtGui.QPushButton('Close', self)
-        closeBut.clicked.connect(QtCore.QCoreApplication.instance().quit)
-        gr.addWidget(closeBut, 5, 4)
-
-        self.lbl1 = QtGui.QLabel(MainWindow.ConfigFileName, self)
-        gr.addWidget(self.lbl1, 1, 1)
-        self.lbl2 = QtGui.QLabel(MainWindow.projectPath)
-        gr.addWidget(self.lbl2, 0, 1)
-        self.lbl3 = QtGui.QLabel(MainWindow.projectPath, self)
-        gr.addWidget(self.lbl3, 3, 0, 3, 2)
-
-        self.setLayout(gr)
-        self.setGeometry(300, 300, 250, 180)
-        self.setWindowTitle('Create Configuration File')
-        self.show()
+        arcpy.CreateFileGDB_management(inputpath, GISName)
+        print "Geodatabase has been created: ", inputpath+GISName + '.gdb/'
+    return inputpath+GISName + '.gdb'
 
 
-    # def showDialog(self):
-    #     newtext, ok = QtGui.QInputDialog.getText(None, "Input", "Enter the name of the Project (in English)")
-    #     if ok:
-    #         self.lbl1.setText(str(newtext))
-    #     MainWindow.ConfigFileName = str(newtext)
-    #     return MainWindow.ConfigFileName
+def create_dataset(GDB,FDname):
+    arcpy.env.workspace = GDB
+    if arcpy.Exists(FDname):
+        print "dataset {} exists".format(FDname)
+    else:
+        arcpy.CreateFeatureDataset_management(GDB, FDname, spatial_reference=arcpy.SpatialReference(4326))
+        print 'dataset {} has been created'.format(FDname)
 
-    def showSelector(self):
-        options = QtGui.QFileDialog.DontResolveSymlinks | QtGui.QFileDialog.ShowDirsOnly
-        foldername = QtGui.QFileDialog.getExistingDirectory(self, "Select folder for the project", self.lbl2.text(),
-                                                            options)
-        if foldername:
-            self.lbl2.setText(update_filepath(foldername))
-        MainWindow.projectPath = foldername + '/'
-        return MainWindow.projectPath
 
-    def setPath(self):
-        MainWindow.projectFolder = MainWindow.projectPath + MainWindow.ConfigFileName
-        tempdata = update_filepath(MainWindow.projectFolder)
-        self.lbl3.setText(tempdata)
-        MainWindow.projectFolder = tempdata
-        return tempdata
+def create_project(configFileName):
+    cur_section = 'Paths'
+    ProjectFolder = GTC.get_setting(configFileName, cur_section, setting='projectfolder')
+    InputData = GTC.get_setting(configFileName, cur_section, setting = 'inputdata')
+    TempData = GTC.get_setting(configFileName, cur_section, setting = 'tempdata')
+    OutputData = GTC.get_setting(configFileName, cur_section, setting = 'outputdata')
+    DecorationFolder = GTC.get_setting(configFileName, cur_section, setting = 'decoration')
+    GISName = GTC.get_setting(configFileName, cur_section, setting = 'gisdataname')
+    BasemapDatasetName = GTC.get_setting(configFileName, cur_section, setting='basemapdatasetname')
+    ThematicDatasetName = GTC.get_setting(configFileName, cur_section, setting='thematicdatasetname')
+    AnalysisDatasetName = GTC.get_setting(configFileName, cur_section, setting='analysisdatasetname')
+    mxdName = GTC.get_setting(configFileName, cur_section, setting='mxdname')
 
-    def createConf(self):
-        temp = str(MainWindow.projectPath.replace('\\', '/'))
-        create_config(temp, MainWindow.ConfigFileName)
-        move_config(temp, str(MainWindow.ConfigFileName))
-        print ('The Configuration has been created\n ####################\nExecute Create_Window_CreateProject.py for further project deployment')
-        return
+    create_folders(InputData)
+    create_folders(TempData)
+    create_folders(OutputData)
+    create_folders(DecorationFolder)
+    GDB = create_database(ProjectFolder, GISName)
 
-if __name__ == '__main__':
-    # create_config(temp, MainWindow.ConfigFileName)
+    create_dataset(GDB, BasemapDatasetName)
+    create_dataset(GDB, ThematicDatasetName)
+    create_dataset(GDB, AnalysisDatasetName)
+    print "\n#####################\nStorage has been created!\nYou can check it via Windows Explorer\n" \
+          "#####################\nNow you should import data\n Please execute file - Create_Window_ImportData.py"
 
-    myApp = QtGui.QApplication(sys.argv)
-    myProg = MainWindow()
-    myProg.show()
-    sys.exit(myApp.exec_())
+
+
+
+configFile = 'CONFIGURATION.ini'
+project_folder = update_filepath(sys.argv[1])
+create_config(project_folder, configFile)
+config_path = move_config(project_folder, configFile)
+print(project_folder)
+create_project(config_path)
+    
+
