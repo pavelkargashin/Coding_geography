@@ -29,9 +29,9 @@ def main(inputlist, fileName, field_list_sungai):
 
 
 if __name__=='__main__':
-    inputlist = sys.argv[1]
-
-    filePath = filePath = GTC.get_setting('CONFIGURATION', 'Paths', 'inputdata')
+    configFileName = sys.argv[1]
+    inputlist = sys.argv[2]
+    filePath = GTC.get_setting(configFileName, 'Paths', 'inputdata')
     fileName = filePath+"Sumur_add.csv"
     field_list_sumur = [u'Area', u'Location', u'Longitude',
                      u'Latitude', u'Year', u'Stage', u'Temperatur',
