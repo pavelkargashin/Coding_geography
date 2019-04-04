@@ -1,5 +1,5 @@
 #!C:\Python27\ArcGIS10.5\python.exe
-# -*-coding:utf-8-*-
+# coding: utf8
 import arcpy, re, os
 import Create_Tools_MakeShapefiles, Analysis_Tools_databaseAnalysis, General_Tools_ConfigFile as GTC
 arcpy.env.overwriteOutput=True

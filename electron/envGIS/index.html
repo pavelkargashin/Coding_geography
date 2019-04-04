@@ -108,13 +108,14 @@
       }
 
       function InitProject() {
+          M.toast({html: 'Project is initializing in ' + pProject})
           let pyOptions = {
             args: [pProject]
           }
-          // pyshell.PythonShell.run('./resources/python_scripts/Create_Window_ConfigFile - Copy.py', pyOptions, function(err, results) {
-          pyshell.PythonShell.run('../../Create_Window_ConfigFile.py', pyOptions, function(err, results) {
+          // pyshell.PythonShell.run('./resources/python_scripts/Create_Window_ConfigFile.py', pyOptions, function(err, results) {  // production
+          pyshell.PythonShell.run('./python_scripts/Create_Window_ConfigFile.py', pyOptions, function(err, results) {  // development
             if (err) throw err
-            var toast_text = 'Project is initialized at ' + results.pop()
+            var toast_text = 'Project is initialized in ' + results.pop()
             M.toast({html: toast_text})
           })
       }
@@ -151,30 +152,19 @@
         })
       }
 
+
       function Import() {
         let pyOptions = {
           args: [pXlsx, pProject, pShp]
         }
-        // pyshell.PythonShell.run('./resources/python_scripts/Create_Window_ConfigFile - Copy.py', pyOptions, function(err, results) {
-        pyshell.PythonShell.run('../../Create_Window_ImportData.py', pyOptions, function(err, results) {
+        // pyshell.PythonShell.run('./resources/python_scripts/Create_Window_ImportData.py', pyOptions, function(err, results) {  // production
+        pyshell.PythonShell.run('./python_scripts/Create_Window_ImportData.py', pyOptions, function(err, results) {  // development
           if (err) throw err
           var toast_text = results
           M.toast({html: toast_text})
           console.log('done')
         })
       }
-
-
-      
-      // function CreateConfigFile() {
-      //   let pyOptions = {
-      //     args: [path]
-      //   }
-      //   pyshell.PythonShell.run('./python_scripts/Create_Window_ConfigFile.py', pyOptions, function(err, results) {
-      //     if (err) throw err;
-      //     M.toast({html: 'Configuration is created'})
-      //   })
-      // }
     </script>
 
 

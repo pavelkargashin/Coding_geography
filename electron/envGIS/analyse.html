@@ -26,14 +26,17 @@
       </div>
     </nav>
     <div class="container" style="min-height: 400px">
-      
-      
+  
+  
+  
+  
       <h4>Select data for analysis</h4>
+  
       <div class="row">
-
-
+  
+  
         <div class="input-field col s6">
-          <select>
+          <select id="year">
             <option value="" disabled selected>Choose your option</option>
             <option value="2009">2009</option>
             <option value="2012">2012</option>
@@ -48,30 +51,33 @@
   
         <div class="col s6">
           <form action="#">
+            <label>Environment</label>
             <p>
-              <label>
-                <input id="r_sungai" class="with-gap" name="area" type="radio" checked/>
-                <span>Sungai</span>
-              </label>
-            </p>
-            <p>
-              <label>
-                <input id="r_sumur" class="with-gap" name="area" type="radio" />
-                <span>Sumur</span>
-              </label>
+              <span>
+                <label>
+                  <input class="with-gap" name="area" type="radio" value="Sungai" onclick="Radio()" checked />
+                  <span>Sungai</span>
+                </label>
+              </span>
+              <span style="margin-left: 50px">
+                <label>
+                  <input class="with-gap" name="area" type="radio" value="Sumur"  onclick="Radio()"/>
+                  <span>Sumur</span>
+                </label>
+              </span>
             </p>
           </form>
         </div>
-
-
+  
+  
       </div>
-
-
+  
+  
       <div class="row">
-
-
+  
+  
         <div class="input-field col s6">
-          <select>
+          <select id="region">
             <option value="" disabled selected>Choose your option</option>
             <option value="Regency">Regency</option>
             <option value="Basin">Basin</option>
@@ -80,7 +86,7 @@
         </div>
   
         <div class="input-field col s6">
-          <select>
+          <select id="stat">
             <option value="" disabled selected>Choose your option</option>
             <option value="MAX">MAX</option>
             <option value="MEAN">MEAN</option>
@@ -89,138 +95,175 @@
           </select>
           <label>Statistics</label>
         </div>
-
-
+  
+  
       </div>
-
-    <div class="row">
-
-
-      <div class="input-field col s6">
-        <select id="s_sungai">
-          <option value="" disabled selected>Choose your option</option>
-          <option value="sn_Temperatur">Temperatur</option>
-          <option value="sn_pH">pH</option>
-          <option value="sn_DHL_MosCm">DHL_MosCm</option>
-          <option value="sn_TDS_mgL">TDS_mgL</option>
-          <option value="sn_TSS_mgL">TSS_mgL</option>
-          <option value="sn_DO_mgL">DO_mgL</option>
-          <option value="sn_BOD_mgL">BOD_mgL</option>
-          <option value="sn_COD_mgL">COD_mgL</option>
-          <option value="sn_NO2_N_mgL">NO2_N_mgL</option>
-          <option value="sn_NO3_N_mgL">NO3_N_mgL</option>
-          <option value="sn_NH3_N_mgL">NH3_N_mgL</option>
-          <option value="sn_FreeChlori">FreeChlori</option>
-          <option value="sn_TotalP_mgL">TotalP_mgL</option>
-          <option value="sn_Phenol_mgL">Phenol_mgL</option>
-          <option value="sn_OilAndFat_">OilAndFat_</option>
-          <option value="sn_Detergent_">Detergent_</option>
-          <option value="sn_FecalColif">FecalColif</option>
-          <option value="sn_TotalColif">TotalColif</option>
-          <option value="sn_Cyanide_mg">Cyanide_mg</option>
-          <option value="sn_Sulfide_mg">Sulfide_mg</option>
-          <option value="sn_Turbidity_">Turbidity_</option>
-          <option value="sn_Cd_mgL">Cd_mgL</option>
-          <option value="sn_Fe_mgL">Fe_mgL</option>
-          <option value="sn_PO4_mgL">PO4_mgL</option>
-          <option value="sn_SO4_mgL">SO4_mgL</option>
-          <option value="sn_Pb_mgL">Pb_mgL</option>
-          <option value="sn_Mn_mgL">Mn_mgL</option>
-          <option value="sn_Zn_mgL">Zn_mgL</option>
-          <option value="sn_Cr_mgL">Cr_mgL</option>
-        </select>
-        <label>Chemistry Sungai</label>
+  
+      <div class="row">
+  
+  
+        <div class="input-field col s6">
+          <select id="s_Sungai" class="chem">
+            <option value="" disabled selected>Choose your option</option>
+            <option value="Temperatur">Temperatur</option>
+            <option value="pH">pH</option>
+            <option value="DHL_MosCm">DHL_MosCm</option>
+            <option value="TDS_mgL">TDS_mgL</option>
+            <option value="TSS_mgL">TSS_mgL</option>
+            <option value="DO_mgL">DO_mgL</option>
+            <option value="BOD_mgL">BOD_mgL</option>
+            <option value="COD_mgL">COD_mgL</option>
+            <option value="NO2_N_mgL">NO2_N_mgL</option>
+            <option value="NO3_N_mgL">NO3_N_mgL</option>
+            <option value="NH3_N_mgL">NH3_N_mgL</option>
+            <option value="FreeChlori">FreeChlori</option>
+            <option value="TotalP_mgL">TotalP_mgL</option>
+            <option value="Phenol_mgL">Phenol_mgL</option>
+            <option value="OilAndFat_">OilAndFat_</option>
+            <option value="Detergent_">Detergent_</option>
+            <option value="FecalColif">FecalColif</option>
+            <option value="TotalColif">TotalColif</option>
+            <option value="Cyanide_mg">Cyanide_mg</option>
+            <option value="Sulfide_mg">Sulfide_mg</option>
+            <option value="Turbidity_">Turbidity_</option>
+            <option value="Cd_mgL">Cd_mgL</option>
+            <option value="Fe_mgL">Fe_mgL</option>
+            <option value="PO4_mgL">PO4_mgL</option>
+            <option value="SO4_mgL">SO4_mgL</option>
+            <option value="Pb_mgL">Pb_mgL</option>
+            <option value="Mn_mgL">Mn_mgL</option>
+            <option value="Zn_mgL">Zn_mgL</option>
+            <option value="Cr_mgL">Cr_mgL</option>
+          </select>
+          <label>Chemistry Sungai</label>
+        </div>
+  
+        <div class="input-field col s6">
+          <select id="s_Sumur" class="chem" disabled>
+            <option value="" disabled selected>Choose your option</option>
+            <option value="Temperatur">Temperatur</option>
+            <option value="TDS_mgL">TDS_mgL</option>
+            <option value="TSS_mgL">TSS_mgL</option>
+            <option value="pH">pH</option>
+            <option value="BOD_mgL">BOD_mgL</option>
+            <option value="COD_mgL">COD_mgL</option>
+            <option value="DO_mgL">DO_mgL</option>
+            <option value="TotalP_mgL">TotalP_mgL</option>
+            <option value="NO3_N_mgL">NO3_N_mgL</option>
+            <option value="NH3_N_mgL">NH3_N_mgL</option>
+            <option value="As_mgL">As_mgL</option>
+            <option value="Co_mgL">Co_mgL</option>
+            <option value="Ba_mgL">Ba_mgL</option>
+            <option value="B_mgL">B_mgL</option>
+            <option value="Cd_mgL">Cd_mgL</option>
+            <option value="Cr_V_mgLI">Cr_V_mgLI</option>
+            <option value="Cu_mgL">Cu_mgL</option>
+            <option value="Fe_mgL">Fe_mgL</option>
+            <option value="Pb_mgL">Pb_mgL</option>
+            <option value="Mn_mgL">Mn_mgL</option>
+            <option value="Hg_mgL">Hg_mgL</option>
+            <option value="Zn_mgL">Zn_mgL</option>
+            <option value="Chloride_m">Chloride_m</option>
+            <option value="Cyanide_mg">Cyanide_mg</option>
+            <option value="Fluoride_m">Fluoride_m</option>
+            <option value="NO2_N_mgL">NO2_N_mgL</option>
+            <option value="Sulphate_m">Sulphate_m</option>
+            <option value="FreeChlori">FreeChlori</option>
+            <option value="Sulfide_mg">Sulfide_mg</option>
+            <option value="Salinity_m">Salinity_m</option>
+            <option value="FecalColif">FecalColif</option>
+            <option value="TotalColif">TotalColif</option>
+            <option value="Gloss_A_mg">Gloss_A_mg</option>
+            <option value="Gloss_B_mg">Gloss_B_mg</option>
+            <option value="DHL_mgL">DHL_mgL</option>
+            <option value="Phenol_mgL">Phenol_mgL</option>
+            <option value="OilAndFat_">OilAndFat_</option>
+            <option value="Detergent_">Detergent_</option>
+            <option value="PO4_mgL">PO4_mgL</option>
+            <option value="Turbidity_">Turbidity_</option>
+          </select>
+          <label>Chemistry Sumur</label>
+        </div>
+  
+  
       </div>
-
-      <div class="input-field col s6">
-        <select id="s_sumnur">
-          <option value="" disabled selected>Choose your option</option>
-          <option value="sm_Temperatur">Temperatur</option>
-          <option value="sm_TDS_mgL">TDS_mgL</option>
-          <option value="sm_TSS_mgL">TSS_mgL</option>
-          <option value="sm_pH">pH</option>
-          <option value="sm_BOD_mgL">BOD_mgL</option>
-          <option value="sm_COD_mgL">COD_mgL</option>
-          <option value="sm_DO_mgL">DO_mgL</option>
-          <option value="sm_TotalP_mgL">TotalP_mgL</option>
-          <option value="sm_NO3_N_mgL">NO3_N_mgL</option>
-          <option value="sm_NH3_N_mgL">NH3_N_mgL</option>
-          <option value="sm_As_mgL">As_mgL</option>
-          <option value="sm_Co_mgL">Co_mgL</option>
-          <option value="sm_Ba_mgL">Ba_mgL</option>
-          <option value="sm_B_mgL">B_mgL</option>
-          <option value="sm_Cd_mgL">Cd_mgL</option>
-          <option value="sm_Cr_V_mgLI">Cr_V_mgLI</option>
-          <option value="sm_Cu_mgL">Cu_mgL</option>
-          <option value="sm_Fe_mgL">Fe_mgL</option>
-          <option value="sm_Pb_mgL">Pb_mgL</option>
-          <option value="sm_Mn_mgL">Mn_mgL</option>
-          <option value="sm_Hg_mgL">Hg_mgL</option>
-          <option value="sm_Zn_mgL">Zn_mgL</option>
-          <option value="sm_Chloride_m">Chloride_m</option>
-          <option value="sm_Cyanide_mg">Cyanide_mg</option>
-          <option value="sm_Fluoride_m">Fluoride_m</option>
-          <option value="sm_NO2_N_mgL">NO2_N_mgL</option>
-          <option value="sm_Sulphate_m">Sulphate_m</option>
-          <option value="sm_FreeChlori">FreeChlori</option>
-          <option value="sm_Sulfide_mg">Sulfide_mg</option>
-          <option value="sm_Salinity_m">Salinity_m</option>
-          <option value="sm_FecalColif">FecalColif</option>
-          <option value="sm_TotalColif">TotalColif</option>
-          <option value="sm_Gloss_A_mg">Gloss_A_mg</option>
-          <option value="sm_Gloss_B_mg">Gloss_B_mg</option>
-          <option value="sm_DHL_mgL">DHL_mgL</option>
-          <option value="sm_Phenol_mgL">Phenol_mgL</option>
-          <option value="sm_OilAndFat_">OilAndFat_</option>
-          <option value="sm_Detergent_">Detergent_</option>
-          <option value="sm_PO4_mgL">PO4_mgL</option>
-          <option value="sm_Turbidity_">Turbidity_</option>
-        </select>
-        <label>Chemistry Sumnur</label>
-      </div>
-
-
-    </div>
-
-    <a class="waves-effect waves-light red lighten-1 btn" onclick="SubmitData()">Submit</a>
-
-
-
+  
+      <a class="waves-effect waves-light red lighten-1 btn" onclick="SubmitData()">Submit</a>
+  
+      <p id="test"></p>
+  
     </div>
 
 
     
 
     <script>
-       M.AutoInit();
+      M.AutoInit();
       // You can also require other files to run in this process
       require('./renderer.js')
       let pyshell = require('python-shell')
-      function py(num) {
-        var paragraph = document.getElementById("paragraph")
-        let options = {
-          args: [num]
-        };
-        // pyshell.PythonShell.run('./resources/python_scripts/hello.py', options, function(err, results){  // production
-        pyshell.PythonShell.run('./python_scripts/hello.py', options, function(err, results){  // debug
-          if (err) throw err;
-          paragraph.textContent += results
-          paragraph.textContent += '\n'
-        });
-      }
     </script>
 
     <script>
       function Radio(){
-        if (document.getElementById("r_sungai").checked = true) {
-          console.log("sad")
-        } else {
-          console.log("фыв")
-        } 
+        var checkedValue
+        var uncheckedValue
+        var radios = document.getElementsByName("area")
+
+        for (var i = 0, length = radios.length; i < length; i++) {
+          if (radios[i].checked) {
+            // do whatever you want with the checked radio
+            checkedValue = radios[i].value
+          } else {
+            uncheckedValue = radios[i].value
+          }
+        }
+        
+        document.getElementById("s_" + checkedValue).disabled = false
+        document.getElementById("s_" + uncheckedValue).disabled = true
+        document.getElementById("s_" + uncheckedValue).value = ""
+
+        M.AutoInit()  // Re-init select elements with new properties
       }
 
       function SubmitData() {
-        M.toast({html: 'Data is submitted'})
+        var region
+        var env
+        var stat
+        var year
+        var chem
+        
+        region = document.getElementById("region").value
+        stat = document.getElementById("stat").value
+        year = document.getElementById("year").value
+
+        // env =
+        var radios = document.getElementsByName("area")
+        for (var i = 0, length = radios.length; i < length; i++) {
+          if (radios[i].checked) {
+            // do whatever you want with the checked radio
+            env = radios[i].value
+
+            // only one radio can be logically checked, don't check the rest
+            break;
+          }
+        }
+
+        chem = document.getElementById("s_Sungai").value + document.getElementById("s_Sumur").value
+        
+        var parameters = [region, env, stat, year, chem]
+        toast_text = "The map's parameters are " + parameters.join(", ")
+        M.toast({html: toast_text})
+
+        let pyOptions = {
+          args: [region, env, stat, year, chem]
+        }
+        // pyshell.PythonShell.run('./resources/python_scripts/Maps_Window_Regionalisation.py', pyOptions, function(err, results) {  // production
+        pyshell.PythonShell.run('./python_scripts/Maps_Window_Regionalisation.py', pyOptions, function (err, results) {  // development
+          if (err) throw err
+          var toast_text = "Map is made successfully"
+          M.toast({ html: toast_text })
+        })
       }
     </script>
   </body>

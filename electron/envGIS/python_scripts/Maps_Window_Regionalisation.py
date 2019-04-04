@@ -1,5 +1,4 @@
 #!C:\Python27\ArcGIS10.5\python.exe
-# -*-coding:utf-8-*-
 import sys
 import Maps_Tools_Regionalization
 
