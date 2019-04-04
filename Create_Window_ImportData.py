@@ -1,4 +1,4 @@
-#!/usr/bin
+#!C:\Python27\ArcGIS10.5\python.exe
 # -*-coding:utf-8-*-
 import os
 import sys
@@ -55,11 +55,11 @@ def main(ThematicFileName, ConfigFileName, BaseMapFolder):
     SelectBasemap(BaseMapFolder, ConfigFileName)
     temp_thematic_file = SelectThematic(ThematicFileName, ConfigFileName)
     runImport(temp_thematic_file, ConfigFileName)
-    print' All done'
+    print 'All done'
 
 if __name__=='__main__':
     Paths = 'Paths'
     ThematicFileName = sys.argv[1]
-    ConfigFileName = sys.argv[2]
+    ConfigFileName = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') + '/' + 'CONFIGURATION.ini'
     BaseMapFolder = sys.argv[3]
     main(ThematicFileName, ConfigFileName, BaseMapFolder)

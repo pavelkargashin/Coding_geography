@@ -1,4 +1,4 @@
-#!/usr/bin
+#!C:\Python27\ArcGIS10.5\python.exe
 # -*-coding:utf-8-*-
 import os
 import sys
@@ -70,7 +70,7 @@ def move_config(path, file):
 def create_folders(inputpath):
     try:
        os.makedirs(inputpath)
-       print "Folder {} has been created".format(inputpath)
+       # print "Folder {} has been created".format(inputpath)
     except OSError:
         if not os.path.isdir(inputpath):
             raise
@@ -127,7 +127,8 @@ configFile = 'CONFIGURATION.ini'
 project_folder = update_filepath(sys.argv[1])
 create_config(project_folder, configFile)
 config_path = move_config(project_folder, configFile)
-print(project_folder)
 create_project(config_path)
+print(project_folder)
+
     
 

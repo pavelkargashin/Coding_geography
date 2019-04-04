@@ -112,9 +112,9 @@
             args: [pProject]
           }
           // pyshell.PythonShell.run('./resources/python_scripts/Create_Window_ConfigFile - Copy.py', pyOptions, function(err, results) {
-          pyshell.PythonShell.run('./python_scripts/Create_Window_ConfigFile - Copy.py', pyOptions, function(err, results) {
+          pyshell.PythonShell.run('../../Create_Window_ConfigFile.py', pyOptions, function(err, results) {
             if (err) throw err
-            var toast_text = 'Project is initialized at ' + results
+            var toast_text = 'Project is initialized at ' + results.pop()
             M.toast({html: toast_text})
           })
       }
@@ -152,11 +152,16 @@
       }
 
       function Import() {
-        // if all set 
-        M.toast({html: 'Data is imported'})
-
-        // else
-        // M.toast({html: 'Import failed'})
+        let pyOptions = {
+          args: [pXlsx, pProject, pShp]
+        }
+        // pyshell.PythonShell.run('./resources/python_scripts/Create_Window_ConfigFile - Copy.py', pyOptions, function(err, results) {
+        pyshell.PythonShell.run('../../Create_Window_ImportData.py', pyOptions, function(err, results) {
+          if (err) throw err
+          var toast_text = results
+          M.toast({html: toast_text})
+          console.log('done')
+        })
       }
 
 
