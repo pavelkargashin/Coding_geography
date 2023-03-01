@@ -1,5 +1,5 @@
 # -*- coding:utf-8-*-
-# The file is the set of functions needed for other scripts
+
 
 import configparser, arcpy
 
